@@ -21,8 +21,10 @@ def register_user(payload: UserCreate, db: Session = Depends(get_db)):
     if len(payload.password) < 8:
         raise HTTPException(status_code=400, detail="Password must be at least 8 characters long")
 
+    first_name, last_name = payload.names()
     user = User(
-        name=payload.name.strip(),
+        first_name=first_name,
+        last_name=last_name,
         email=payload.email.lower(),
         password_hash=get_password_hash(payload.password),
     )

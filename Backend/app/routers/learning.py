@@ -1,152 +1,178 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from datetime import datetime
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import get_db
 from app.dependencies import get_current_user
 from app.models.learning import (
-    Assessment,
-    AssessmentAttempt,
-    ContentItem,
-    Curriculum,
-    LearnerProfile,
+    Assessment, AssessmentAnswer, AssessmentAttempt, Language, LearnerProfile,
+    LearnerProgress, Lesson, Level, Module, Question,
 )
 from app.models.user import User
 from app.schemas.learning import (
-    AssessmentResponse,
-    AssessmentResult,
-    AssessmentSubmission,
-    CurriculumResponse,
-    LearnerDashboardResponse,
-    LearnerProfileResponse,
-    LearnerProfileUpdate,
+    AssessmentResponse, AssessmentResult, AssessmentSubmission, LanguageResponse,
+    LevelResponse, LessonResponse, ModuleResponse, ProfileResponse, ProfileUpdate,
+    ProgressResponse,
 )
 
 router = APIRouter()
+BENCHMARKS = ((0, "Beginner"), (40, "Elementary"), (60, "Intermediate"), (75, "Upper Intermediate"), (90, "Advanced"))
 
 
-def get_or_create_profile(user: User, db: Session) -> LearnerProfile:
-    profile = db.query(LearnerProfile).filter(LearnerProfile.user_id == user.id).first()
-    if profile is None:
-        profile = LearnerProfile(user_id=user.id)
-        db.add(profile)
-        db.commit()
-        db.refresh(profile)
-    return profile
+def benchmark(score: float) -> str:
+    return next(name for minimum, name in reversed(BENCHMARKS) if score >= minimum)
 
 
-@router.get("/curricula", response_model=list[CurriculumResponse])
-def list_curricula(
-    language: str | None = None,
-    level: str | None = None,
-    db: Session = Depends(get_db),
-):
-    query = db.query(Curriculum).options(joinedload(Curriculum.content_items)).filter(Curriculum.is_published.is_(True))
-    if language:
-        query = query.filter(Curriculum.language == language)
-    if level:
-        query = query.filter(Curriculum.level == level)
-    return query.order_by(Curriculum.id).all()
+def full_module_query(db: Session):
+    return db.query(Module).options(
+        joinedload(Module.lessons).joinedload(Lesson.activities),
+        joinedload(Module.lessons).joinedload(Lesson.contents),
+    )
+
+
+@router.get("/languages", response_model=list[LanguageResponse])
+def list_languages(db: Session = Depends(get_db)):
+    return db.query(Language).filter(Language.is_active.is_(True)).order_by(Language.name).all()
+
+
+@router.get("/levels", response_model=list[LevelResponse])
+def list_levels(db: Session = Depends(get_db)):
+    return db.query(Level).order_by(Level.minimum_score).all()
+
+
+@router.get("/curriculum", response_model=list[ModuleResponse])
+def list_curriculum(language_id: int | None = None, level_id: int | None = None, db: Session = Depends(get_db)):
+    query = full_module_query(db)
+    if language_id:
+        query = query.filter(Module.language_id == language_id)
+    if level_id:
+        query = query.filter(Module.level_id == level_id)
+    return query.order_by(Module.order_number).all()
+
+
+@router.get("/curriculum/{language_id}/{level_id}", response_model=list[ModuleResponse])
+def curriculum_by_level(language_id: int, level_id: int, db: Session = Depends(get_db)):
+    return full_module_query(db).filter(Module.language_id == language_id, Module.level_id == level_id).order_by(Module.order_number).all()
+
+
+@router.get("/modules/{module_id}", response_model=ModuleResponse)
+def get_module(module_id: int, db: Session = Depends(get_db)):
+    module = full_module_query(db).filter(Module.id == module_id).first()
+    if not module:
+        raise HTTPException(404, "Module not found")
+    return module
+
+
+@router.get("/lessons/{lesson_id}", response_model=LessonResponse)
+def get_lesson(lesson_id: int, db: Session = Depends(get_db)):
+    lesson = db.query(Lesson).options(joinedload(Lesson.activities), joinedload(Lesson.contents)).filter(Lesson.id == lesson_id).first()
+    if not lesson:
+        raise HTTPException(404, "Lesson not found")
+    return lesson
+
+
+@router.get("/content", response_model=list)
+def list_content(lesson_id: int | None = None, language_id: int | None = None, db: Session = Depends(get_db)):
+    from app.models.learning import Content
+    query = db.query(Content).options(joinedload(Content.translations))
+    if lesson_id:
+        query = query.filter(Content.lesson_id == lesson_id)
+    if language_id:
+        query = query.filter(Content.language_id == language_id)
+    return query.order_by(Content.id).all()
 
 
 @router.get("/assessments", response_model=list[AssessmentResponse])
-def list_assessments(
-    language: str | None = None,
-    skill: str | None = None,
-    db: Session = Depends(get_db),
-):
-    query = db.query(Assessment).options(joinedload(Assessment.questions))
-    if language:
-        query = query.filter(Assessment.language == language)
-    if skill:
-        query = query.filter(Assessment.skill == skill)
+def list_assessments(assessment_type: str | None = None, language_id: int | None = None, db: Session = Depends(get_db)):
+    query = db.query(Assessment).options(joinedload(Assessment.questions).joinedload(Question.options))
+    if assessment_type:
+        query = query.filter(Assessment.assessment_type == assessment_type)
+    if language_id:
+        query = query.filter(Assessment.language_id == language_id)
     return query.order_by(Assessment.id).all()
 
 
-@router.get("/profile", response_model=LearnerProfileResponse)
-def get_profile(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    return get_or_create_profile(current_user, db)
+@router.get("/assessments/{assessment_id}", response_model=AssessmentResponse)
+def get_assessment(assessment_id: int, db: Session = Depends(get_db)):
+    assessment = db.query(Assessment).options(joinedload(Assessment.questions).joinedload(Question.options)).filter(Assessment.id == assessment_id).first()
+    if not assessment:
+        raise HTTPException(404, "Assessment not found")
+    return assessment
 
 
-@router.put("/profile", response_model=LearnerProfileResponse)
-def update_profile(
-    payload: LearnerProfileUpdate,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
-):
-    profile = get_or_create_profile(current_user, db)
-    profile.preferred_language = payload.preferred_language.lower()
-    profile.proficiency_level = payload.proficiency_level.lower()
-    profile.goals = payload.goals.strip()
-    db.commit()
-    db.refresh(profile)
-    return profile
-
-
-@router.get("/dashboard", response_model=LearnerDashboardResponse)
-def get_dashboard(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    profile = get_or_create_profile(current_user, db)
-    attempts = db.query(AssessmentAttempt).filter(AssessmentAttempt.user_id == current_user.id).order_by(AssessmentAttempt.submitted_at.desc()).all()
-    return {
-        "user_id": current_user.id,
-        "name": current_user.name,
-        "email": current_user.email,
-        "level": current_user.level,
-        "xp": current_user.xp,
-        "streak": current_user.streak,
-        "profile": profile,
-        "attempts": [
-            {
-                "attempt_id": attempt.id,
-                "score": attempt.score,
-                "max_score": attempt.max_score,
-                "percentage": round(attempt.score / attempt.max_score * 100, 2),
-                "benchmark_level": attempt.benchmark_level,
-                "passed": attempt.score / attempt.max_score >= 0.7,
-                "xp_awarded": 0,
-            }
-            for attempt in attempts
-        ],
-    }
-
-
-@router.post("/assessments/{assessment_id}/attempts", response_model=AssessmentResult, status_code=status.HTTP_201_CREATED)
-def submit_assessment(
-    assessment_id: int,
-    payload: AssessmentSubmission,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
-):
-    assessment = db.query(Assessment).options(joinedload(Assessment.questions)).filter(Assessment.id == assessment_id).first()
-    if assessment is None:
-        raise HTTPException(status_code=404, detail="Assessment not found")
-
-    max_score = sum(question.points for question in assessment.questions)
-    score = sum(
-        question.points
-        for question in assessment.questions
-        if str(payload.answers.get(question.id, "")).strip().casefold() == question.answer.strip().casefold()
-    )
-    percentage = round(score / max_score * 100, 2) if max_score else 0
-    passed = percentage >= 70
-    xp_awarded = score * 10
-    attempt = AssessmentAttempt(
-        user_id=current_user.id,
-        assessment_id=assessment.id,
-        score=score,
-        max_score=max_score,
-        benchmark_level=assessment.benchmark_level if passed else "developing",
-    )
-    current_user.xp += xp_awarded
-    current_user.level = max(current_user.level, 1 + current_user.xp // 100)
+@router.post("/assessments/{assessment_id}/submit", response_model=AssessmentResult, status_code=status.HTTP_201_CREATED)
+def submit_assessment(assessment_id: int, payload: AssessmentSubmission, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    assessment = get_assessment(assessment_id, db)
+    score = 0
+    attempt = AssessmentAttempt(user_id=current_user.id, assessment_id=assessment.id, started_at=payload.started_at or datetime.utcnow())
     db.add(attempt)
+    db.flush()
+    for question in assessment.questions:
+        answer = str(payload.answers.get(question.id, "")).strip()
+        marks = question.marks if answer.casefold() == question.correct_answer.strip().casefold() else 0
+        score += marks
+        attempt.answers.append(AssessmentAnswer(question_id=question.id, answer_text=answer, marks_obtained=marks))
+    percentage = round(score / assessment.total_marks * 100, 2) if assessment.total_marks else 0
+    attempt.score, attempt.percentage, attempt.completed_at = score, percentage, datetime.utcnow()
+    db.add(LearnerProgress(user_id=current_user.id, skill=assessment.assessment_type, score=percentage, proficiency_level=benchmark(percentage), assessment_id=assessment.id))
     db.commit()
     db.refresh(attempt)
+    return {"attempt_id": attempt.id, "score": score, "total_marks": assessment.total_marks, "percentage": percentage, "proficiency_level": benchmark(percentage)}
+
+
+@router.get("/users/me", response_model=ProfileResponse)
+def get_profile(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    profile = current_user.profile
+    if profile is None:
+        profile = LearnerProfile(user_id=current_user.id)
+        db.add(profile)
+        db.commit()
+        db.refresh(profile)
     return {
-        "attempt_id": attempt.id,
-        "score": score,
-        "max_score": max_score,
-        "percentage": percentage,
-        "benchmark_level": attempt.benchmark_level,
-        "passed": passed,
-        "xp_awarded": xp_awarded,
+        "id": profile.id,
+        "user_id": profile.user_id,
+        "first_name": current_user.first_name,
+        "last_name": current_user.last_name,
+        "age": profile.age,
+        "native_language": profile.native_language,
+        "learning_language": profile.learning_language,
+        "education_level": profile.education_level,
+        "current_level_id": profile.current_level_id,
+        "updated_at": profile.updated_at,
     }
+
+
+@router.put("/users/me", response_model=ProfileResponse)
+def update_profile(payload: ProfileUpdate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    profile = current_user.profile or LearnerProfile(user_id=current_user.id)
+    current_user.first_name, current_user.last_name = payload.first_name.strip(), payload.last_name.strip()
+    for field, value in payload.model_dump().items():
+        if field not in {"first_name", "last_name"}:
+            setattr(profile, field, value)
+    db.add(profile)
+    db.commit()
+    db.refresh(profile)
+    return {
+        "id": profile.id,
+        "user_id": profile.user_id,
+        "first_name": current_user.first_name,
+        "last_name": current_user.last_name,
+        "age": profile.age,
+        "native_language": profile.native_language,
+        "learning_language": profile.learning_language,
+        "education_level": profile.education_level,
+        "current_level_id": profile.current_level_id,
+        "updated_at": profile.updated_at,
+    }
+
+
+@router.get("/progress/me", response_model=ProgressResponse)
+def get_progress(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    values = {}
+    for skill in ("reading", "writing", "comprehension"):
+        latest = db.query(LearnerProgress).filter(LearnerProgress.user_id == current_user.id, LearnerProgress.skill == skill).order_by(LearnerProgress.updated_at.desc()).first()
+        values[skill] = {"score": latest.score if latest else 0, "level": latest.proficiency_level if latest else "Beginner"}
+    overall_score = round(sum(item["score"] for item in values.values()) / 3, 2)
+    values["overall"] = {"score": overall_score, "level": benchmark(overall_score)}
+    return values

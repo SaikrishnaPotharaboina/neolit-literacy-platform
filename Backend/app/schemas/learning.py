@@ -1,88 +1,131 @@
 from datetime import datetime
-from typing import Any
-
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class LearnerProfileUpdate(BaseModel):
-    preferred_language: str = Field(min_length=2, max_length=10)
-    proficiency_level: str = Field(min_length=1, max_length=20)
-    goals: str = Field(default="", max_length=1000)
-
-
-class LearnerProfileResponse(LearnerProfileUpdate):
+class ReadModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+
+class LanguageResponse(ReadModel):
     id: int
-    user_id: int
-    updated_at: datetime | None = None
+    name: str
+    code: str
+    is_active: bool
 
 
-class ContentItemResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+class LevelResponse(ReadModel):
+    id: int
+    name: str
+    description: str
+    minimum_score: int
+    maximum_score: int
 
+
+class ActivityResponse(ReadModel):
     id: int
     title: str
-    body: str
-    language: str
-    skill: str
-    sequence: int
+    activity_type: str
+    content: str
+    order_number: int
 
 
-class CurriculumResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+class ContentTranslationResponse(ReadModel):
+    id: int
+    language_id: int
+    translated_text: str
 
+
+class ContentResponse(ReadModel):
+    id: int
+    title: str
+    content_type: str
+    content: str
+    language_id: int
+    translations: list[ContentTranslationResponse] = []
+
+
+class LessonResponse(ReadModel):
     id: int
     title: str
     description: str
-    language: str
-    level: str
-    is_published: bool
-    content_items: list[ContentItemResponse] = []
+    order_number: int
+    lesson_type: str
+    activities: list[ActivityResponse] = []
+    contents: list[ContentResponse] = []
 
 
-class AssessmentQuestionResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
+class ModuleResponse(ReadModel):
     id: int
-    prompt: str
+    title: str
+    description: str
+    order_number: int
+    language_id: int
+    level_id: int
+    lessons: list[LessonResponse] = []
+
+
+class QuestionOptionResponse(ReadModel):
+    id: int
+    option_text: str
+
+
+class QuestionResponse(ReadModel):
+    id: int
+    question_text: str
     question_type: str
-    options: list[Any] = []
-    points: int
+    marks: int
+    options: list[QuestionOptionResponse] = []
 
 
-class AssessmentResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
+class AssessmentResponse(ReadModel):
     id: int
     title: str
     description: str
-    language: str
-    skill: str
-    benchmark_level: str
-    questions: list[AssessmentQuestionResponse] = []
+    assessment_type: str
+    language_id: int
+    level_id: int
+    total_marks: int
+    passing_marks: int
+    questions: list[QuestionResponse] = []
 
 
 class AssessmentSubmission(BaseModel):
-    answers: dict[int, str]
+    answers: dict[int, str] = Field(default_factory=dict)
+    started_at: datetime | None = None
 
 
 class AssessmentResult(BaseModel):
     attempt_id: int
     score: int
-    max_score: int
+    total_marks: int
     percentage: float
-    benchmark_level: str
-    passed: bool
-    xp_awarded: int
+    proficiency_level: str
 
 
-class LearnerDashboardResponse(BaseModel):
+class ProfileUpdate(BaseModel):
+    first_name: str = Field(min_length=1, max_length=80)
+    last_name: str = Field(default="", max_length=80)
+    age: int | None = Field(default=None, ge=5, le=120)
+    native_language: str = Field(default="", max_length=80)
+    learning_language: str = Field(min_length=2, max_length=12)
+    education_level: str = Field(default="", max_length=80)
+    current_level_id: int | None = None
+
+
+class ProfileResponse(ProfileUpdate):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
     user_id: int
-    name: str
-    email: str
-    level: int
-    xp: int
-    streak: int
-    profile: LearnerProfileResponse
-    attempts: list[AssessmentResult]
+    updated_at: datetime | None = None
+
+
+class ProgressItem(BaseModel):
+    score: float
+    level: str
+
+
+class ProgressResponse(BaseModel):
+    reading: ProgressItem
+    writing: ProgressItem
+    comprehension: ProgressItem
+    overall: ProgressItem

@@ -1,32 +1,33 @@
 from datetime import datetime
-from typing import Optional
-
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
-class UserBase(BaseModel):
-    name: str
+class UserCreate(BaseModel):
+    first_name: str | None = Field(default=None, min_length=1, max_length=80)
+    last_name: str = Field(default="", max_length=80)
+    name: str | None = Field(default=None, max_length=160)
     email: EmailStr
+    password: str = Field(min_length=8)
 
-
-class UserCreate(UserBase):
-    password: str
-
+    def names(self) -> tuple[str, str]:
+        if self.first_name:
+            return self.first_name.strip(), self.last_name.strip()
+        parts = (self.name or "").strip().split(maxsplit=1)
+        return parts[0], parts[1] if len(parts) > 1 else ""
 
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
 
-class UserResponse(UserBase):
+class UserResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-
     id: int
-    level: int = 1
-    xp: int = 0
-    streak: int = 0
+    first_name: str
+    last_name: str
+    email: EmailStr
     created_at: datetime
-    updated_at: Optional[datetime] = None
+    updated_at: datetime | None = None
 
 
 class Token(BaseModel):

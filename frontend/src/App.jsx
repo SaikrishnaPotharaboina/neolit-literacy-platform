@@ -31,6 +31,14 @@ function AppRoutes() {
                     </ProtectedRoute>
                 }
             />
+            <Route
+                path="/profile"
+                element={
+                    <ProtectedRoute>
+                        <DashboardPage />
+                    </ProtectedRoute>
+                }
+            />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
     )

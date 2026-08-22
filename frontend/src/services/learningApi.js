@@ -1,28 +1,12 @@
 import api from './api'
 
 export const learningApi = {
-    getCurricula: async (language) => {
-        const response = await api.get('/learning/curricula', { params: language ? { language } : {} })
-        return response.data
-    },
-
-    getAssessments: async (language) => {
-        const response = await api.get('/learning/assessments', { params: language ? { language } : {} })
-        return response.data
-    },
-
-    getDashboard: async () => {
-        const response = await api.get('/learning/dashboard')
-        return response.data
-    },
-
-    updateProfile: async (profile) => {
-        const response = await api.put('/learning/profile', profile)
-        return response.data
-    },
-
-    submitAssessment: async (assessmentId, answers) => {
-        const response = await api.post(`/learning/assessments/${assessmentId}/attempts`, { answers })
-        return response.data
-    }
+    getLanguages: async () => (await api.get('/api/languages')).data,
+    getLevels: async () => (await api.get('/api/levels')).data,
+    getCurriculum: async (params) => (await api.get('/api/curriculum', { params })).data,
+    getProfile: async () => (await api.get('/api/users/me')).data,
+    updateProfile: async (profile) => (await api.put('/api/users/me', profile)).data,
+    getAssessments: async (params) => (await api.get('/api/assessments', { params })).data,
+    submitAssessment: async (assessmentId, answers) => (await api.post(`/api/assessments/${assessmentId}/submit`, { answers })).data,
+    getProgress: async () => (await api.get('/api/progress/me')).data,
 }

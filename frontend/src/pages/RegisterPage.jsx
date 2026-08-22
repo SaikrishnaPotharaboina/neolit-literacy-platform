@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function RegisterPage() {
-    const [form, setForm] = useState({ name: '', email: '', password: '' })
+    const [form, setForm] = useState({ first_name: '', last_name: '', email: '', password: '' })
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const { register } = useAuth()
@@ -38,16 +38,21 @@ export default function RegisterPage() {
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                        <label className="mb-2 block text-sm font-medium text-slate-700">Full name</label>
+                        <label className="mb-2 block text-sm font-medium text-slate-700">First name</label>
                         <input
-                            name="name"
+                            name="first_name"
                             type="text"
-                            value={form.name}
+                            value={form.first_name}
                             onChange={handleChange}
                             className="w-full rounded-xl border border-slate-200 px-4 py-3"
-                            placeholder="Alex Johnson"
+                            placeholder="Alex"
                             required
                         />
+                    </div>
+
+                    <div>
+                        <label className="mb-2 block text-sm font-medium text-slate-700">Last name</label>
+                        <input name="last_name" value={form.last_name} onChange={handleChange} className="w-full rounded-xl border border-slate-200 px-4 py-3" placeholder="Johnson" />
                     </div>
 
                     <div>
