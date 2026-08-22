@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.database import Base, engine
+from app.database import Base, SessionLocal, engine
 from app.routers import auth
+from app.routers import learning
+from app.seed import seed_learning_content
 
 app = FastAPI(title="NeoLit API", version="1.0.0")
 
@@ -15,8 +17,11 @@ app.add_middleware(
 )
 
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
+app.include_router(learning.router, prefix="/learning", tags=["learning"])
 
 Base.metadata.create_all(bind=engine)
+with SessionLocal() as db:
+    seed_learning_content(db)
 
 
 @app.get("/health")

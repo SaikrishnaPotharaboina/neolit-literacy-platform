@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.dependencies import get_current_user
 from app.models.user import User
+from app.models.learning import LearnerProfile
 from app.schemas.user import Token, UserCreate, UserLogin, UserResponse
 from app.utils.security import create_access_token, get_password_hash, verify_password
 
@@ -30,6 +31,8 @@ def register_user(payload: UserCreate, db: Session = Depends(get_db)):
     try:
         db.commit()
         db.refresh(user)
+        db.add(LearnerProfile(user_id=user.id))
+        db.commit()
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=400, detail="Could not create user")
