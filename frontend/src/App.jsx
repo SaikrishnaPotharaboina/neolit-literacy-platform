@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import DashboardPage from './pages/DashboardPage'
+import ProfilePage from './pages/ProfilePage'
 import { AuthProvider, useAuth } from './context/AuthContext'
 
 function ProtectedRoute({ children }) {
@@ -35,7 +36,7 @@ function AppRoutes() {
                 path="/profile"
                 element={
                     <ProtectedRoute>
-                        <DashboardPage />
+                        <ProfilePage />
                     </ProtectedRoute>
                 }
             />
