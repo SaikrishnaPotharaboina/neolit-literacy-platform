@@ -1,13 +1,26 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { learningApi } from '../services/learningApi'
 
 export default function RegisterPage() {
-    const [form, setForm] = useState({ first_name: '', last_name: '', email: '', password: '' })
+    const [form, setForm] = useState({ first_name: '', last_name: '', email: '', password: '', age: '', native_language: '', learning_language: 'en', education_level: '', current_level_id: '' })
+    const [languages, setLanguages] = useState([])
+    const [levels, setLevels] = useState([])
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const { register } = useAuth()
     const navigate = useNavigate()
+
+    useEffect(() => {
+        Promise.all([learningApi.getLanguages(), learningApi.getLevels()])
+            .then(([languageData, levelData]) => {
+                setLanguages(languageData)
+                setLevels(levelData)
+                setForm((current) => ({ ...current, learning_language: current.learning_language || languageData[0]?.code || '', current_level_id: current.current_level_id || levelData[0]?.id || '' }))
+            })
+            .catch(() => setError('Unable to load learner options'))
+    }, [])
 
     const handleChange = (event) => {
         setForm((prev) => ({ ...prev, [event.target.name]: event.target.value }))
@@ -80,6 +93,18 @@ export default function RegisterPage() {
                             required
                         />
                     </div>
+
+                    <div className="grid gap-5 sm:grid-cols-2">
+                        <label className="text-sm font-medium text-slate-700">Age<input name="age" type="number" min="5" max="120" value={form.age} onChange={handleChange} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" placeholder="25" /></label>
+                        <label className="text-sm font-medium text-slate-700">Education level<input name="education_level" value={form.education_level} onChange={handleChange} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" placeholder="College" /></label>
+                    </div>
+
+                    <div className="grid gap-5 sm:grid-cols-2">
+                        <label className="text-sm font-medium text-slate-700">Native language<input name="native_language" value={form.native_language} onChange={handleChange} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" placeholder="English" /></label>
+                        <label className="text-sm font-medium text-slate-700">Preferred language<select name="learning_language" value={form.learning_language} onChange={handleChange} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" required>{languages.map((language) => <option key={language.id} value={language.code}>{language.name}</option>)}</select></label>
+                    </div>
+
+                    <label className="block text-sm font-medium text-slate-700">Current proficiency level<select name="current_level_id" value={form.current_level_id} onChange={handleChange} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" required>{levels.map((level) => <option key={level.id} value={level.id}>{level.name}</option>)}</select></label>
 
                     {error && <p className="text-sm text-red-600">{error}</p>}
 

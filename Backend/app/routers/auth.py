@@ -28,12 +28,20 @@ def register_user(payload: UserCreate, db: Session = Depends(get_db)):
         email=payload.email.lower(),
         password_hash=get_password_hash(payload.password),
     )
+    profile = LearnerProfile(
+        age=payload.age,
+        native_language=payload.native_language.strip(),
+        learning_language=payload.learning_language,
+        education_level=payload.education_level.strip(),
+        current_level_id=payload.current_level_id,
+    )
 
     db.add(user)
     try:
         db.commit()
         db.refresh(user)
-        db.add(LearnerProfile(user_id=user.id))
+        profile.user_id = user.id
+        db.add(profile)
         db.commit()
     except IntegrityError:
         db.rollback()
