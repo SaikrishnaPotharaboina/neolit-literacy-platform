@@ -15,9 +15,11 @@ export default function RegisterPage() {
     useEffect(() => {
         Promise.all([learningApi.getLanguages(), learningApi.getLevels()])
             .then(([languageData, levelData]) => {
-                setLanguages(languageData)
-                setLevels(levelData)
-                setForm((current) => ({ ...current, learning_language: current.learning_language || languageData[0]?.code || '', current_level_id: current.current_level_id || levelData[0]?.id || '' }))
+                const availableLanguages = Array.isArray(languageData) ? languageData : languageData.data || []
+                const availableLevels = Array.isArray(levelData) ? levelData : levelData.data || []
+                setLanguages(availableLanguages)
+                setLevels(availableLevels)
+                setForm((current) => ({ ...current, learning_language: current.learning_language || availableLanguages[0]?.code || '', current_level_id: current.current_level_id || availableLevels[0]?.id || '' }))
             })
             .catch(() => setError('Unable to load learner options'))
     }, [])
@@ -30,12 +32,21 @@ export default function RegisterPage() {
         event.preventDefault()
         setError('')
         setLoading(true)
+        const payload = {
+            ...form,
+            age: form.age === '' ? null : Number(form.age),
+            current_level_id: form.current_level_id === '' ? null : Number(form.current_level_id)
+        }
 
         try {
-            await register(form)
+            await register(payload)
             navigate('/login')
         } catch (err) {
-            setError(err.response?.data?.detail || 'Registration failed')
+            const detail = err.response?.data?.detail
+            const message = Array.isArray(detail)
+                ? detail.map((item) => item.msg).join(', ')
+                : detail || 'Registration failed'
+            setError(message)
         } finally {
             setLoading(false)
         }

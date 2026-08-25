@@ -306,12 +306,6 @@ Do not move authentication, score calculation, or proficiency benchmark logic in
 
 
 
-
-
-
-
-
-
 @router.post("/login", response_model=dict)
 def login_user(payload: UserLogin, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == payload.email.lower()).first()
