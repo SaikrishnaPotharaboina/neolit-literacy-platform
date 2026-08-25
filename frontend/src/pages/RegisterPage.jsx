@@ -99,6 +99,7 @@ export default function RegisterPage() {
                             type="password"
                             value={form.password}
                             onChange={handleChange}
+                            minLength={8}
                             className="w-full rounded-xl border border-slate-200 px-4 py-3"
                             placeholder="Create a strong password"
                             required
