@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 from app.config import settings
@@ -14,3 +14,10 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+def ensure_schema():
+    columns = {column["name"] for column in inspect(engine).get_columns("learner_profiles")}
+    if "gender" not in columns:
+        with engine.begin() as connection:
+            connection.execute(text("ALTER TABLE learner_profiles ADD COLUMN gender VARCHAR(40) NOT NULL DEFAULT ''"))

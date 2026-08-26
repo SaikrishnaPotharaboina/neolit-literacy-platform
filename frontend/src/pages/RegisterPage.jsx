@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { learningApi } from '../services/learningApi'
 
 export default function RegisterPage() {
-    const [form, setForm] = useState({ first_name: '', last_name: '', email: '', password: '', age: '', native_language: '', learning_language: 'en', education_level: '', current_level_id: '' })
+    const [form, setForm] = useState({ first_name: '', last_name: '', email: '', password: '', age: '', native_language: '', learning_language: 'en', gender: '', current_level_id: '' })
     const [languages, setLanguages] = useState([])
     const [levels, setLevels] = useState([])
     const [error, setError] = useState('')
@@ -108,7 +108,7 @@ export default function RegisterPage() {
 
                     <div className="grid gap-5 sm:grid-cols-2">
                         <label className="text-sm font-medium text-slate-700">Age<input name="age" type="number" min="5" max="120" value={form.age} onChange={handleChange} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" placeholder="25" /></label>
-                        <label className="text-sm font-medium text-slate-700">Education level<input name="education_level" value={form.education_level} onChange={handleChange} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" placeholder="College" /></label>
+                        <label className="text-sm font-medium text-slate-700">Gender<select name="gender" value={form.gender} onChange={handleChange} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3"><option value="">Prefer not to say</option><option value="female">Female</option><option value="male">Male</option><option value="non-binary">Non-binary</option><option value="other">Other</option></select></label>
                     </div>
 
                     <div className="grid gap-5 sm:grid-cols-2">

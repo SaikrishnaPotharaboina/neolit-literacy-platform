@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.database import Base, SessionLocal, engine
+from app.database import Base, SessionLocal, engine, ensure_schema
 from app.routers import auth
 from app.routers import learning
 from app.seed import seed_learning_content
@@ -21,6 +21,7 @@ app.include_router(learning.router, prefix="/api", tags=["learning"])
 app.include_router(auth.router, prefix="/auth", tags=["legacy-auth"])
 
 Base.metadata.create_all(bind=engine)
+ensure_schema()
 with SessionLocal() as db:
     seed_learning_content(db)
 

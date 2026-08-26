@@ -6,7 +6,7 @@ from app.database import get_db
 from app.dependencies import get_current_user
 from app.models.user import User
 from app.models.learning import LearnerProfile
-from app.schemas.user import Token, UserCreate, UserLogin, UserResponse
+from app.schemas.user import PasswordReset, Token, UserCreate, UserLogin, UserResponse
 from app.utils.security import create_access_token, get_password_hash, verify_password
 
 router = APIRouter()
@@ -32,7 +32,7 @@ def register_user(payload: UserCreate, db: Session = Depends(get_db)):
         age=payload.age,
         native_language=payload.native_language.strip(),
         learning_language=payload.learning_language,
-        education_level=payload.education_level.strip(),
+        gender=payload.gender.strip(),
         current_level_id=payload.current_level_id,
     )
 
@@ -66,6 +66,16 @@ def login_user(payload: UserLogin, db: Session = Depends(get_db)):
         "token_type": "bearer",
         "user": UserResponse.model_validate(user),
     }
+
+
+@router.post("/forgot-password")
+def reset_password(payload: PasswordReset, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == payload.email.lower()).first()
+    if user:
+        user.password_hash = get_password_hash(payload.password)
+        db.commit()
+
+    return {"message": "If that email is registered, the password was reset successfully"}
 
 
 @router.post("/logout")

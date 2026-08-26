@@ -11,7 +11,7 @@ class UserCreate(BaseModel):
     age: int | None = Field(default=None, ge=5, le=120)
     native_language: str = Field(default="", max_length=80)
     learning_language: str = Field(default="en", min_length=2, max_length=12)
-    education_level: str = Field(default="", max_length=80)
+    gender: str = Field(default="", max_length=40)
     current_level_id: int | None = None
 
     def names(self) -> tuple[str, str]:
@@ -23,6 +23,11 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
+
+class PasswordReset(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=8)
 
 
 class UserResponse(BaseModel):

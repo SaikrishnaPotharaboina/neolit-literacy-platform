@@ -137,7 +137,7 @@ def get_profile(current_user: User = Depends(get_current_user), db: Session = De
         "age": profile.age,
         "native_language": profile.native_language,
         "learning_language": profile.learning_language,
-        "education_level": profile.education_level,
+        "gender": profile.gender,
         "current_level_id": profile.current_level_id,
         "updated_at": profile.updated_at,
     }
@@ -161,7 +161,7 @@ def update_profile(payload: ProfileUpdate, current_user: User = Depends(get_curr
         "age": profile.age,
         "native_language": profile.native_language,
         "learning_language": profile.learning_language,
-        "education_level": profile.education_level,
+        "gender": profile.gender,
         "current_level_id": profile.current_level_id,
         "updated_at": profile.updated_at,
     }

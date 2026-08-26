@@ -14,6 +14,7 @@ class LearnerProfile(Base):
     native_language = Column(String(80), default="", nullable=False)
     learning_language = Column(String(20), default="en", nullable=False)
     education_level = Column(String(80), default="", nullable=False)
+    gender = Column(String(40), default="", nullable=False)
     current_level_id = Column(Integer, ForeignKey("levels.id"), nullable=True)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     user = relationship("User", back_populates="profile")

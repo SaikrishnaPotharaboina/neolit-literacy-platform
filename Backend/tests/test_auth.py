@@ -18,7 +18,7 @@ def test_register_and_login_flow():
             "age": 25,
             "native_language": "Hindi",
             "learning_language": "en",
-            "education_level": "College",
+            "gender": "female",
             "current_level_id": 1,
         },
     )
@@ -53,5 +53,23 @@ def test_register_and_login_flow():
     assert profile_response.json()["age"] == 25
     assert profile_response.json()["native_language"] == "Hindi"
     assert profile_response.json()["learning_language"] == "en"
-    assert profile_response.json()["education_level"] == "College"
+    assert profile_response.json()["gender"] == "female"
     assert profile_response.json()["current_level_id"] == 1
+
+    reset_response = client.post(
+        "/auth/forgot-password",
+        json={"email": email, "password": "NewStrongPass456!"},
+    )
+    assert reset_response.status_code == 200, reset_response.text
+
+    old_login_response = client.post(
+        "/auth/login",
+        json={"email": email, "password": "StrongPass123!"},
+    )
+    assert old_login_response.status_code == 401
+
+    new_login_response = client.post(
+        "/auth/login",
+        json={"email": email, "password": "NewStrongPass456!"},
+    )
+    assert new_login_response.status_code == 200, new_login_response.text

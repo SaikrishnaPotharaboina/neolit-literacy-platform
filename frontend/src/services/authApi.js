@@ -11,6 +11,11 @@ export const authApi = {
         return response.data
     },
 
+    resetPassword: async (payload) => {
+        const response = await api.post('/api/auth/forgot-password', payload)
+        return response.data
+    },
+
     logout: async (token) => {
         const response = await api.post('/api/auth/logout', {}, {
             headers: token ? { Authorization: `Bearer ${token}` } : {}
