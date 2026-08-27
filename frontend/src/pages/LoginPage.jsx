@@ -77,7 +77,7 @@ export default function LoginPage() {
                                 type="button"
                                 onClick={() => setShowPassword((visible) => !visible)}
                                 aria-label={showPassword ? 'Hide password' : 'Show password'}
-                                className="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-slate-500 hover:text-slate-700"
+                                className="password-toggle absolute inset-y-0 right-0 flex w-12 items-center justify-center text-slate-500 hover:text-slate-700"
                             >
                                 {showPassword ? (
                                     <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">

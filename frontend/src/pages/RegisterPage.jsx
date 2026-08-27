@@ -1,26 +1,23 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { learningApi } from '../services/learningApi'
 import { languages } from '../data/languages'
+
+const levels = [
+    { id: 1, name: 'Beginner' },
+    { id: 2, name: 'Elementary' },
+    { id: 3, name: 'Intermediate' },
+    { id: 4, name: 'Upper Intermediate' },
+    { id: 5, name: 'Advanced' },
+]
 
 export default function RegisterPage() {
     const [form, setForm] = useState({ first_name: '', last_name: '', email: '', password: '', age: '', native_language: '', learning_language: 'en', gender: '', current_level_id: '' })
-    const [levels, setLevels] = useState([])
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
     const { register } = useAuth()
     const navigate = useNavigate()
-
-    useEffect(() => {
-        learningApi.getLevels()
-            .then((levelData) => {
-                const availableLevels = Array.isArray(levelData) ? levelData : levelData.data || []
-                setLevels(availableLevels)
-                setForm((current) => ({ ...current, learning_language: current.learning_language || languages[0]?.code || '', current_level_id: current.current_level_id || availableLevels[0]?.id || '' }))
-            })
-            .catch(() => setError('Unable to load learner options'))
-    }, [])
 
     const handleChange = (event) => {
         setForm((prev) => ({ ...prev, [event.target.name]: event.target.value }))
@@ -43,7 +40,7 @@ export default function RegisterPage() {
             const detail = err.response?.data?.detail
             const message = Array.isArray(detail)
                 ? detail.map((item) => item.msg).join(', ')
-                : detail || 'Registration failed'
+                : detail || (err.request ? 'Cannot connect to the server. Start the backend on port 8000 and try again.' : 'Registration failed')
             setError(message)
         } finally {
             setLoading(false)
@@ -93,16 +90,35 @@ export default function RegisterPage() {
 
                     <div>
                         <label className="mb-2 block text-sm font-medium text-slate-700">Password</label>
-                        <input
-                            name="password"
-                            type="password"
-                            value={form.password}
-                            onChange={handleChange}
-                            minLength={8}
-                            className="w-full rounded-xl border border-slate-200 px-4 py-3"
-                            placeholder="Create a strong password"
-                            required
-                        />
+                        <div className="relative">
+                            <input
+                                name="password"
+                                type={showPassword ? 'text' : 'password'}
+                                value={form.password}
+                                onChange={handleChange}
+                                minLength={8}
+                                className="w-full rounded-xl border border-slate-200 px-4 py-3 pr-12"
+                                placeholder="Create a strong password"
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword((visible) => !visible)}
+                                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                className="password-toggle absolute inset-y-0 right-0 flex w-12 items-center justify-center text-slate-500 hover:text-slate-700"
+                            >
+                                {showPassword ? (
+                                    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 4.2A10.8 10.8 0 0 1 12 4c5 0 8.5 4 9.5 6a12.3 12.3 0 0 1-3.1 3.7M6.2 6.2C3.9 7.7 2.5 9.5 2.5 10c1 2 4.5 6 9.5 6 1 0 2-.2 2.9-.5" />
+                                    </svg>
+                                ) : (
+                                    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+                                        <circle cx="12" cy="12" r="2.5" />
+                                    </svg>
+                                )}
+                            </button>
+                        </div>
                     </div>
 
                     <div className="grid gap-5 sm:grid-cols-2">
