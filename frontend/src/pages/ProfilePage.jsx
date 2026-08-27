@@ -45,13 +45,13 @@ export default function ProfilePage() {
         }
     }
 
-    return <div className="min-h-screen bg-[#f5f7f5] px-4 py-6 text-slate-900 sm:px-8 sm:py-10">
+    return <div className="profile-page min-h-screen bg-[#f5f7f5] px-4 py-6 text-slate-900 sm:px-8 sm:py-10">
         <div className="mx-auto max-w-4xl">
             <header className="flex items-center justify-between">
                 <Link to="/dashboard" className="flex items-center gap-3 text-slate-900"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600 text-lg font-black text-white">N</span><span><span className="block text-sm font-bold">NeoLit</span><span className="block text-xs text-slate-500">Literacy lab</span></span></Link>
                 <span className="text-sm text-slate-500">{user?.email}</span>
             </header>
-            <main className="mt-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10">
+            <main className="profile-card mt-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10">
                 <div className="flex flex-wrap items-end justify-between gap-4 border-b border-slate-200 pb-6"><div><p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">Learner profile</p><h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-950">Your learning settings</h1><p className="mt-2 text-sm text-slate-600">Keep your language and level up to date so your learning path stays relevant.</p></div><button type="button" onClick={() => navigate('/dashboard')} className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-bold text-slate-700">Back to dashboard</button></div>
                 {message && <p className="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">{message}</p>}
                 {error && <p className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}

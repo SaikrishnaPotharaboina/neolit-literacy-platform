@@ -30,9 +30,10 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
-            <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
+        <div className="auth-page flex min-h-screen items-center justify-center bg-slate-100 px-4">
+            <div className="auth-card w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
                 <div className="mb-8 text-center">
+                    <div className="auth-icon" aria-hidden="true">↪</div>
                     <h1 className="text-3xl font-bold text-slate-900">NeoLit</h1>
                     <p className="mt-2 text-sm text-slate-600">Welcome back to your learning journey</p>
                 </div>

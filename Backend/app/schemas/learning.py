@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class ReadModel(BaseModel):
@@ -110,6 +110,11 @@ class ProfileUpdate(BaseModel):
     learning_language: str = Field(min_length=2, max_length=12)
     gender: str = Field(default="", max_length=40)
     current_level_id: int | None = None
+
+    @field_validator("first_name", "last_name", "native_language", "learning_language", "gender", mode="before")
+    @classmethod
+    def strip_text(cls, value):
+        return value.strip() if isinstance(value, str) else value
 
 
 class ProfileResponse(ProfileUpdate):

@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
 
 
 class UserCreate(BaseModel):
@@ -13,6 +13,17 @@ class UserCreate(BaseModel):
     learning_language: str = Field(default="en", min_length=2, max_length=12)
     gender: str = Field(default="", max_length=40)
     current_level_id: int | None = None
+
+    @field_validator("first_name", "last_name", "name", "native_language", "learning_language", "gender", mode="before")
+    @classmethod
+    def strip_text(cls, value):
+        return value.strip() if isinstance(value, str) else value
+
+    @model_validator(mode="after")
+    def require_name(self):
+        if not self.first_name and not self.name:
+            raise ValueError("A first name or full name is required")
+        return self
 
     def names(self) -> tuple[str, str]:
         if self.first_name:

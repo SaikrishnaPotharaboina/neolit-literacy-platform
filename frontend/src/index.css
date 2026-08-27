@@ -3,11 +3,23 @@
 @tailwind utilities;
 
 :root {
-    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+    --color-ink: #17202a;
+    --color-muted: #5f6b76;
+    --color-paper: #fffdf8;
+    --color-surface: #ffffff;
+    --color-surface-soft: #f2f5f3;
+    --color-border: #d6ded9;
+    --color-accent: #e85d4a;
+    --color-accent-dark: #c74739;
+    --color-accent-soft: #fff0e9;
+    --color-lime: #d8f06a;
+    --color-success-ink: #315000;
+    --color-focus: #17202a;
+    font-family: 'Space Grotesk', 'Trebuchet MS', sans-serif;
     line-height: 1.5;
     font-weight: 400;
-    color: #0f172a;
-    background: #f5f7f5;
+    color: var(--color-ink);
+    background: var(--color-paper);
     font-synthesis: none;
     text-rendering: optimizeLegibility;
 }
@@ -15,9 +27,7 @@
 body {
     margin: 0;
     min-height: 100vh;
-    background:
-        radial-gradient(circle at 8% 0%, rgba(16, 185, 129, 0.08), transparent 24rem),
-        #f5f7f5;
+    background: var(--color-paper);
 }
 
 * {
@@ -33,6 +43,12 @@ textarea {
 
 button {
     cursor: pointer;
+    border: 0;
+    transition: transform 160ms ease, background-color 160ms ease;
+}
+
+button:not(:disabled):hover {
+    transform: translateY(-2px);
 }
 
 button:disabled {
@@ -43,17 +59,158 @@ input,
 select,
 textarea {
     outline: none;
-    transition: border-color 160ms ease, box-shadow 160ms ease;
+    transition: border-color 160ms ease, background-color 160ms ease;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-    border-color: #10b981;
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.14);
+    border-color: var(--color-focus);
+    background-color: var(--color-surface);
+}
+
+input,
+select,
+textarea {
+    border-radius: 0.8rem;
+    border-color: var(--color-border);
+    background-color: var(--color-surface);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--color-muted);
+}
+
+a {
+    text-underline-offset: 3px;
+}
+
+.shadow-sm,
+.shadow-lg,
+.shadow-xl,
+.shadow,
+.hover\:shadow-sm:hover {
+    box-shadow: none !important;
+}
+
+.rounded-2xl {
+    border-radius: 1.35rem;
+}
+
+.rounded-xl {
+    border-radius: 1rem;
+}
+
+.bg-emerald-600,
+.bg-primary-600 {
+    background-color: var(--color-accent) !important;
+}
+
+.bg-emerald-700,
+.bg-primary-700 {
+    background-color: var(--color-accent-dark) !important;
+}
+
+.text-emerald-700,
+.text-primary-600,
+.text-primary-700 {
+    color: var(--color-accent-dark) !important;
+}
+
+.bg-emerald-50,
+.bg-primary-50 {
+    background-color: var(--color-accent-soft) !important;
+}
+
+.bg-emerald-100 {
+    background-color: var(--color-lime) !important;
+}
+
+.text-emerald-800,
+.text-emerald-900 {
+    color: var(--color-success-ink) !important;
+}
+
+.border-emerald-600,
+.border-emerald-500,
+.border-primary-600 {
+    border-color: var(--color-ink) !important;
+}
+
+.auth-page,
+.profile-page,
+.dashboard-page {
+    position: relative;
+    isolation: isolate;
+    background: var(--color-paper) !important;
+}
+
+.auth-card,
+.profile-card {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+}
+
+.auth-card {
+    max-width: 390px !important;
+}
+
+.auth-icon {
+    display: grid;
+    width: 3.2rem;
+    height: 3.2rem;
+    margin: 0 auto 1.1rem;
+    place-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    background: var(--color-accent-soft);
+    color: var(--color-ink);
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.auth-card h1,
+.profile-card h1,
+.dashboard-page h1,
+.dashboard-page h2 {
+    letter-spacing: -0.04em;
+}
+
+.auth-card h1::after {
+    display: none;
+}
+
+.auth-card button[type='submit'] {
+    background-color: var(--color-ink) !important;
+}
+
+.auth-card button[type='submit']:hover:not(:disabled) {
+    background-color: #273746 !important;
+}
+
+.dashboard-page>div>header,
+.profile-page>div>header {
+    padding-bottom: 1.25rem;
+    border-bottom: 2px solid var(--color-ink);
+}
+
+.dashboard-page section,
+.profile-card {
+    border-color: var(--color-border);
+}
+
+.dashboard-page .bg-slate-950 {
+    background-color: var(--color-ink) !important;
+}
+
+@media (max-width: 640px) {
+    .auth-card {
+        padding: 1.5rem;
+    }
 }
 
 ::selection {
-    color: #064e3b;
-    background: #a7f3d0;
+    color: var(--color-ink);
+    background: var(--color-lime);
 }

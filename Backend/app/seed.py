@@ -3,6 +3,42 @@ from sqlalchemy.orm import Session
 from app.models.learning import Activity, Assessment, Content, Language, Lesson, Level, Module, Question, QuestionOption
 
 
+LANGUAGES = [
+    ("English", "en"),
+    ("Assamese", "as"),
+    ("Bengali", "bn"),
+    ("Bodo", "brx"),
+    ("Dogri", "doi"),
+    ("Gujarati", "gu"),
+    ("Hindi", "hi"),
+    ("Kannada", "kn"),
+    ("Kashmiri", "ks"),
+    ("Konkani", "kok"),
+    ("Maithili", "mai"),
+    ("Malayalam", "ml"),
+    ("Manipuri (Meitei)", "mni"),
+    ("Marathi", "mr"),
+    ("Nepali", "ne"),
+    ("Odia", "or"),
+    ("Punjabi", "pa"),
+    ("Sanskrit", "sa"),
+    ("Santali", "sat"),
+    ("Sindhi", "sd"),
+    ("Tamil", "ta"),
+    ("Telugu", "te"),
+    ("Urdu", "ur"),
+]
+
+
+def ensure_languages(db: Session) -> list[Language]:
+    existing_codes = {language.code for language in db.query(Language).all()}
+    missing_languages = [Language(name=name, code=code) for name, code in LANGUAGES if code not in existing_codes]
+    if missing_languages:
+        db.add_all(missing_languages)
+        db.flush()
+    return db.query(Language).order_by(Language.id).all()
+
+
 def add_extra_questions(db: Session) -> None:
     question_sets = {
         "Reading: A Morning Routine": [
@@ -50,11 +86,12 @@ def add_extra_questions(db: Session) -> None:
 
 def seed_learning_content(db: Session) -> None:
     if db.query(Language).first() and db.query(Assessment).count() >= 6:
+        ensure_languages(db)
         add_extra_questions(db)
         db.commit()
         return
     if db.query(Language).first():
-        languages = db.query(Language).order_by(Language.id).all()
+        languages = ensure_languages(db)
         levels = db.query(Level).order_by(Level.minimum_score).all()
         advanced_level = levels[2]
         existing_types = {item.assessment_type for item in db.query(Assessment).filter(Assessment.level_id == advanced_level.id).all()}
@@ -70,7 +107,7 @@ def seed_learning_content(db: Session) -> None:
                 db.add(assessment)
         db.commit()
         return
-    languages = [Language(name="English", code="en"), Language(name="Hindi", code="hi"), Language(name="Telugu", code="te")]
+    languages = [Language(name=name, code=code) for name, code in LANGUAGES]
     levels = [
         Level(name="Beginner", description="Build confidence with everyday words and sentences.", minimum_score=0, maximum_score=39),
         Level(name="Elementary", description="Understand familiar topics and short texts.", minimum_score=40, maximum_score=59),
@@ -91,7 +128,7 @@ def seed_learning_content(db: Session) -> None:
                     Activity(title="Notice the words", activity_type="vocabulary", content="Underline one new word and explain it.", order_number=2),
                     Activity(title="Write your answer", activity_type="writing", content="Write one sentence about your day.", order_number=3),
                 ]
-                lesson.contents = [Content(title="A useful greeting", content_type="lesson", content={"en": "Hello, how are you?", "hi": "आप कैसे हैं?", "te": "మీరు ఎలా ఉన్నారు?"}[language.code], language=language)]
+                lesson.contents = [Content(title="A useful greeting", content_type="lesson", content={"en": "Hello, how are you?", "hi": "आप कैसे हैं?", "te": "మీరు ఎలా ఉన్నారు?"}.get(language.code, "Hello, how are you?"), language=language)]
                 module.lessons.append(lesson)
             db.add(module)
     reading = Assessment(title="Reading: A Morning Routine", description="Read the passage and answer each question.", assessment_type="reading", language=languages[0], level=beginner, total_marks=2, passing_marks=1)

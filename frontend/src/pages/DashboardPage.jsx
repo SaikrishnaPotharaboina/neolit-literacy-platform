@@ -96,7 +96,7 @@ export default function DashboardPage() {
         }
     }
 
-    return <div className="min-h-screen bg-[#f5f7f5] text-slate-900">
+    return <div className="dashboard-page min-h-screen bg-[#f5f7f5] text-slate-900">
         <div className="mx-auto max-w-[1400px] px-4 py-5 sm:px-8 sm:py-8">
             <header className="mb-8 flex items-center justify-between">
                 <div className="flex items-center gap-3"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600 text-lg font-black text-white">N</div><div><p className="text-sm font-bold">NeoLit</p><p className="text-xs text-slate-500">Literacy lab</p></div></div>
