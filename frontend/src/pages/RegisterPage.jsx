@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { learningApi } from '../services/learningApi'
+import { languages } from '../data/languages'
 
 export default function RegisterPage() {
     const [form, setForm] = useState({ first_name: '', last_name: '', email: '', password: '', age: '', native_language: '', learning_language: 'en', gender: '', current_level_id: '' })
-    const [languages, setLanguages] = useState([])
     const [levels, setLevels] = useState([])
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
@@ -13,13 +13,11 @@ export default function RegisterPage() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        Promise.all([learningApi.getLanguages(), learningApi.getLevels()])
-            .then(([languageData, levelData]) => {
-                const availableLanguages = Array.isArray(languageData) ? languageData : languageData.data || []
+        learningApi.getLevels()
+            .then((levelData) => {
                 const availableLevels = Array.isArray(levelData) ? levelData : levelData.data || []
-                setLanguages(availableLanguages)
                 setLevels(availableLevels)
-                setForm((current) => ({ ...current, learning_language: current.learning_language || availableLanguages[0]?.code || '', current_level_id: current.current_level_id || availableLevels[0]?.id || '' }))
+                setForm((current) => ({ ...current, learning_language: current.learning_language || languages[0]?.code || '', current_level_id: current.current_level_id || availableLevels[0]?.id || '' }))
             })
             .catch(() => setError('Unable to load learner options'))
     }, [])

@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { learningApi } from '../services/learningApi'
+import { languages } from '../data/languages'
 
 export default function ProfilePage() {
     const { user } = useAuth()
     const navigate = useNavigate()
-    const [languages, setLanguages] = useState([])
     const [levels, setLevels] = useState([])
     const [profile, setProfile] = useState(null)
     const [message, setMessage] = useState('')
@@ -15,13 +15,11 @@ export default function ProfilePage() {
     useEffect(() => {
         const loadProfile = async () => {
             try {
-                const [profileData, languageData, levelData] = await Promise.all([
+                const [profileData, levelData] = await Promise.all([
                     learningApi.getProfile(),
-                    learningApi.getLanguages(),
                     learningApi.getLevels(),
                 ])
                 setProfile(profileData)
-                setLanguages(languageData)
                 setLevels(levelData)
             } catch (requestError) {
                 setError(requestError.response?.data?.detail || 'Unable to load your profile')
