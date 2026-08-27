@@ -5,6 +5,9 @@ from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+BACKEND_DIR = Path(__file__).resolve().parent.parent
+
+
 class Settings(BaseSettings):
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./neolit.db")
     SECRET_KEY: str = os.getenv("SECRET_KEY", "change-me")
@@ -23,3 +26,6 @@ def get_settings() -> Settings:
 
 
 settings = get_settings()
+if settings.DATABASE_URL.startswith("sqlite:///./"):
+    relative_path = settings.DATABASE_URL.removeprefix("sqlite:///./")
+    settings.DATABASE_URL = f"sqlite:///{(BACKEND_DIR / relative_path).resolve().as_posix()}"
