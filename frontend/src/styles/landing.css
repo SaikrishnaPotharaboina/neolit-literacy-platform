@@ -1,0 +1,175 @@
+.neo-landing-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5ece5;
+    padding: 32px 20px;
+}
+
+.neo-landing-container {
+    width: min(650px, 100%);
+    text-align: center;
+}
+
+.neo-landing-content {
+    background: #f9f4ef;
+    border: 1px solid rgba(17, 38, 58, 0.08);
+    border-radius: 28px;
+    box-shadow: 0 10px 30px rgba(21, 31, 42, 0.06);
+    padding: 48px 40px 44px;
+}
+
+.neo-landing-brand {
+    font-weight: 900;
+    font-size: 2.2rem;
+    color: #111827;
+    letter-spacing: -0.06em;
+    margin-bottom: 20px;
+}
+
+.neo-landing-content h1 {
+    margin: 0 0 20px;
+    font-size: clamp(2.2rem, 3vw, 3.8rem);
+    line-height: 0.95;
+    letter-spacing: -0.065em;
+    color: #1d2b36;
+}
+
+.neo-landing-content p {
+    margin: 0 0 28px;
+    font-size: 1.02rem;
+    color: rgba(17, 38, 58, 0.76);
+    line-height: 1.6;
+}
+
+.neo-landing-features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.neo-landing-feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.neo-landing-feature span {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f7d7c0;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.neo-landing-feature strong {
+    display: block;
+    color: #1d2b36;
+    font-size: 1.06rem;
+    margin-bottom: 2px;
+    text-align: left;
+}
+
+.neo-landing-feature small {
+    display: block;
+    color: rgba(17, 38, 58, 0.72);
+    text-align: left;
+}
+
+.neo-landing-owl {
+    position: relative;
+    width: 150px;
+    height: 130px;
+    margin: 28px auto;
+}
+
+.neo-owl-body {
+    position: absolute;
+    inset: 24px 18px 8px 18px;
+    background: linear-gradient(180deg, #8de15e, #66d452);
+    border-radius: 34px 34px 30px 30px;
+    box-shadow: inset 0 -12px 0 rgba(29, 87, 34, 0.14);
+}
+
+.neo-owl-eye {
+    position: absolute;
+    top: 48px;
+    width: 18px;
+    height: 18px;
+    background: #1f2937;
+    border-radius: 50%;
+}
+
+.neo-owl-eye.left {
+    left: 48px;
+}
+
+.neo-owl-eye.right {
+    right: 48px;
+}
+
+.neo-owl-beak {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 18px solid #f4b048;
+    left: 50%;
+    top: 60px;
+    transform: translateX(-50%);
+}
+
+.neo-landing-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.neo-landing-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    transition: all 160ms ease;
+    border: 1px solid transparent;
+}
+
+.neo-landing-btn.primary {
+    background: #0c2133;
+    color: #fff;
+}
+
+.neo-landing-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(12, 33, 51, 0.15);
+}
+
+.neo-landing-btn.secondary {
+    background: #fff;
+    color: #1d2b36;
+    border: 1px solid rgba(17, 38, 58, 0.12);
+}
+
+.neo-landing-btn.secondary:hover {
+    transform: translateY(-2px);
+    border-color: #f29e3d;
+}
+
+.neo-landing-tagline {
+    margin: 0;
+    color: rgba(17, 38, 58, 0.7);
+    font-size: 0.9rem;
+}

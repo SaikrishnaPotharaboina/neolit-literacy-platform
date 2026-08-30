@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
@@ -30,86 +30,152 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="auth-page flex min-h-screen items-center justify-center bg-slate-100 px-4">
-            <div className="auth-card w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
-                <div className="mb-8 text-center">
-                    <div className="auth-icon" aria-hidden="true">↪</div>
-                    <h1 className="text-3xl font-bold text-slate-900">NeoLit</h1>
-                    <p className="mt-2 text-sm text-slate-600">Welcome back to your learning journey</p>
+        <div className="neo-auth-page login-page-only">
+            <div className="neo-auth-shell login-shell">
+                <aside className="neo-left-card">
+                    <div className="neo-brand">NeoLit</div>
+
+                    <h1>
+                        Learn English.<br />
+                        Open <span>New Worlds.</span>
+                    </h1>
+
+                    <p>
+                        Interactive lessons, real conversations,<br />
+                        and personalized practice to help you
+                        speak with confidence.
+                    </p>
+
+                    <div className="neo-feature-list">
+                        <div className="neo-feature-item">
+                            <span className="neo-feature-icon orange">📘</span>
+                            <div>
+                                <strong>Expert Lessons</strong>
+                                <small>Learn with structured and engaging content.</small>
+                            </div>
+                        </div>
+
+                        <div className="neo-feature-item">
+                            <span className="neo-feature-icon yellow">🗣️</span>
+                            <div>
+                                <strong>Practice Speaking</strong>
+                                <small>Improve your speaking with real-life conversations.</small>
+                            </div>
+                        </div>
+
+                        <div className="neo-feature-item">
+                            <span className="neo-feature-icon green">📈</span>
+                            <div>
+                                <strong>Track Progress</strong>
+                                <small>Monitor your progress and achieve your goals.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="neo-owl-wrap">
+                        <div className="neo-owl">
+                            <div className="neo-owl-body" />
+                            <div className="neo-owl-eye left" />
+                            <div className="neo-owl-eye right" />
+                            <div className="neo-owl-beak" />
+                        </div>
+                    </div>
+
+                    <div className="neo-quote-block">
+                        <span className="neo-quote-mark">“</span>
+                        <p>
+                            The beautiful thing about learning
+                            is that no one can take it away from you.
+                        </p>
+                        <span className="neo-quote-author">— B.B. King</span>
+                    </div>
+                </aside>
+
+                <div className="neo-auth-card neo-login-card">
+                    <div className="neo-card-icon orange">📖</div>
+                    <h2>Welcome back!</h2>
+                    <p className="neo-subtitle">Log in to continue your learning journey.</p>
+
+                    <form onSubmit={handleSubmit} className="neo-auth-form">
+                        <label>
+                            <span>Email</span>
+                            <div className="neo-input-wrap">
+                                <span className="neo-input-icon">✉</span>
+                                <input
+                                    name="email"
+                                    type="email"
+                                    value={form.email}
+                                    onChange={handleChange}
+                                    placeholder="you@example.com"
+                                    required
+                                />
+                            </div>
+                        </label>
+
+                        <label>
+                            <span>Password</span>
+                            <div className="neo-input-wrap">
+                                <span className="neo-input-icon">🔒</span>
+                                <input
+                                    name="password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    value={form.password}
+                                    onChange={handleChange}
+                                    placeholder="Enter your password"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    className="neo-eye-btn"
+                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                    onClick={() => setShowPassword((visible) => !visible)}
+                                >
+                                    {showPassword ? '◉' : '◌'}
+                                </button>
+                            </div>
+                        </label>
+
+                        <div className="neo-row-between">
+                            <label className="neo-remember">
+                                <input type="checkbox" />
+                                <span>Remember me</span>
+                            </label>
+                            <Link to="/forgot-password">Forgot password?</Link>
+                        </div>
+
+                        {error && <p className="neo-error-msg">{error}</p>}
+
+                        <button type="submit" className="neo-login-button-primary" disabled={loading}>
+                            {loading ? 'Logging in...' : 'Log In'} <span className="neo-arrow">→</span>
+                        </button>
+                    </form>
+
+                    <div className="neo-divider">or continue with</div>
+
+                    <div className="neo-social-grid">
+                        <button type="button" className="neo-social-btn">
+                            <span className="neo-social-icon">G</span> Continue with Google
+                        </button>
+                        <button type="button" className="neo-social-btn">
+                            <span className="neo-social-icon">🍎</span> Continue with Apple
+                        </button>
+                        <button type="button" className="neo-social-btn">
+                            <span className="neo-social-icon">f</span> Continue with Facebook
+                        </button>
+                    </div>
+
+                    <div className="neo-security-note">
+                        <span className="neo-security-icon">🛡️</span>
+                        <div>
+                            <p>Your data is safe with us.</p>
+                            <p>We never share your information.</p>
+                        </div>
+                    </div>
+
+                    <p className="neo-switch-text">
+                        Don't have an account? <Link to="/register">Create one</Link>
+                    </p>
                 </div>
-
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                        <label className="mb-2 block text-sm font-medium text-slate-700">Email</label>
-                        <input
-                            name="email"
-                            type="email"
-                            value={form.email}
-                            onChange={handleChange}
-                            className="w-full rounded-xl border border-slate-200 px-4 py-3"
-                            placeholder="you@example.com"
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <div className="mb-2 flex items-center justify-between">
-                            <label htmlFor="password" className="block text-sm font-medium text-slate-700">Password</label>
-                            <Link
-                                to="/forgot-password"
-                                className="text-sm font-semibold text-primary-600 hover:text-primary-700"
-                            >
-                                Forgot password?
-                            </Link>
-                        </div>
-                        <div className="relative">
-                            <input
-                                id="password"
-                                name="password"
-                                type={showPassword ? 'text' : 'password'}
-                                value={form.password}
-                                onChange={handleChange}
-                                className="w-full rounded-xl border border-slate-200 px-4 py-3 pr-12"
-                                placeholder="••••••••"
-                                required
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword((visible) => !visible)}
-                                aria-label={showPassword ? 'Hide password' : 'Show password'}
-                                className="password-toggle absolute inset-y-0 right-0 flex w-12 items-center justify-center text-slate-500 hover:text-slate-700"
-                            >
-                                {showPassword ? (
-                                    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 4.2A10.8 10.8 0 0 1 12 4c5 0 8.5 4 9.5 6a12.3 12.3 0 0 1-3.1 3.7M6.2 6.2C3.9 7.7 2.5 9.5 2.5 10c1 2 4.5 6 9.5 6 1 0 2-.2 2.9-.5" />
-                                    </svg>
-                                ) : (
-                                    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
-                                        <circle cx="12" cy="12" r="2.5" />
-                                    </svg>
-                                )}
-                            </button>
-                        </div>
-                    </div>
-
-                    {error && <p className="text-sm text-red-600">{error}</p>}
-
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full rounded-xl bg-primary-600 px-4 py-3 font-medium text-white transition hover:bg-primary-700 disabled:opacity-60"
-                    >
-                        {loading ? 'Signing in...' : 'Log in'}
-                    </button>
-                </form>
-
-                <p className="mt-6 text-center text-sm text-slate-600">
-                    Don’t have an account?{' '}
-                    <Link to="/register" className="font-semibold text-primary-600">
-                        Create one
-                    </Link>
-                </p>
             </div>
         </div>
     )

@@ -1,0 +1,546 @@
+.login-page-only {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5ece5;
+    padding: 32px 20px;
+}
+
+.login-shell {
+    width: min(1120px, 100%);
+    display: grid;
+    grid-template-columns: 1.02fr 0.98fr;
+    gap: 0;
+    align-items: stretch;
+    background: #f7f4f1;
+    border: 1px solid rgba(17, 38, 58, 0.08);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(21, 31, 42, 0.08);
+}
+
+.neo-auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5ece5;
+    padding: 32px 20px;
+}
+
+.neo-auth-shell {
+    width: min(1200px, 100%);
+    display: grid;
+    grid-template-columns: 1.12fr 0.88fr;
+    gap: 24px;
+    align-items: stretch;
+}
+
+.register-shell {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+}
+
+.neo-left-card {
+    background: #f7f4f1;
+    padding: 32px 32px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-right: 1px solid rgba(17, 38, 58, 0.08);
+}
+
+.neo-brand {
+    font-weight: 900;
+    font-size: 2.1rem;
+    color: #111827;
+    letter-spacing: -0.06em;
+    margin-bottom: 18px;
+}
+
+.neo-left-card h1 {
+    margin: 0;
+    font-size: clamp(2.6rem, 3vw, 4rem);
+    line-height: 0.97;
+    letter-spacing: -0.065em;
+    color: #1d2b36;
+}
+
+.neo-left-card h1 span {
+    color: #7c3aed;
+}
+
+.neo-left-card p {
+    margin-top: 18px;
+    margin-bottom: 18px;
+    font-size: 1.02rem;
+    color: rgba(17, 38, 58, 0.76);
+    line-height: 1.6;
+}
+
+.neo-feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.neo-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.neo-feature-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+}
+
+.neo-feature-icon.orange {
+    background: #f7d7c0;
+}
+
+.neo-feature-icon.yellow {
+    background: #fbe6b2;
+}
+
+.neo-feature-icon.green {
+    background: #d9f4d8;
+}
+
+.neo-feature-item strong {
+    display: block;
+    color: #1d2b36;
+    font-size: 1.08rem;
+    margin-bottom: 2px;
+}
+
+.neo-feature-item small {
+    display: block;
+    color: rgba(17, 38, 58, 0.72);
+    line-height: 1.5;
+}
+
+.neo-owl-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 22px 0 10px;
+}
+
+.neo-owl {
+    position: relative;
+    width: 170px;
+    height: 150px;
+}
+
+.neo-owl-body {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 10px;
+    top: 34px;
+    background: linear-gradient(180deg, #8de15e, #66d452);
+    border-radius: 36px 36px 28px 28px;
+    box-shadow: inset 0 -12px 0 rgba(29, 87, 34, 0.14);
+}
+
+.neo-owl::before,
+.neo-owl::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 60px;
+    height: 44px;
+    background: linear-gradient(180deg, #7b4ed9, #6b3fc5);
+    border-radius: 18px 18px 12px 12px;
+    box-shadow: inset 0 -8px 0 rgba(37, 20, 59, 0.12);
+}
+
+.neo-owl::before {
+    left: 10px;
+}
+
+.neo-owl::after {
+    right: 10px;
+}
+
+.neo-owl-eye {
+    position: absolute;
+    top: 52px;
+    width: 20px;
+    height: 20px;
+    background: #1f2937;
+    border-radius: 50%;
+}
+
+.neo-owl-eye.left {
+    left: 52px;
+}
+
+.neo-owl-eye.right {
+    right: 52px;
+}
+
+.neo-owl-beak {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 18px solid #f4b048;
+    left: 50%;
+    top: 68px;
+    transform: translateX(-50%);
+}
+
+.neo-quote-block {
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+.neo-quote-mark {
+    display: inline-block;
+    font-size: 2.3rem;
+    line-height: 1;
+    color: #7c3aed;
+    margin-bottom: 8px;
+}
+
+.neo-quote-block p {
+    margin: 0;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: #1d2b36;
+    line-height: 1.6;
+}
+
+.neo-quote-author {
+    display: block;
+    margin-top: 18px;
+    font-size: 0.9rem;
+    color: rgba(17, 38, 58, 0.7);
+    text-align: left;
+}
+
+.neo-auth-card {
+    background: #f9f4ef;
+    border: 1px solid rgba(17, 38, 58, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(21, 31, 42, 0.06);
+    padding: 26px 28px 22px;
+}
+
+.neo-card-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: #f9d4b5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    font-size: 1.8rem;
+}
+
+.neo-login-card h2,
+.neo-register-card h2 {
+    margin: 0;
+    text-align: center;
+    font-size: clamp(2.1rem, 2vw, 2.7rem);
+    letter-spacing: -0.06em;
+    color: #1d2b36;
+}
+
+.neo-login-card p,
+.neo-register-card p {
+    text-align: center;
+    margin: 10px 0 18px;
+    color: rgba(17, 38, 58, 0.72);
+}
+
+.neo-auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.neo-auth-form label,
+.neo-register-card label {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    width: 100%;
+    color: #1d2b36;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.neo-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(17, 38, 58, 0.18);
+    border-radius: 12px;
+    padding: 0 14px 0 14px;
+    min-height: 52px;
+}
+
+.neo-input-icon {
+    margin-right: 8px;
+    color: rgba(17, 38, 58, 0.72);
+}
+
+.neo-input-wrap input,
+.neo-auth-form input,
+.neo-auth-form select,
+.neo-register-card input,
+.neo-register-card select {
+    flex: 1;
+    border: 0;
+    background: transparent;
+    color: #1d2b36;
+    font-size: 1rem;
+    height: 100%;
+    min-height: 48px;
+    padding: 0;
+    outline: none;
+}
+
+.neo-input-wrap input::placeholder,
+.neo-auth-form input::placeholder,
+.neo-register-card input::placeholder {
+    color: rgba(17, 38, 58, 0.5);
+}
+
+.neo-eye-btn {
+    background: transparent;
+    color: rgba(17, 38, 58, 0.62);
+    font-size: 1.2rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.neo-row-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: rgba(17, 38, 58, 0.76);
+    font-size: 0.95rem;
+}
+
+.neo-row-between a,
+.neo-switch-text a {
+    color: #f29e3d;
+    font-weight: 700;
+}
+
+.neo-remember {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.92rem;
+}
+
+.neo-remember input,
+.neo-check-row input {
+    width: 16px;
+    height: 16px;
+    accent-color: #f29e3d;
+}
+
+.neo-login-button-primary {
+    width: 100%;
+    background: linear-gradient(135deg, #6366f1 0%, #7c3aed 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 15px 18px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    margin-top: 18px;
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.neo-login-button-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(99, 102, 241, 0.35);
+}
+
+.neo-login-button-primary:disabled {
+    opacity: 0.7;
+}
+
+.neo-arrow {
+    font-size: 1.2em;
+}
+
+.neo-divider {
+    display: flex;
+    align-items: center;
+    margin: 26px 0 16px;
+    gap: 12px;
+    color: rgba(17, 38, 58, 0.62);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.neo-divider::before,
+.neo-divider::after {
+    content: '';
+    height: 1px;
+    flex: 1;
+    background: rgba(17, 38, 58, 0.15);
+}
+
+.neo-social-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.neo-social-btn {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-weight: 600;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.neo-social-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.neo-social-icon {
+    font-size: 1.2em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.neo-security-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 20px;
+    padding: 14px 14px;
+    background: rgba(99, 102, 241, 0.08);
+    border-radius: 10px;
+    border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.neo-security-icon {
+    font-size: 1.3em;
+    flex-shrink: 0;
+}
+
+.neo-security-note div {
+    flex: 1;
+}
+
+.neo-security-note p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #475569;
+    line-height: 1.4;
+}
+
+.neo-security-note p:first-child {
+    font-weight: 600;
+    color: #334155;
+}
+
+.neo-security-note p:last-child {
+    margin-top: 2px;
+}
+
+.neo-switch-text {
+    text-align: center;
+    margin-top: 18px;
+    color: rgba(17, 38, 58, 0.72);
+}
+
+.neo-two-col {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.neo-register-card .neo-login-button {
+    margin-top: 10px;
+}
+
+.neo-strength {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.neo-strength-bar {
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(17, 38, 58, 0.1);
+    overflow: hidden;
+}
+
+.neo-strength-bar span {
+    display: block;
+    width: 72%;
+    height: 100%;
+    background: linear-gradient(90deg, #8de15e, #4cc88a);
+    border-radius: inherit;
+}
+
+.neo-strength small {
+    color: rgba(17, 38, 58, 0.7);
+}
+
+.neo-check-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    color: rgba(17, 38, 58, 0.76) !important;
+    font-size: 0.9rem !important;
+}
+
+.single-form-page {
+    padding-top: 22px;
+    padding-bottom: 22px;
+}
+
+.single-register-card {
+    padding: 26px 24px 22px;
+}
+
+@media (max-width: 720px) {
+    .neo-two-col {
+        grid-template-columns: 1fr;
+    }
+
+    .neo-social-grid {
+        grid-template-columns: 1fr;
+    }
+}

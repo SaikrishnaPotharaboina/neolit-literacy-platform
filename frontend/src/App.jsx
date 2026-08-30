@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
+import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import RegisterPage from './pages/RegisterPage'
@@ -14,7 +15,7 @@ function ProtectedRoute({ children }) {
     }
 
     if (!user) {
-        return <Navigate to="/login" replace />
+        return <Navigate to="/" replace />
     }
 
     return children
@@ -23,6 +24,7 @@ function ProtectedRoute({ children }) {
 function AppRoutes() {
     return (
         <Routes>
+            <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/register" element={<RegisterPage />} />

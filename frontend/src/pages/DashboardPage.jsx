@@ -73,6 +73,12 @@ export default function DashboardPage() {
     const levelName = (levelId) => levels.find((level) => level.id === levelId)?.name || 'Beginner'
     const lessonCount = modules.reduce((total, module) => total + module.lessons.length, 0)
 
+    useEffect(() => {
+        if (!selected && visibleAssessments.length) {
+            setSelected(visibleAssessments[0])
+        }
+    }, [selected, visibleAssessments])
+
     const selectAssessment = (assessment) => {
         setSelected(assessment)
         setAnswers({})
