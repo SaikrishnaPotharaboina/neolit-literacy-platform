@@ -171,7 +171,7 @@ export default function RegisterPage() {
                                 />
                             </label>
                             <label>
-                                <span>Preferred language</span>
+                                <span>Choose language</span>
                                 <select
                                     name="learning_language"
                                     value={form.learning_language}
