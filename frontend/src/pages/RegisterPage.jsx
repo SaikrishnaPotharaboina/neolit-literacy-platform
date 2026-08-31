@@ -179,7 +179,7 @@ export default function RegisterPage() {
                                     required
                                 >
                                     {languages.map((language) => (
-                                        <option key={language.id} value={language.code}>
+                                        <option key={language.code} value={language.code}>
                                             {language.name}
                                         </option>
                                     ))}
