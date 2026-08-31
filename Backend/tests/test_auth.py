@@ -142,6 +142,35 @@ def test_invalid_token_returns_401():
     assert invalid_subject.status_code == 401
 
 
+def test_assessment_submission_accepts_numeric_option_ids():
+    email = f"assessment+{uuid4().hex}@example.com"
+    register_response = client.post(
+        "/api/auth/register",
+        json={"name": "Assessment User", "email": email, "password": "StrongPass123!"},
+    )
+    assert register_response.status_code == 201, register_response.text
+
+    token = client.post(
+        "/api/auth/login",
+        json={"email": email, "password": "StrongPass123!"},
+    ).json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+
+    assessment_response = client.get("/api/assessments", headers=headers)
+    assert assessment_response.status_code == 200, assessment_response.text
+    assessment_id = assessment_response.json()[0]["id"]
+
+    attempt_response = client.post(
+        f"/api/assessments/{assessment_id}/submit",
+        headers=headers,
+        json={"answers": {"1": 2, "2": "Reading books"}, "started_at": "2026-08-31T06:00:00Z"},
+    )
+    assert attempt_response.status_code == 201, attempt_response.text
+    data = attempt_response.json()
+    assert data["score"] >= 0
+    assert data["total_marks"] > 0
+
+
 def test_profile_update_rejects_invalid_boundaries():
     email = f"profile.validation+{uuid4().hex}@example.com"
     register_response = client.post(

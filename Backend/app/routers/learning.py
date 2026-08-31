@@ -108,9 +108,15 @@ def submit_assessment(assessment_id: int, payload: AssessmentSubmission, current
     attempt = AssessmentAttempt(user_id=current_user.id, assessment_id=assessment.id, started_at=payload.started_at or datetime.utcnow())
     db.add(attempt)
     db.flush()
+    normalized_answers = {
+        str(question_id): value if isinstance(value, str) else str(value)
+        for question_id, value in (payload.answers or {}).items()
+    }
     for question in assessment.questions:
-        answer = str(payload.answers.get(question.id, "")).strip()
-        marks = question.marks if answer.casefold() == question.correct_answer.strip().casefold() else 0
+        answer_value = normalized_answers.get(str(question.id), "")
+        answer = str(answer_value).strip()
+        correct = str(question.correct_answer or "").strip()
+        marks = question.marks if answer.casefold() == correct.casefold() else 0
         score += marks
         attempt.answers.append(AssessmentAnswer(question_id=question.id, answer_text=answer, marks_obtained=marks))
     percentage = round(score / assessment.total_marks * 100, 2) if assessment.total_marks else 0

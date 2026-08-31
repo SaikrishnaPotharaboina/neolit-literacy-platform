@@ -90,8 +90,15 @@ class AssessmentResponse(ReadModel):
 
 
 class AssessmentSubmission(BaseModel):
-    answers: dict[int, str] = Field(default_factory=dict)
+    answers: dict[str, str | int | float | bool | None] = Field(default_factory=dict)
     started_at: datetime | None = None
+
+    @field_validator("answers", mode="before")
+    @classmethod
+    def normalize_answers(cls, value):
+        if not isinstance(value, dict):
+            return {}
+        return {str(key): val for key, val in value.items()}
 
 
 class AssessmentResult(BaseModel):
