@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import RegisterPage from './pages/RegisterPage'
 import DashboardPage from './pages/DashboardPage'
 import ProfilePage from './pages/ProfilePage'
+import LearningPathPage from './pages/LearningPathPage'
 import { AuthProvider, useAuth } from './context/AuthContext'
 
 function ProtectedRoute({ children }) {
@@ -15,16 +15,26 @@ function ProtectedRoute({ children }) {
     }
 
     if (!user) {
-        return <Navigate to="/" replace />
+        return <Navigate to="/login" replace />
     }
 
     return children
 }
 
+function RootRedirect() {
+    const { user, loading } = useAuth()
+
+    if (loading) {
+        return <div className="flex min-h-screen items-center justify-center">Loading...</div>
+    }
+
+    return <Navigate to={user ? '/learning-path' : '/login'} replace />
+}
+
 function AppRoutes() {
     return (
         <Routes>
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/" element={<RootRedirect />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/register" element={<RegisterPage />} />
@@ -44,7 +54,15 @@ function AppRoutes() {
                     </ProtectedRoute>
                 }
             />
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            <Route
+                path="/learning-path"
+                element={
+                    <ProtectedRoute>
+                        <LearningPathPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route path="*" element={<Navigate to="/learning-path" replace />} />
         </Routes>
     )
 }

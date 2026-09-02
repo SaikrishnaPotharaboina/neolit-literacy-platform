@@ -4,6 +4,53 @@ import { useAuth } from '../context/AuthContext'
 import { learningApi } from '../services/learningApi'
 
 const skills = ['reading', 'writing', 'comprehension']
+const lessonStages = [
+    { id: 'reading', icon: '🧠', label: 'Reading' },
+    { id: 'writing', icon: '💡', label: 'Writing' },
+    { id: 'comprehension', icon: '⭐', label: 'Comprehension' },
+    { id: 'progress', icon: '🏆', label: 'Progress' },
+]
+
+const lessonStageCopy = {
+    en: {
+        reading: 'Talk about food',
+        writing: 'Write simple sentences',
+        comprehension: 'Recognize key phrases',
+        progress: 'Track your learning progress',
+    },
+    hi: {
+        reading: 'खाने के बारे में बात करें',
+        writing: 'सरल वाक्य लिखें',
+        comprehension: 'मुख्य वाक्यांश पहचानें',
+        progress: 'अपना सीखना ट्रैक करें',
+    },
+    kn: {
+        reading: 'ಆಹಾರದ ಬಗ್ಗೆ ಮಾತನಾಡಿ',
+        writing: 'ಸರಳ ವಾಕ್ಯಗಳನ್ನು ಬರೆಯಿರಿ',
+        comprehension: 'ಮುಖ್ಯ ಪದಗುಚ್ಛಗಳನ್ನು ಗುರುತಿಸಿ',
+        progress: 'ನಿಮ್ಮ ಕಲಿಕೆಯನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ',
+    },
+    ta: {
+        reading: 'உணவு பற்றிப் பேசுங்கள்',
+        writing: 'எளிய வாக்கியங்களை எழுதுங்கள்',
+        comprehension: 'முக்கிய சொற்றொடர்களை அடையாளம் காணுங்கள்',
+        progress: 'உங்கள் கற்றலைப் பின்பற்றுங்கள்',
+    },
+    te: {
+        reading: 'ఆహారం గురించి మాట్లాడండి',
+        writing: 'సాధారణ వాక్యాలను రాయండి',
+        comprehension: 'ముఖ్య వాక్యాల భాగాలను గుర్తించండి',
+        progress: 'మీ అభ్యాసాన్ని ట్రాక్ చేయండి',
+    },
+}
+
+const lessonTitles = {
+    en: 'Form basic sentences',
+    hi: 'मूल वाक्य बनाइए',
+    kn: 'ಮೂಲ ವಾಕ್ಯಗಳನ್ನು ರಚಿಸಿ',
+    ta: 'அடிப்படை வாக்கியங்களை உருவாக்கு',
+    te: 'ప్రాథమిక వాక్యాలను రూపొందించండి',
+}
 
 function ProgressBar({ value, accent = 'emerald' }) {
     const width = `${Math.min(100, Math.max(0, value || 0))}%`
@@ -55,6 +102,7 @@ export default function DashboardPage() {
     const [nextAssessment, setNextAssessment] = useState(null)
     const [message, setMessage] = useState('')
     const [activeSkill, setActiveSkill] = useState('reading')
+    const [selectedLesson, setSelectedLesson] = useState('reading')
 
     useEffect(() => {
         const load = async () => {
@@ -85,6 +133,11 @@ export default function DashboardPage() {
         () => assessments.filter((assessment) => assessment.assessment_type === activeSkill),
         [assessments, activeSkill]
     )
+
+    const selectedLanguageCode = profile?.learning_language || 'en'
+    const selectedLanguageName = languages.find((item) => item.code === selectedLanguageCode)?.name || 'English'
+    const activeStageCopy = (lessonStageCopy[selectedLanguageCode] || lessonStageCopy.en)[selectedLesson] || 'Talk about food'
+    const selectedLessonTitle = lessonTitles[selectedLanguageCode] || lessonTitles.en
 
     const levelName = (levelId) => levels.find((level) => level.id === levelId)?.name || 'Beginner'
     const lessonCount = modules.reduce((total, module) => total + (module.lessons?.length || 0), 0)
@@ -141,215 +194,114 @@ export default function DashboardPage() {
     }
 
     return (
-        <div className="dashboard-page">
-            <div className="dashboard-shell">
-                <header className="dashboard-header">
-                    <div className="brand-group">
-                        <div className="brand-mark">N</div>
-                        <div>
-                            <p className="brand-name">NeoLit</p>
-                            <p className="brand-subtitle">Learning Lab</p>
-                        </div>
-                    </div>
+        <div className="duolingo-reference-page">
+            <aside className="duolingo-sidebar">
+                <div className="duolingo-logo">NeoLit</div>
 
-                    <div className="dashboard-header-actions">
-                        <Link to="/profile" className="profile-pill">
-                            <span className="avatar-dot">{user?.first_name?.[0] || 'L'}</span>
-                            <span>Profile</span>
-                        </Link>
-                        <button type="button" onClick={logout} className="logout-btn">Log out</button>
-                    </div>
-                </header>
+                <nav className="duolingo-sidebar-nav" aria-label="Main navigation">
+                    <Link to="/dashboard" className="sidebar-item active"><span className="nav-icon">🏠</span> LEARN</Link>
+                    <Link to="/dashboard" className="sidebar-item"><span className="nav-icon">✎</span> LETTERS</Link>
+                    <Link to="/dashboard" className="sidebar-item"><span className="nav-icon">🏆</span> LEADERBOARDS</Link>
+                    <Link to="/dashboard" className="sidebar-item"><span className="nav-icon">🎯</span> QUESTS</Link>
+                    <Link to="/dashboard" className="sidebar-item"><span className="nav-icon">🛒</span> SHOP</Link>
+                    <Link to="/profile" className="sidebar-item"><span className="nav-icon">👤</span> PROFILE</Link>
+                    <Link to="/dashboard" className="sidebar-item"><span className="nav-icon">⋯</span> MORE</Link>
+                </nav>
 
-                <section className="dashboard-hero">
-                    <div className="hero-copy">
-                        <p className="eyebrow">Your learning space</p>
-                        <h1>Keep your momentum, {user?.first_name || 'learner'}.</h1>
-                        <p className="hero-text">
-                            Short practice sessions add up. Continue with {lessonCount || 'your'} lessons in{' '}
-                            {languages.find((item) => item.code === profile?.learning_language)?.name || 'your chosen language'}.
-                        </p>
-                    </div>
-
-                    <div className="focus-card">
-                        <span>Current focus</span>
-                        <strong>{levelName(profile?.current_level_id)}</strong>
-                        <small>Keep practicing to reach your next benchmark.</small>
-                    </div>
-                </section>
-
-                {message && <div className="dashboard-alert">{message}</div>}
-
-                <section className="stats-grid">
-                    <ScoreCard label="overall" item={progress?.overall} featured />
-                    {skills.map((skill) => (
-                        <ScoreCard key={skill} label={skill} item={progress?.[skill]} />
-                    ))}
-                </section>
-
-                <div className="dashboard-layout">
-                    <main className="dashboard-main-panel">
-                        <section className="dashboard-panel">
-                            <div className="panel-header">
-                                <div>
-                                    <p className="eyebrow">Learning path</p>
-                                    <h2>Your lessons</h2>
-                                </div>
-                                <span className="module-badge">{modules.length} modules</span>
-                            </div>
-
-                            <div className="module-list">
-                                {modules.map((module) => (
-                                    <article key={module.id} className="module-item">
-                                        <button
-                                            type="button"
-                                            className="module-toggle"
-                                            onClick={() => setExpandedModule(expandedModule === module.id ? null : module.id)}
-                                        >
-                                            <div>
-                                                <span className="module-index">Module {String(module.order_number).padStart(2, '0')}</span>
-                                                <strong>{module.title}</strong>
-                                                <small>{module.description}</small>
-                                            </div>
-                                            <span className="toggle-icon">{expandedModule === module.id ? '-' : '+'}</span>
-                                        </button>
-
-                                        {expandedModule === module.id && (
-                                            <div className="module-lessons">
-                                                {module.lessons.map((lesson) => (
-                                                    <div key={lesson.id} className="mini-lesson-card">
-                                                        <span>Lesson {lesson.order_number}</span>
-                                                        <h3>{lesson.title}</h3>
-                                                        <p>{lesson.description}</p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </article>
-                                ))}
-                            </div>
-                        </section>
-
-                        <section className="dashboard-panel assessment-panel">
-                            <div className="panel-header assessment-header">
-                                <div>
-                                    <p className="eyebrow">Skill check</p>
-                                    <h2>Assessment center</h2>
-                                </div>
-                                <div className="skill-tabs">
-                                    {skills.map((skill) => (
-                                        <button
-                                            key={skill}
-                                            type="button"
-                                            className={`skill-tab ${activeSkill === skill ? 'active' : ''}`}
-                                            onClick={() => {
-                                                setActiveSkill(skill)
-                                                setSelected(null)
-                                                setResult(null)
-                                                setNextAssessment(null)
-                                            }}
-                                        >
-                                            {skill}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="assessment-list">
-                                {visibleAssessments.map((assessment) => (
-                                    <AssessmentCard
-                                        key={assessment.id}
-                                        assessment={assessment}
-                                        levelName={levelName}
-                                        active={selected?.id === assessment.id}
-                                        onSelect={() => selectAssessment(assessment)}
-                                    />
-                                ))}
-                            </div>
-
-                            {selected && (
-                                <form onSubmit={submit} className="assessment-form">
-                                    <div className="assessment-form-header">
-                                        <div>
-                                            <span className="assessment-form-tag">{levelName(selected.level_id)} challenge</span>
-                                            <h3>{selected.title}</h3>
-                                        </div>
-                                        <span className="assessment-count">{selected.questions.length} questions</span>
-                                    </div>
-
-                                    <div className="question-list">
-                                        {selected.questions.map((question, index) => (
-                                            <fieldset key={question.id} className="question-block">
-                                                <legend>
-                                                    {index + 1}. {question.question_text}
-                                                </legend>
-                                                {question.options.length ? (
-                                                    <div className="choice-grid">
-                                                        {question.options.map((option) => (
-                                                            <label key={option.id} className="choice-item">
-                                                                <input
-                                                                    type="radio"
-                                                                    name={`question-${question.id}`}
-                                                                    checked={answers[question.id] === option.option_text}
-                                                                    onChange={() => setAnswers((prev) => ({ ...prev, [question.id]: option.option_text }))}
-                                                                />
-                                                                <span>{option.option_text}</span>
-                                                            </label>
-                                                        ))}
-                                                    </div>
-                                                ) : (
-                                                    <input
-                                                        type="text"
-                                                        value={answers[question.id] || ''}
-                                                        onChange={(event) =>
-                                                            setAnswers((prev) => ({ ...prev, [question.id]: event.target.value }))
-                                                        }
-                                                        className="short-answer"
-                                                        placeholder="Type your answer"
-                                                    />
-                                                )}
-                                            </fieldset>
-                                        ))}
-                                    </div>
-
-                                    <button type="submit" className="submit-btn">Submit assessment</button>
-                                </form>
-                            )}
-
-                            {result && (
-                                <div className="result-box">
-                                    <h3>Result</h3>
-                                    <p>{result.message || 'Assessment completed successfully.'}</p>
-                                    {nextAssessment && (
-                                        <button type="button" onClick={() => setSelected(nextAssessment)} className="next-btn">
-                                            Continue to next challenge
-                                        </button>
-                                    )}
-                                </div>
-                            )}
-                        </section>
-                    </main>
-
-                    <aside className="dashboard-side-panel">
-                        <section className="side-card profile-card">
-                            <p className="eyebrow">Quick profile</p>
-                            <div className="profile-mini">
-                                <span className="profile-avatar">{user?.first_name?.[0] || 'L'}</span>
-                                <div>
-                                    <strong>{profile?.first_name} {profile?.last_name}</strong>
-                                    <small>{languages.find((item) => item.code === profile?.learning_language)?.name || 'Learning language'}</small>
-                                </div>
-                            </div>
-                            <Link to="/profile" className="secondary-btn">Edit profile</Link>
-                        </section>
-
-                        <section className="side-card reminder-card">
-                            <p className="eyebrow">A small reminder</p>
-                            <h3>Consistency beats cramming.</h3>
-                            <p>Finish one lesson today and let your progress build from there.</p>
-                        </section>
-                    </aside>
+                <div className="duolingo-sidebar-status">
+                    <span>31°C</span>
+                    <small>Partly sunny</small>
                 </div>
+
+                <button type="button" className="duolingo-logout-button" onClick={logout}>
+                    LOG OUT
+                </button>
+            </aside>
+
+            <div className="duolingo-app-content">
+                <main className="duolingo-reference-main">
+                    <section className="duolingo-reference-content">
+                        <div className="duolingo-reference-banner">
+                            <div className="banner-left">
+                                <span className="banner-arrow">←</span>
+                                <span className="banner-text">SECTION 1, UNIT 1</span>
+                            </div>
+                            <div className="banner-chip">GUIDEBOOK</div>
+                        </div>
+
+                        <h1>{selectedLessonTitle}</h1>
+
+                        <div className="duolingo-reference-scene" aria-label="Lesson focus options">
+                            {lessonStages.map((stage, index) => (
+                                <button
+                                    key={stage.id}
+                                    type="button"
+                                    className={`scene-item item-${index + 1} ${selectedLesson === stage.id ? 'active' : ''}`}
+                                    onClick={() => {
+                                        setSelectedLesson(stage.id)
+                                        if (stage.id !== 'progress') {
+                                            setActiveSkill(stage.id)
+                                        }
+                                    }}
+                                    aria-label={stage.label}
+                                    title={stage.label}
+                                >
+                                    {stage.icon}
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="duolingo-reference-divider">{activeStageCopy}</div>
+
+                        <div className="duolingo-reference-cta">
+                            <button type="button" className="jump-btn" onClick={() => setActiveSkill(selectedLesson === 'progress' ? 'reading' : selectedLesson)}>JUMP HERE?</button>
+                            <button type="button" className="play-btn" onClick={() => setActiveSkill(selectedLesson === 'progress' ? 'reading' : selectedLesson)}>▶</button>
+                        </div>
+                    </section>
+
+                    <aside className="duolingo-reference-side">
+                        <div className="duolingo-course-panel">
+                            <div className="language-card-row">
+                                <span className="language-pill">{selectedLanguageName}</span>
+                                <button type="button" className="mini-add-btn">＋</button>
+                            </div>
+                            <div className="course-art">✦</div>
+                        </div>
+
+                        <div className="mini-card promo-card">
+                            <button type="button">TRY 1 WEEK FREE</button>
+                        </div>
+
+                        <div className="mini-card">
+                            <h3>Unlock Leaderboards!</h3>
+                            <div className="leaderboard-line">
+                                <span>🏆</span>
+                                <span>Complete 3 more lessons to start competing</span>
+                            </div>
+                        </div>
+
+                        <div className="mini-card">
+                            <div className="mini-header">
+                                <h3>Daily Quests</h3>
+                                <span>VIEW ALL</span>
+                            </div>
+                            <div className="quest-row">
+                                <div className="quest-copy">
+                                    <strong>Earn 10 XP</strong>
+                                    <div className="quest-bar"><span /></div>
+                                </div>
+                                <span className="quest-badge">🏆</span>
+                            </div>
+                        </div>
+
+                        <div className="mini-card discover-card">
+                            <h3>Discover more</h3>
+                            <button type="button">Take Sociology Courses <span>›</span></button>
+                            <button type="button">Stream History Documentaries <span>›</span></button>
+                            <button type="button">Get Study Guides <span>›</span></button>
+                        </div>
+                    </aside>
+                </main>
             </div>
         </div>
     )

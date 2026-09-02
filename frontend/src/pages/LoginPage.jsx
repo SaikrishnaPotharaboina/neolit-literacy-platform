@@ -21,7 +21,7 @@ export default function LoginPage() {
 
         try {
             await login(form)
-            navigate('/dashboard')
+            navigate('/learning-path')
         } catch (err) {
             setError(err.response?.data?.detail || 'Login failed')
         } finally {
