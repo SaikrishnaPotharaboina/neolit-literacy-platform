@@ -946,13 +946,15 @@ export default function LearningPathPage() {
 
     return (
         <div className="duolingo-page-shell">
-            <div className="duolingo-page-header">
-                <Link to="/dashboard" className="duolingo-back-link">←</Link>
-                <div className="duolingo-top-tabs">
-                    <button type="button" className="duolingo-tab active">Learn</button>
-                    <button type="button" className="duolingo-tab">Courses</button>
+            {step !== 'language' && (
+                <div className="duolingo-page-header">
+                    <Link to="/dashboard" className="duolingo-back-link">←</Link>
+                    <div className="duolingo-top-tabs">
+                        <button type="button" className="duolingo-tab active">Learn</button>
+                        <button type="button" className="duolingo-tab">Courses</button>
+                    </div>
                 </div>
-            </div>
+            )}
 
             {step === 'language' && renderLanguageSelection()}
             {step === 'knowledge' && renderKnowledgeStep()}

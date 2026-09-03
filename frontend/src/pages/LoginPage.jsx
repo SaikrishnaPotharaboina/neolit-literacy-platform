@@ -32,65 +32,6 @@ export default function LoginPage() {
     return (
         <div className="neo-auth-page login-page-only">
             <div className="neo-auth-shell login-shell">
-                <aside className="neo-left-card">
-                    <div className="neo-brand">NeoLit</div>
-
-                    <h1>
-                        Learn English.<br />
-                        Open <span>New Worlds.</span>
-                    </h1>
-
-                    <p>
-                        Interactive lessons, real conversations,<br />
-                        and personalized practice to help you
-                        speak with confidence.
-                    </p>
-
-                    <div className="neo-feature-list">
-                        <div className="neo-feature-item">
-                            <span className="neo-feature-icon orange">📘</span>
-                            <div>
-                                <strong>Expert Lessons</strong>
-                                <small>Learn with structured and engaging content.</small>
-                            </div>
-                        </div>
-
-                        <div className="neo-feature-item">
-                            <span className="neo-feature-icon yellow">🗣️</span>
-                            <div>
-                                <strong>Practice Speaking</strong>
-                                <small>Improve your speaking with real-life conversations.</small>
-                            </div>
-                        </div>
-
-                        <div className="neo-feature-item">
-                            <span className="neo-feature-icon green">📈</span>
-                            <div>
-                                <strong>Track Progress</strong>
-                                <small>Monitor your progress and achieve your goals.</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="neo-owl-wrap">
-                        <div className="neo-owl">
-                            <div className="neo-owl-body" />
-                            <div className="neo-owl-eye left" />
-                            <div className="neo-owl-eye right" />
-                            <div className="neo-owl-beak" />
-                        </div>
-                    </div>
-
-                    <div className="neo-quote-block">
-                        <span className="neo-quote-mark">“</span>
-                        <p>
-                            The beautiful thing about learning
-                            is that no one can take it away from you.
-                        </p>
-                        <span className="neo-quote-author">— B.B. King</span>
-                    </div>
-                </aside>
-
                 <div className="neo-auth-card neo-login-card">
                     <div className="neo-card-icon orange">📖</div>
                     <h2>Welcome back!</h2>

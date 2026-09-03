@@ -5,6 +5,7 @@ import RegisterPage from './pages/RegisterPage'
 import DashboardPage from './pages/DashboardPage'
 import ProfilePage from './pages/ProfilePage'
 import LearningPathPage from './pages/LearningPathPage'
+import UnitLessonPage from './pages/UnitLessonPage'
 import { AuthProvider, useAuth } from './context/AuthContext'
 
 function ProtectedRoute({ children }) {
@@ -59,6 +60,14 @@ function AppRoutes() {
                 element={
                     <ProtectedRoute>
                         <LearningPathPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/lesson/:unit"
+                element={
+                    <ProtectedRoute>
+                        <UnitLessonPage />
                     </ProtectedRoute>
                 }
             />

@@ -4,6 +4,14 @@ import { useAuth } from '../context/AuthContext'
 import { learningApi } from '../services/learningApi'
 
 const skills = ['reading', 'writing', 'comprehension']
+const supportedLanguageCodes = ['en', 'hi', 'kn', 'ta', 'te']
+const leaderboardRows = [
+    { name: 'Aarav', xp: 1840, streak: 18 },
+    { name: 'Meera', xp: 1620, streak: 14 },
+    { name: 'You', xp: 1280, streak: 9, current: true },
+    { name: 'Rohan', xp: 1110, streak: 7 },
+    { name: 'Ananya', xp: 980, streak: 6 },
+]
 const lessonStages = [
     { id: 'reading', icon: '🧠', label: 'Reading' },
     { id: 'writing', icon: '💡', label: 'Writing' },
@@ -50,6 +58,63 @@ const lessonTitles = {
     kn: 'ಮೂಲ ವಾಕ್ಯಗಳನ್ನು ರಚಿಸಿ',
     ta: 'அடிப்படை வாக்கியங்களை உருவாக்கு',
     te: 'ప్రాథమిక వాక్యాలను రూపొందించండి',
+}
+
+const courseUnits = {
+    en: [
+        ['Form basic sentences', 'Greetings and everyday words'],
+        ['Talk about your day', 'Simple routines and useful verbs'],
+        ['Food and preferences', 'Order food and share opinions'],
+        ['Make real conversations', 'Bring your new skills together'],
+    ],
+    hi: [['मूल वाक्य बनाइए', 'अभिवादन और रोज़मर्रा के शब्द'], ['अपने दिन के बारे में बात करें', 'सरल दिनचर्या और क्रियाएँ'], ['खाने और पसंद के बारे में', 'खाना ऑर्डर करना सीखें'], ['बातचीत का अभ्यास करें', 'अपने कौशल को साथ लाएँ']],
+    kn: [['ಮೂಲ ವಾಕ್ಯಗಳನ್ನು ರಚಿಸಿ', 'ಶುಭಾಶಯಗಳು ಮತ್ತು ದೈನಂದಿನ ಪದಗಳು'], ['ನಿಮ್ಮ ದಿನದ ಬಗ್ಗೆ ಮಾತನಾಡಿ', 'ಸರಳ ದಿನಚರಿ ಮತ್ತು ಕ್ರಿಯಾಪದಗಳು'], ['ಆಹಾರ ಮತ್ತು ಇಷ್ಟಗಳು', 'ಆಹಾರವನ್ನು ಆರ್ಡರ್ ಮಾಡಲು ಕಲಿಯಿರಿ'], ['ನೈಜ ಸಂಭಾಷಣೆ ಮಾಡಿ', 'ನಿಮ್ಮ ಕೌಶಲ್ಯಗಳನ್ನು ಒಟ್ಟುಗೂಡಿಸಿ']],
+    ta: [['அடிப்படை வாக்கியங்களை உருவாக்கு', 'வாழ்த்துகள் மற்றும் அன்றாட சொற்கள்'], ['உங்கள் நாளைப் பற்றி பேசுங்கள்', 'எளிய பழக்கங்கள் மற்றும் வினைச்சொற்கள்'], ['உணவு மற்றும் விருப்பங்கள்', 'உணவை ஆர்டர் செய்ய கற்றுக்கொள்ளுங்கள்'], ['உண்மையான உரையாடல்கள்', 'உங்கள் திறன்களை ஒன்றிணைக்கவும்']],
+    te: [['ప్రాథమిక వాక్యాలను రూపొందించండి', 'శుభాకాంక్షలు మరియు రోజువారీ పదాలు'], ['మీ రోజు గురించి మాట్లాడండి', 'సులభమైన దినచర్యలు మరియు క్రియలు'], ['ఆహారం మరియు అభిరుచులు', 'ఆహారం ఆర్డర్ చేయడం నేర్చుకోండి'], ['నిజమైన సంభాషణలు చేయండి', 'మీ నైపుణ్యాలను కలపండి']],
+}
+
+const unitLessonLabels = ['Learn words', 'Build sentences', 'Practice conversation']
+
+const letterLessons = {
+    en: {
+        title: "Let's learn English sounds!",
+        subtitle: 'Train your ear and learn to pronounce English sounds',
+        vowels: [
+            ['ɑ', 'hot'], ['æ', 'cat'], ['ʌ', 'but'], ['ɛ', 'bed'], ['eɪ', 'say'], ['ɝ', 'bird'],
+            ['ɪ', 'ship'], ['i', 'sheep'], ['ə', 'about'], ['oʊ', 'boat'], ['ʊ', 'foot'], ['u', 'food'],
+            ['aʊ', 'cow'], ['aɪ', 'time'], ['ɔɪ', 'boy'],
+        ],
+        consonants: [
+            ['b', 'book'], ['tʃ', 'chair'], ['d', 'day'], ['f', 'fish'], ['g', 'go'], ['h', 'home'],
+            ['dʒ', 'job'], ['k', 'key'], ['l', 'lion'], ['m', 'moon'], ['n', 'nose'], ['ŋ', 'sing'],
+            ['p', 'pig'], ['ɹ', 'red'], ['s', 'see'], ['ʒ', 'measure'], ['ʃ', 'shoe'], ['t', 'time'],
+            ['ð', 'then'], ['θ', 'think'], ['v', 'very'], ['w', 'water'], ['j', 'you'], ['z', 'zoo'],
+        ],
+    },
+    hi: {
+        title: 'आइए हिंदी अक्षर सीखें!',
+        subtitle: 'स्वर और व्यंजन का उच्चारण सीखें',
+        vowels: [['अ', 'अदरक'], ['आ', 'आम'], ['इ', 'इमली'], ['ई', 'ईख'], ['उ', 'उल्लू'], ['ऊ', 'ऊन'], ['ए', 'एक'], ['ऐ', 'ऐनक'], ['ओ', 'ओखली'], ['औ', 'औरत']],
+        consonants: [['क', 'कमल'], ['ख', 'खरगोश'], ['ग', 'गमला'], ['घ', 'घर'], ['च', 'चम्मच'], ['छ', 'छाता'], ['ज', 'जहाज'], ['ट', 'टमाटर'], ['ड', 'डमरू'], ['त', 'तरबूज'], ['द', 'दवात'], ['न', 'नल'], ['प', 'पतंग'], ['ब', 'बकरी'], ['म', 'मछली'], ['र', 'रस्सी'], ['ल', 'लड्डू'], ['स', 'सेब'], ['ह', 'हाथी']],
+    },
+    kn: {
+        title: 'ಕನ್ನಡ ಅಕ್ಷರಗಳನ್ನು ಕಲಿಯೋಣ!',
+        subtitle: 'ಸ್ವರಗಳು ಮತ್ತು ವ್ಯಂಜನಗಳನ್ನು ಉಚ್ಚರಿಸಲು ಕಲಿಯಿರಿ',
+        vowels: [['ಅ', 'ಅಕ್ಕ'], ['ಆ', 'ಆನೆ'], ['ಇ', 'ಇಲಿ'], ['ಈ', 'ಈಜು'], ['ಉ', 'ಉಪ್ಪು'], ['ಊ', 'ಊಟ'], ['ಎ', 'ಎಲೆ'], ['ಏ', 'ಏಣಿ'], ['ಒ', 'ಒಂಟೆ'], ['ಓ', 'ಓಡು']],
+        consonants: [['ಕ', 'ಕಮಲ'], ['ಖ', 'ಖಡ್ಗ'], ['ಗ', 'ಗಿಡ'], ['ಘ', 'ಘಂಟೆ'], ['ಚ', 'ಚಂದ್ರ'], ['ಜ', 'ಜಿಂಕೆ'], ['ಟ', 'ಟಗರು'], ['ಡ', 'ಡಬ್ಬಿ'], ['ತ', 'ತಲೆ'], ['ದ', 'ದನ'], ['ನ', 'ನದಿ'], ['ಪ', 'ಪಟ'], ['ಬ', 'ಬಾಳೆ'], ['ಮ', 'ಮನೆ'], ['ಯ', 'ಯಾನ'], ['ರ', 'ರಥ'], ['ಲ', 'ಲತೆ'], ['ವ', 'ವನು'], ['ಸ', 'ಸೂರ್ಯ'], ['ಹ', 'ಹಸು']],
+    },
+    ta: {
+        title: 'தமிழ் எழுத்துக்களை கற்போம்!',
+        subtitle: 'உயிர் மற்றும் மெய் எழுத்துக்களை உச்சரிக்க கற்றுக்கொள்ளுங்கள்',
+        vowels: [['அ', 'அம்மா'], ['ஆ', 'ஆடு'], ['இ', 'இலை'], ['ஈ', 'ஈ'], ['உ', 'உப்பு'], ['ஊ', 'ஊர்'], ['எ', 'எலி'], ['ஏ', 'ஏணி'], ['ஐ', 'ஐந்து'], ['ஒ', 'ஒட்டகம்'], ['ஓ', 'ஓநாய்'], ['ஔ', 'ஔவை']],
+        consonants: [['க்', 'கல்'], ['ங்', 'மாங்காய்'], ['ச்', 'சங்கு'], ['ஞ்', 'ஞாயிறு'], ['ட்', 'பட்டு'], ['ண்', 'மண்'], ['த்', 'தமிழ்'], ['ந்', 'நதி'], ['ப்', 'பல்'], ['ம்', 'மரம்'], ['ய்', 'மயில்'], ['ர்', 'மரம்'], ['ல்', 'இலை'], ['வ்', 'வலை'], ['ழ்', 'தமிழ்'], ['ள்', 'வாள்'], ['ற்', 'காற்று'], ['ன்', 'மீன்']],
+    },
+    te: {
+        title: 'తెలుగు అక్షరాలు నేర్చుకుందాం!',
+        subtitle: 'అచ్చులు మరియు హల్లులను పలకడం నేర్చుకోండి',
+        vowels: [['అ', 'అమ్మ'], ['ఆ', 'ఆవు'], ['ఇ', 'ఇల్లు'], ['ఈ', 'ఈగ'], ['ఉ', 'ఉడుత'], ['ఊ', 'ఊయల'], ['ఋ', 'ఋషి'], ['ఎ', 'ఎలుక'], ['ఏ', 'ఏనుగు'], ['ఐ', 'ఐదు'], ['ఒ', 'ఒంటె'], ['ఓ', 'ఓడ'], ['ఔ', 'ఔషధం']],
+        consonants: [['క', 'కమలం'], ['ఖ', 'ఖడ్గం'], ['గ', 'గడియారం'], ['ఘ', 'ఘటం'], ['చ', 'చిలుక'], ['జ', 'జింక'], ['ట', 'టమాటా'], ['డ', 'డబ్బా'], ['త', 'తల'], ['ద', 'దీపం'], ['న', 'నది'], ['ప', 'పండు'], ['బ', 'బడి'], ['మ', 'మామిడి'], ['య', 'యానం'], ['ర', 'రథం'], ['ల', 'లత'], ['వ', 'వాన'], ['శ', 'శంఖం'], ['స', 'సూర్యుడు'], ['హ', 'హంస']],
+    },
 }
 
 function ProgressBar({ value, accent = 'emerald' }) {
@@ -103,6 +168,24 @@ export default function DashboardPage() {
     const [message, setMessage] = useState('')
     const [activeSkill, setActiveSkill] = useState('reading')
     const [selectedLesson, setSelectedLesson] = useState('reading')
+    const [activeSection, setActiveSection] = useState('learn')
+    const [lettersStarted, setLettersStarted] = useState(false)
+    const [letterProgress, setLetterProgress] = useState({})
+    const [quizOpen, setQuizOpen] = useState(false)
+    const [quizAnswer, setQuizAnswer] = useState(null)
+    const [quizScore, setQuizScore] = useState(0)
+    const [quizIndex, setQuizIndex] = useState(0)
+    const [courseMenuOpen, setCourseMenuOpen] = useState(false)
+    const [changingCourse, setChangingCourse] = useState(false)
+    const [leaderboardPeriod, setLeaderboardPeriod] = useState('weekly')
+    const [activeUnit, setActiveUnit] = useState(1)
+    const [completedPathLessons, setCompletedPathLessons] = useState(() => {
+        try {
+            return JSON.parse(localStorage.getItem('neolit_completed_path_lessons') || '{}')
+        } catch {
+            return {}
+        }
+    })
 
     useEffect(() => {
         const load = async () => {
@@ -115,8 +198,9 @@ export default function DashboardPage() {
                     learningApi.getAssessments(),
                 ])
 
-                const language = languageData.find((item) => item.code === profileData.learning_language) || languageData[0]
-                setLanguages(languageData)
+                const supportedLanguages = languageData.filter((item) => supportedLanguageCodes.includes(item.code))
+                const language = supportedLanguages.find((item) => item.code === profileData.learning_language) || supportedLanguages[0]
+                setLanguages(supportedLanguages)
                 setLevels(levelData)
                 setProfile(profileData)
                 setProgress(progressData)
@@ -136,12 +220,24 @@ export default function DashboardPage() {
 
     const selectedLanguageCode = profile?.learning_language || 'en'
     const selectedLanguageName = languages.find((item) => item.code === selectedLanguageCode)?.name || 'English'
-    const activeStageCopy = (lessonStageCopy[selectedLanguageCode] || lessonStageCopy.en)[selectedLesson] || 'Talk about food'
-    const selectedLessonTitle = lessonTitles[selectedLanguageCode] || lessonTitles.en
+    const activeStageCopy = lessonStageCopy.en[selectedLesson] || 'Talk about food'
+    const selectedLessonTitle = lessonTitles.en
+    const selectedUnits = courseUnits.en
+    const activeUnitDetails = selectedUnits[activeUnit - 1]
+    const unitProgressKey = `${selectedLanguageCode}-${activeUnit}`
+    const completedLessons = completedPathLessons[unitProgressKey] || []
+    const currentPathLesson = completedLessons.length
+    const isUnitUnlocked = (unitNumber) => unitNumber === 1 || (completedPathLessons[`${selectedLanguageCode}-${unitNumber - 1}`] || []).length === unitLessonLabels.length
+    const selectedLetters = letterLessons[selectedLanguageCode] || letterLessons.en
+    const letterItems = useMemo(
+        () => [...selectedLetters.vowels, ...selectedLetters.consonants],
+        [selectedLetters]
+    )
+    const practicedLetters = Object.keys(letterProgress).length
+    const quizItem = letterItems[quizIndex % letterItems.length]
+    const quizOptions = [quizItem, letterItems[(quizIndex + 3) % letterItems.length], letterItems[(quizIndex + 7) % letterItems.length]]
 
     const levelName = (levelId) => levels.find((level) => level.id === levelId)?.name || 'Beginner'
-    const lessonCount = modules.reduce((total, module) => total + (module.lessons?.length || 0), 0)
-
     useEffect(() => {
         if (!selected && visibleAssessments.length) {
             setSelected(visibleAssessments[0])
@@ -193,15 +289,138 @@ export default function DashboardPage() {
         }
     }
 
+    const speakLetter = (letter, word) => {
+        setLetterProgress((prev) => ({ ...prev, [letter]: true }))
+        if (!window.speechSynthesis) return
+        window.speechSynthesis.cancel()
+        const utterance = new SpeechSynthesisUtterance(`${letter}, ${word}`)
+        utterance.lang = selectedLanguageCode === 'en' ? 'en-US' : `${selectedLanguageCode}-IN`
+        window.speechSynthesis.speak(utterance)
+    }
+
+    const changeCourse = async (languageCode) => {
+        if (!profile || languageCode === selectedLanguageCode) {
+            setCourseMenuOpen(false)
+            return
+        }
+
+        setChangingCourse(true)
+        try {
+            const updatedProfile = await learningApi.updateProfile({
+                ...profile,
+                first_name: profile.first_name || user?.first_name || 'Learner',
+                last_name: profile.last_name || user?.last_name || '',
+                learning_language: languageCode,
+            })
+            setProfile(updatedProfile)
+            setCourseMenuOpen(false)
+            setMessage('Course changed successfully.')
+        } catch (error) {
+            setMessage(error.response?.data?.detail || 'Unable to change course')
+        } finally {
+            setChangingCourse(false)
+        }
+    }
+
+    const renderLetters = () => (
+        <section className="letters-page">
+            <div className="letters-heading">
+                <h1>{selectedLetters.title}</h1>
+                <p>{selectedLetters.subtitle}</p>
+                <button type="button" className="letters-start-button" onClick={() => setLettersStarted(true)}>
+                    {lettersStarted ? 'PRACTICE STARTED' : 'START +10 XP'}
+                </button>
+                <div className="letters-progress-summary">
+                    <span>{practicedLetters} / {letterItems.length} sounds practiced</span>
+                    <div><i style={{ width: `${(practicedLetters / letterItems.length) * 100}%` }} /></div>
+                </div>
+                <button type="button" className="letters-quiz-button" onClick={() => { setLettersStarted(true); setQuizOpen(true); setQuizAnswer(null); setQuizIndex(0); setQuizScore(0) }}>
+                    {quizOpen ? 'PRONUNCIATION QUIZ' : 'PRACTICE QUIZ'}
+                </button>
+            </div>
+
+            {quizOpen && (
+                <div className="letters-quiz-card">
+                    <div>
+                        <span className="section-kicker">Pronunciation quiz</span>
+                        <h2>Which sound is this?</h2>
+                        <button type="button" className="quiz-sound-button" onClick={() => speakLetter(quizItem[0], quizItem[1])}>
+                            ▶ Hear “{quizItem[1]}”
+                        </button>
+                    </div>
+                    <div className="quiz-options">
+                        {quizOptions.map(([letter, word]) => (
+                            <button key={`${letter}-${word}`} type="button" className={quizAnswer === letter ? (letter === quizItem[0] ? 'correct' : 'wrong') : ''} onClick={() => { setQuizAnswer(letter); if (letter === quizItem[0]) setQuizScore((score) => score + 1) }}>
+                                {letter}
+                            </button>
+                        ))}
+                    </div>
+                    {quizAnswer && (
+                        <>
+                            <p className={quizAnswer === quizItem[0] ? 'quiz-feedback correct' : 'quiz-feedback wrong'}>{quizAnswer === quizItem[0] ? 'Correct! +10 XP' : `The answer is ${quizItem[0]}`}</p>
+                            <button type="button" className="quiz-next-button" onClick={() => { setQuizIndex((index) => index + 1); setQuizAnswer(null) }}>NEXT SOUND</button>
+                        </>
+                    )}
+                </div>
+            )}
+
+            {['vowels', 'consonants'].map((group) => (
+                <section key={group} className="letters-group">
+                    <h2><span />{group === 'vowels' ? 'Vowels' : 'Consonants'}<span /></h2>
+                    <div className="letters-grid">
+                        {selectedLetters[group].map(([letter, word]) => (
+                            <button key={`${letter}-${word}`} type="button" className="letter-card" onClick={() => speakLetter(letter, word)} title={`Hear ${letter}`}>
+                                <strong>{letter}</strong>
+                                <small>{word}</small>
+                                <i />
+                            </button>
+                        ))}
+                    </div>
+                </section>
+            ))}
+        </section>
+    )
+
+    const renderLeaderboard = () => (
+        <section className="leaderboard-page">
+            <div className="leaderboard-heading">
+                <span className="section-kicker">{selectedLanguageName} course</span>
+                <h1>Leaderboards</h1>
+                <p>Compete with learners and keep your streak moving.</p>
+            </div>
+
+            <div className="leaderboard-tabs" role="tablist" aria-label="Leaderboard period">
+                {['weekly', 'monthly'].map((period) => (
+                    <button key={period} type="button" className={leaderboardPeriod === period ? 'active' : ''} onClick={() => setLeaderboardPeriod(period)} role="tab" aria-selected={leaderboardPeriod === period}>
+                        {period}
+                    </button>
+                ))}
+            </div>
+
+            <div className="leaderboard-card">
+                <div className="leaderboard-card-header"><span>RANK</span><span>LEARNER</span><span>XP</span><span>STREAK</span></div>
+                {leaderboardRows.map((row, index) => (
+                    <div key={row.name} className={`leaderboard-row ${row.current ? 'current' : ''}`}>
+                        <strong className="leaderboard-rank">{index + 1}</strong>
+                        <span className="leaderboard-name"><i>{row.name[0]}</i>{row.current ? (user?.first_name || row.name) : row.name}</span>
+                        <strong>{row.xp.toLocaleString()}</strong>
+                        <span className="leaderboard-streak">🔥 {row.streak}</span>
+                    </div>
+                ))}
+            </div>
+            <p className="leaderboard-note">Dummy rankings for your {leaderboardPeriod} {selectedLanguageName} group.</p>
+        </section>
+    )
+
     return (
         <div className="duolingo-reference-page">
             <aside className="duolingo-sidebar">
                 <div className="duolingo-logo">NeoLit</div>
 
                 <nav className="duolingo-sidebar-nav" aria-label="Main navigation">
-                    <Link to="/dashboard" className="sidebar-item active"><span className="nav-icon">🏠</span> LEARN</Link>
-                    <Link to="/dashboard" className="sidebar-item"><span className="nav-icon">✎</span> LETTERS</Link>
-                    <Link to="/dashboard" className="sidebar-item"><span className="nav-icon">🏆</span> LEADERBOARDS</Link>
+                    <button type="button" className={`sidebar-item sidebar-button ${activeSection === 'learn' ? 'active' : ''}`} onClick={() => setActiveSection('learn')}><span className="nav-icon">🏠</span> LEARN</button>
+                    <button type="button" className={`sidebar-item sidebar-button ${activeSection === 'letters' ? 'active' : ''}`} onClick={() => setActiveSection('letters')}><span className="nav-icon">✎</span> LETTERS</button>
+                    <button type="button" className={`sidebar-item sidebar-button ${activeSection === 'leaderboard' ? 'active' : ''}`} onClick={() => setActiveSection('leaderboard')}><span className="nav-icon">🏆</span> LEADERBOARDS</button>
                     <Link to="/dashboard" className="sidebar-item"><span className="nav-icon">🎯</span> QUESTS</Link>
                     <Link to="/dashboard" className="sidebar-item"><span className="nav-icon">🛒</span> SHOP</Link>
                     <Link to="/profile" className="sidebar-item"><span className="nav-icon">👤</span> PROFILE</Link>
@@ -219,89 +438,81 @@ export default function DashboardPage() {
             </aside>
 
             <div className="duolingo-app-content">
-                <main className="duolingo-reference-main">
+                <div className="course-switcher">
+                    <button type="button" className="course-switcher-button" onClick={() => setCourseMenuOpen((open) => !open)} aria-expanded={courseMenuOpen}>
+                        <span className="course-switcher-flag">🌐</span>
+                        <span><small>MY COURSE</small><strong>{selectedLanguageName}</strong></span>
+                        <span className="course-switcher-chevron">⌄</span>
+                    </button>
+                    {courseMenuOpen && (
+                        <div className="course-menu">
+                            <strong>MY COURSES</strong>
+                            {languages.map((language) => (
+                                <button key={language.code} type="button" className={language.code === selectedLanguageCode ? 'selected' : ''} onClick={() => changeCourse(language.code)} disabled={changingCourse}>
+                                    <span>{language.code === selectedLanguageCode ? '✓' : '+'}</span>
+                                    {language.name}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
+                {activeSection === 'letters' ? renderLetters() : activeSection === 'leaderboard' ? renderLeaderboard() : <main className="duolingo-reference-main dashboard-main-only">
                     <section className="duolingo-reference-content">
                         <div className="duolingo-reference-banner">
                             <div className="banner-left">
                                 <span className="banner-arrow">←</span>
-                                <span className="banner-text">SECTION 1, UNIT 1</span>
+                                <span className="banner-text">SECTION 1, UNIT {activeUnit}</span>
                             </div>
-                            <div className="banner-chip">GUIDEBOOK</div>
+                                <div className="banner-chip">{Math.round((completedLessons.length / unitLessonLabels.length) * 100)}% COMPLETE</div>
                         </div>
 
-                        <h1>{selectedLessonTitle}</h1>
+                        <div className="unit-selector" aria-label="Course units">
+                            {selectedUnits.map(([title, description], index) => {
+                                const unitNumber = index + 1
+                                return (
+                                    <button key={title} type="button" disabled={!isUnitUnlocked(unitNumber)} className={`unit-selector-card ${activeUnit === unitNumber ? 'active' : ''} ${!isUnitUnlocked(unitNumber) ? 'locked' : ''}`} onClick={() => setActiveUnit(unitNumber)}>
+                                        <span className="unit-number">UNIT {unitNumber}</span>
+                                        <strong>{title}</strong>
+                                        <small>{description}</small>
+                                        <span className="unit-progress"><i style={{ width: `${unitNumber === activeUnit ? (completedLessons.length / unitLessonLabels.length) * 100 : unitNumber < activeUnit ? 100 : 0}%` }} /></span>
+                                    </button>
+                                )
+                            })}
+                        </div>
 
-                        <div className="duolingo-reference-scene" aria-label="Lesson focus options">
-                            {lessonStages.map((stage, index) => (
-                                <button
-                                    key={stage.id}
-                                    type="button"
-                                    className={`scene-item item-${index + 1} ${selectedLesson === stage.id ? 'active' : ''}`}
-                                    onClick={() => {
-                                        setSelectedLesson(stage.id)
-                                        if (stage.id !== 'progress') {
-                                            setActiveSkill(stage.id)
-                                        }
-                                    }}
-                                    aria-label={stage.label}
-                                    title={stage.label}
-                                >
-                                    {stage.icon}
-                                </button>
-                            ))}
+                        <h1>{activeUnitDetails?.[0] || selectedLessonTitle}</h1>
+
+                        <div className="course-path" aria-label={`Lessons in Unit ${activeUnit}`}>
+                            <div className="course-path-line" />
+                            {unitLessonLabels.map((label, index) => {
+                                const completed = completedLessons.includes(index)
+                                const current = index === currentPathLesson && !completed
+                                const unlocked = index <= currentPathLesson
+                                return (
+                                    <Link key={label} to={unlocked ? `/lesson/${activeUnit}?step=${index}` : '#'} className={`course-path-node path-node-${index + 1} ${completed ? 'completed' : ''} ${current ? 'current' : ''} ${!unlocked ? 'locked' : ''}`}>
+                                        <span>{completed ? '✓' : current ? '▶' : '🔒'}</span>
+                                        <strong>{label}</strong>
+                                        <small>{completed ? 'Completed' : current ? '+10 XP • Start here' : 'Complete the previous lesson'}</small>
+                                    </Link>
+                                )
+                            })}
                         </div>
 
                         <div className="duolingo-reference-divider">{activeStageCopy}</div>
 
                         <div className="duolingo-reference-cta">
-                            <button type="button" className="jump-btn" onClick={() => setActiveSkill(selectedLesson === 'progress' ? 'reading' : selectedLesson)}>JUMP HERE?</button>
-                            <button type="button" className="play-btn" onClick={() => setActiveSkill(selectedLesson === 'progress' ? 'reading' : selectedLesson)}>▶</button>
+                            <div className="cta-copy">
+                                <strong>{activeUnitDetails?.[0] || selectedLessonTitle}</strong>
+                                <span>Unit {activeUnit} • 3 lessons • +10 XP each</span>
+                            </div>
+                            <div className="cta-actions">
+                                <Link to={`/lesson/${activeUnit}`} className="jump-btn">START UNIT {activeUnit}</Link>
+                                <Link to={`/lesson/${activeUnit}`} className="play-btn" aria-label={`Start Unit ${activeUnit}`} title={`Start Unit ${activeUnit}`}>▶</Link>
+                            </div>
                         </div>
                     </section>
 
-                    <aside className="duolingo-reference-side">
-                        <div className="duolingo-course-panel">
-                            <div className="language-card-row">
-                                <span className="language-pill">{selectedLanguageName}</span>
-                                <button type="button" className="mini-add-btn">＋</button>
-                            </div>
-                            <div className="course-art">✦</div>
-                        </div>
-
-                        <div className="mini-card promo-card">
-                            <button type="button">TRY 1 WEEK FREE</button>
-                        </div>
-
-                        <div className="mini-card">
-                            <h3>Unlock Leaderboards!</h3>
-                            <div className="leaderboard-line">
-                                <span>🏆</span>
-                                <span>Complete 3 more lessons to start competing</span>
-                            </div>
-                        </div>
-
-                        <div className="mini-card">
-                            <div className="mini-header">
-                                <h3>Daily Quests</h3>
-                                <span>VIEW ALL</span>
-                            </div>
-                            <div className="quest-row">
-                                <div className="quest-copy">
-                                    <strong>Earn 10 XP</strong>
-                                    <div className="quest-bar"><span /></div>
-                                </div>
-                                <span className="quest-badge">🏆</span>
-                            </div>
-                        </div>
-
-                        <div className="mini-card discover-card">
-                            <h3>Discover more</h3>
-                            <button type="button">Take Sociology Courses <span>›</span></button>
-                            <button type="button">Stream History Documentaries <span>›</span></button>
-                            <button type="button">Get Study Guides <span>›</span></button>
-                        </div>
-                    </aside>
-                </main>
+                </main>}
             </div>
         </div>
     )
