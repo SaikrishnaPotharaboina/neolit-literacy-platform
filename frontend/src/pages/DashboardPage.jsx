@@ -463,7 +463,7 @@ export default function DashboardPage() {
                                 <span className="banner-arrow">←</span>
                                 <span className="banner-text">SECTION 1, UNIT {activeUnit}</span>
                             </div>
-                                <div className="banner-chip">{Math.round((completedLessons.length / unitLessonLabels.length) * 100)}% COMPLETE</div>
+                            <div className="banner-chip">{Math.round((completedLessons.length / unitLessonLabels.length) * 100)}% COMPLETE</div>
                         </div>
 
                         <div className="unit-selector" aria-label="Course units">

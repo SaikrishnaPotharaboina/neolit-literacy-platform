@@ -2406,7 +2406,7 @@
     text-align: center;
 }
 
-.course-path-node > span {
+.course-path-node>span {
     display: grid;
     width: 76px;
     height: 76px;
@@ -2421,13 +2421,13 @@
     box-shadow: 0 8px 0 rgba(0, 0, 0, 0.15);
 }
 
-.course-path-node.current > span {
+.course-path-node.current>span {
     border-color: #55cc78;
     background: #38be5d;
     color: #fff;
 }
 
-.course-path-node.completed > span {
+.course-path-node.completed>span {
     border-color: #58a9a2;
     background: #429a8b;
     color: #fff;
@@ -2457,7 +2457,7 @@
     opacity: 0.62;
 }
 
-.course-path-node:hover > span {
+.course-path-node:hover>span {
     transform: translateY(-3px);
 }
 
