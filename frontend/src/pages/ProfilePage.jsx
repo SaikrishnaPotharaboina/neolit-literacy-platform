@@ -148,7 +148,6 @@ export default function ProfilePage() {
                             </div>
 
                             <div className="profile-actions">
-                                <button type="button" onClick={() => navigate('/dashboard')} className="secondary-btn">Cancel</button>
                                 <button type="submit" className="primary-btn">Save changes</button>
                             </div>
                         </form>

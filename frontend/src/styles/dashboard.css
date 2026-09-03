@@ -104,10 +104,17 @@
 
 .logout-btn,
 .ghost-btn,
-.secondary-btn {
+.secondary-btn,
+.back-btn {
     background: rgba(255, 255, 255, 0.04);
     color: #edf8f8;
     padding: 10px 16px;
+}
+
+.back-btn {
+    background: rgba(14, 116, 144, 0.12);
+    border-color: rgba(125, 211, 252, 0.34);
+    color: #e0f2fe;
 }
 
 .profile-pill:hover,
@@ -116,7 +123,8 @@
 .primary-btn:hover,
 .submit-btn:hover,
 .next-btn:hover,
-.ghost-btn:hover {
+.ghost-btn:hover,
+.back-btn:hover {
     transform: translateY(-1px);
     border-color: rgba(95, 231, 163, 0.38);
     box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
