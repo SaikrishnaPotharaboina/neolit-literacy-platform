@@ -167,7 +167,12 @@ export default function UnitLessonPage() {
         const loadProfile = async () => {
             try {
                 const [profile, languages] = await Promise.all([learningApi.getProfile(), learningApi.getLanguages()])
-                const code = lessonContent[profile.learning_language] ? profile.learning_language : 'en'
+                const persistedCourseCode = localStorage.getItem('neolit_selected_language')
+                const code = lessonContent[persistedCourseCode]
+                    ? persistedCourseCode
+                    : lessonContent[profile.learning_language]
+                        ? profile.learning_language
+                        : 'en'
                 setLanguageCode(code)
                 setLanguageName(languages.find((language) => language.code === code)?.name || 'English')
                 if (Number(unit) > 1) {
