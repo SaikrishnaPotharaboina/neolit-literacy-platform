@@ -199,7 +199,9 @@ export default function DashboardPage() {
                 ])
 
                 const supportedLanguages = languageData.filter((item) => supportedLanguageCodes.includes(item.code))
-                const language = supportedLanguages.find((item) => item.code === profileData.learning_language) || supportedLanguages[0]
+                const persistedCourseCode = localStorage.getItem('neolit_selected_language')
+                const effectiveLanguageCode = persistedCourseCode || profileData.learning_language || 'en'
+                const language = supportedLanguages.find((item) => item.code === effectiveLanguageCode) || supportedLanguages[0]
                 setLanguages(supportedLanguages)
                 setLevels(levelData)
                 setProfile(profileData)
@@ -218,7 +220,7 @@ export default function DashboardPage() {
         [assessments, activeSkill]
     )
 
-    const selectedLanguageCode = profile?.learning_language || 'en'
+    const selectedLanguageCode = localStorage.getItem('neolit_selected_language') || profile?.learning_language || 'en'
     const selectedLanguageName = languages.find((item) => item.code === selectedLanguageCode)?.name || 'English'
     const activeStageCopy = lessonStageCopy.en[selectedLesson] || 'Talk about food'
     const selectedLessonTitle = lessonTitles.en
@@ -313,6 +315,7 @@ export default function DashboardPage() {
                 learning_language: languageCode,
             })
             setProfile(updatedProfile)
+            localStorage.setItem('neolit_selected_language', languageCode)
             setCourseMenuOpen(false)
             setMessage('Course changed successfully.')
         } catch (error) {

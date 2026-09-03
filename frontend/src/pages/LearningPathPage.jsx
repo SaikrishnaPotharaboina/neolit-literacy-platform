@@ -660,6 +660,12 @@ export default function LearningPathPage() {
     const canContinue = reviewState !== null
     const activeTheme = languageTheme[currentLanguage.code] || languageTheme.en
 
+    const persistSelectedCourse = (languageCode) => {
+        if (languageCode) {
+            localStorage.setItem('neolit_selected_language', languageCode)
+        }
+    }
+
     const nextStep = () => {
         if (step === 'language') {
             setStep('knowledge')
@@ -715,6 +721,9 @@ export default function LearningPathPage() {
     }
 
     const handleEndSession = () => {
+        const courseCode = selectedLanguage?.code || currentLanguage?.code || 'en'
+        persistSelectedCourse(courseCode)
+
         setShowQuitModal(false)
         setStep('language')
         setLessonIndex(0)
@@ -725,15 +734,18 @@ export default function LearningPathPage() {
         setSelectedSequence([])
         setReviewState(null)
         setShowReview(false)
+        window.location.href = '/dashboard'
     }
 
     const handleContinue = () => {
         if (lessonIndex >= lessonBank.length - 1) {
-            setLessonIndex(0)
-            setStep('language')
-        } else {
-            setLessonIndex((prev) => prev + 1)
+            const courseCode = selectedLanguage?.code || currentLanguage?.code || 'en'
+            persistSelectedCourse(courseCode)
+            window.location.href = '/dashboard'
+            return
         }
+
+        setLessonIndex((prev) => prev + 1)
         resetLessonState()
         setShowReview(false)
     }
@@ -770,6 +782,7 @@ export default function LearningPathPage() {
                             }
                             onClick={() => {
                                 setSelectedLanguage(language)
+                                persistSelectedCourse(language.code)
                                 setStep('knowledge')
                             }}
                         >
