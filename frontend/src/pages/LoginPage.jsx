@@ -91,28 +91,6 @@ export default function LoginPage() {
                         </button>
                     </form>
 
-                    <div className="neo-divider">or continue with</div>
-
-                    <div className="neo-social-grid">
-                        <button type="button" className="neo-social-btn">
-                            <span className="neo-social-icon">G</span> Continue with Google
-                        </button>
-                        <button type="button" className="neo-social-btn">
-                            <span className="neo-social-icon">🍎</span> Continue with Apple
-                        </button>
-                        <button type="button" className="neo-social-btn">
-                            <span className="neo-social-icon">f</span> Continue with Facebook
-                        </button>
-                    </div>
-
-                    <div className="neo-security-note">
-                        <span className="neo-security-icon">🛡️</span>
-                        <div>
-                            <p>Your data is safe with us.</p>
-                            <p>We never share your information.</p>
-                        </div>
-                    </div>
-
                     <p className="neo-switch-text">
                         Don't have an account? <Link to="/register">Create one</Link>
                     </p>
