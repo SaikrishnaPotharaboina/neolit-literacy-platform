@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.config import settings
 from app.dependencies import get_current_user
 from app.models.user import User
 from app.models.learning import LearnerProfile
@@ -54,12 +55,20 @@ def register_user(payload: UserCreate, db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=dict)
-def login_user(payload: UserLogin, db: Session = Depends(get_db)):
+def login_user(payload: UserLogin, response: Response, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == payload.email.lower()).first()
     if not user or not verify_password(payload.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     token = create_access_token(user.id)
+    response.set_cookie(
+        key="neolit_access_token",
+        value=token,
+        httponly=True,
+        secure=True,
+        samesite="none",
+        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+    )
     return {
         "message": "Login successful",
         "access_token": token,
@@ -79,7 +88,12 @@ def reset_password(payload: PasswordReset, db: Session = Depends(get_db)):
 
 
 @router.post("/logout")
-def logout_user():
+def logout_user(response: Response):
+    response.delete_cookie(
+        key="neolit_access_token",
+        secure=True,
+        samesite="none",
+    )
     return {"message": "Logged out successfully"}
 
 
