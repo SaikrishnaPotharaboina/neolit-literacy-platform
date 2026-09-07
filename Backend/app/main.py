@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.database import Base, SessionLocal, engine, ensure_schema
+from app.config import settings
 from app.routers import auth
 from app.routers import learning
 from app.seed import seed_learning_content
@@ -12,6 +13,8 @@ from app.seed import seed_learning_content
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="NeoLit API", version="1.0.0")
+
+cors_origins = [origin.strip() for origin in settings.CORS_ORIGINS.split(",") if origin.strip()]
 
 
 @app.exception_handler(Exception)
@@ -29,7 +32,7 @@ async def handle_unexpected_error(request, exc):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -52,15 +55,6 @@ app.include_router(
     prefix="/auth",
     tags=["legacy-auth"],
 )
-
-
-# Temporarily disabled to test Render startup
-# Base.metadata.create_all(bind=engine)
-# ensure_schema()
-
-# Temporarily disabled to test Render startup
-# with SessionLocal() as db:
-#     seed_learning_content(db)
 
 
 @app.get("/health")

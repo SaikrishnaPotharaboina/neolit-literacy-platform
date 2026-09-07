@@ -13,6 +13,10 @@ class Settings(BaseSettings):
     SECRET_KEY: str = os.getenv("SECRET_KEY", "change-me")
     ALGORITHM: str = os.getenv("ALGORITHM", "HS256")
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "10080"))
+    CORS_ORIGINS: str = os.getenv(
+        "CORS_ORIGINS",
+        "https://neolit-literacy-platform.vercel.app,http://localhost:5173,http://localhost:4173",
+    )
 
     model_config = SettingsConfigDict(
         env_file=Path(__file__).resolve().parent.parent / ".env",
