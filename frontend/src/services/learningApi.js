@@ -12,4 +12,6 @@ export const learningApi = {
         return (await api.post(`/api/assessments/${assessmentId}/submit`, payload)).data
     },
     getProgress: async () => (await api.get('/api/progress/me')).data,
+    getLearningState: async () => (await api.get('/api/learning-state/me')).data,
+    completeLesson: async (payload) => (await api.post('/api/lesson-progress', payload)).data,
 }

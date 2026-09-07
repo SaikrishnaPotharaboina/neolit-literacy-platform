@@ -19,6 +19,8 @@ class User(Base):
 
     attempts = relationship("AssessmentAttempt", back_populates="user", cascade="all, delete-orphan")
     progress = relationship("LearnerProgress", back_populates="user", cascade="all, delete-orphan")
+    stats = relationship("LearnerStats", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    lesson_completions = relationship("LessonCompletion", back_populates="user", cascade="all, delete-orphan")
     profile = relationship("LearnerProfile", back_populates="user", uselist=False, cascade="all, delete-orphan")
 
     @property

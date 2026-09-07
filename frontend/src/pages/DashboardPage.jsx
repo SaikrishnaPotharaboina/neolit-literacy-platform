@@ -164,11 +164,11 @@ export default function DashboardPage() {
     const [assessments, setAssessments] = useState([])
     const [profile, setProfile] = useState(null)
     const [progress, setProgress] = useState(null)
+    const [learningState, setLearningState] = useState(null)
     const [selected, setSelected] = useState(null)
     const [answers, setAnswers] = useState({})
     const [expandedModule, setExpandedModule] = useState(null)
     const [result, setResult] = useState(null)
-    const [nextAssessment, setNextAssessment] = useState(null)
     const [message, setMessage] = useState('')
     const [activeSkill, setActiveSkill] = useState('reading')
     const [selectedLesson, setSelectedLesson] = useState('reading')
@@ -196,12 +196,13 @@ export default function DashboardPage() {
     useEffect(() => {
         const load = async () => {
             try {
-                const [languageData, levelData, profileData, progressData, assessmentData] = await Promise.all([
+                const [languageData, levelData, profileData, progressData, assessmentData, learningStateData] = await Promise.all([
                     learningApi.getLanguages(),
                     learningApi.getLevels(),
                     learningApi.getProfile(),
                     learningApi.getProgress(),
                     learningApi.getAssessments(),
+                    learningApi.getLearningState(),
                 ])
 
                 const supportedLanguages = languageData.filter((item) => supportedLanguageCodes.includes(item.code))
@@ -212,6 +213,12 @@ export default function DashboardPage() {
                 setLevels(levelData)
                 setProfile(profileData)
                 setProgress(progressData)
+                setLearningState(learningStateData)
+                setCompletedPathLessons((learningStateData.completions || []).reduce((groups, completion) => {
+                    const key = `${completion.language_code}-${completion.unit_number}`
+                    groups[key] = [...(groups[key] || []), completion.lesson_step]
+                    return groups
+                }, {}))
                 setAssessments(assessmentData)
                 setModules(await learningApi.getCurriculum({ language_id: language?.id, level_id: profileData.current_level_id || levelData[0]?.id }))
             } catch (error) {
@@ -238,15 +245,16 @@ export default function DashboardPage() {
     const activeUnitDetails = selectedUnits[activeUnit - 1]
     const unitProgressKey = `${selectedLanguageCode}-${activeUnit}`
     const completedLessons = completedPathLessons[unitProgressKey] || []
-    const totalCompletedLessons = Object.values(completedPathLessons).reduce((sum, unitProgress) => sum + unitProgress.length, 0)
+    const totalCompletedLessons = learningState?.completions?.length ?? Object.values(completedPathLessons).reduce((sum, unitProgress) => sum + unitProgress.length, 0)
     const currentPathLesson = completedLessons.length
     const examScore = Number(progress?.overall?.score || 0)
-    const xpTotal = totalCompletedLessons * 10 + examScore
-    const streakDays = Math.min(30, totalCompletedLessons + (examScore >= 70 ? 3 : examScore >= 40 ? 1 : 0))
-    const gemsTotal = xpTotal
-    const heartsRemaining = examScore === 0 ? 5 : Math.max(1, Math.min(5, Math.ceil(examScore / 20)))
+    const xpTotal = learningState?.xp ?? totalCompletedLessons * 10 + examScore
+    const streakDays = learningState?.streak_days ?? 0
+    const gemsTotal = learningState?.gems ?? 0
+    const heartsRemaining = learningState?.hearts ?? 5
     const dailyGoalTarget = 3
-    const dailyGoalProgress = Math.min(100, (totalCompletedLessons / dailyGoalTarget) * 100)
+    const dailyLessons = learningState?.daily_lessons ?? 0
+    const dailyGoalProgress = Math.min(100, (dailyLessons / dailyGoalTarget) * 100)
     const areAllLessonsCompleted = (unitNumber) => (completedPathLessons[`${selectedLanguageCode}-${unitNumber}`] || []).length === unitLessonLabels.length
     const isUnitUnlocked = (unitNumber) => unitNumber === 1 || areAllLessonsCompleted(unitNumber - 1)
     const selectedLetters = letterLessons[selectedLanguageCode] || letterLessons.en
@@ -346,6 +354,7 @@ export default function DashboardPage() {
             setSelected(null)
             setAnswers({})
             setProgress(await learningApi.getProgress())
+            setLearningState(await learningApi.getLearningState())
             setMessage(harderAssessment ? 'Saved. Review your result before continuing.' : 'Assessment saved to your progress.')
         } catch (error) {
             const detail = error?.response?.data?.detail

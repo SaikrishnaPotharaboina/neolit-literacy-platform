@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session, joinedload
@@ -7,13 +7,14 @@ from app.database import get_db
 from app.dependencies import get_current_user
 from app.models.learning import (
     Assessment, AssessmentAnswer, AssessmentAttempt, Language, LearnerProfile,
-    LearnerProgress, Lesson, Level, Module, Question,
+    LearnerProgress, LearnerStats, Lesson, LessonCompletion, Level, Module, Question,
 )
 from app.models.user import User
 from app.schemas.learning import (
     AssessmentResponse, AssessmentResult, AssessmentSubmission, LanguageResponse,
     LevelResponse, LessonResponse, ModuleResponse, ProfileResponse, ProfileUpdate,
     ProgressResponse,
+    LearningStateResponse, LessonProgressRequest,
 )
 
 router = APIRouter()
@@ -122,9 +123,22 @@ def submit_assessment(assessment_id: int, payload: AssessmentSubmission, current
     percentage = round(score / assessment.total_marks * 100, 2) if assessment.total_marks else 0
     attempt.score, attempt.percentage, attempt.completed_at = score, percentage, datetime.utcnow()
     db.add(LearnerProgress(user_id=current_user.id, skill=assessment.assessment_type, score=percentage, proficiency_level=benchmark(percentage), assessment_id=assessment.id))
+    stats = get_or_create_stats(current_user, db)
+    today = date.today()
+    reset_daily_stats(stats, today)
+    xp_earned = max(0, min(20, round(percentage / 10)))
+    stats.xp += xp_earned
+    stats.daily_xp += xp_earned
+    stats.gems += 1 if stats.xp // 50 > (stats.xp - xp_earned) // 50 else 0
+    if xp_earned:
+        if stats.last_activity_date is None or stats.last_activity_date != today - timedelta(days=1):
+            stats.streak_days = 1 if stats.last_activity_date != today else stats.streak_days
+        else:
+            stats.streak_days += 1
+        stats.last_activity_date = today
     db.commit()
     db.refresh(attempt)
-    return {"attempt_id": attempt.id, "score": score, "total_marks": assessment.total_marks, "percentage": percentage, "proficiency_level": benchmark(percentage)}
+    return {"attempt_id": attempt.id, "score": score, "total_marks": assessment.total_marks, "percentage": percentage, "proficiency_level": benchmark(percentage), "xp_earned": xp_earned}
 
 
 @router.get("/users/me", response_model=ProfileResponse)
@@ -182,3 +196,94 @@ def get_progress(current_user: User = Depends(get_current_user), db: Session = D
     overall_score = round(sum(item["score"] for item in values.values()) / 3, 2)
     values["overall"] = {"score": overall_score, "level": benchmark(overall_score)}
     return values
+
+
+def get_or_create_stats(current_user: User, db: Session) -> LearnerStats:
+    stats = db.query(LearnerStats).filter(LearnerStats.user_id == current_user.id).first()
+    if stats:
+        return stats
+    stats = LearnerStats(user_id=current_user.id)
+    db.add(stats)
+    db.flush()
+    return stats
+
+
+def reset_daily_stats(stats: LearnerStats, today: date) -> None:
+    if stats.daily_date != today:
+        stats.daily_date = today
+        stats.daily_xp = 0
+        stats.daily_lessons = 0
+
+
+@router.get("/learning-state/me", response_model=LearningStateResponse)
+def get_learning_state(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    today = date.today()
+    stats = get_or_create_stats(current_user, db)
+    reset_daily_stats(stats, today)
+    db.commit()
+    completions = db.query(LessonCompletion).filter(LessonCompletion.user_id == current_user.id).order_by(LessonCompletion.completed_at).all()
+    return {
+        "xp": stats.xp,
+        "gems": stats.gems,
+        "hearts": stats.hearts,
+        "streak_days": stats.streak_days,
+        "daily_xp": stats.daily_xp,
+        "daily_lessons": stats.daily_lessons,
+        "completions": completions,
+    }
+
+
+@router.post("/lesson-progress", response_model=LearningStateResponse, status_code=status.HTTP_201_CREATED)
+def complete_lesson(payload: LessonProgressRequest, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    language_code = payload.language_code.strip().lower()
+    if current_user.profile and current_user.profile.learning_language != language_code:
+        raise HTTPException(status_code=400, detail="Lesson language does not match your active course")
+    if payload.score == 0:
+        raise HTTPException(status_code=400, detail="Answer at least one question correctly to complete this lesson")
+
+    previous_step = payload.lesson_step - 1
+    if previous_step >= 0:
+        previous = db.query(LessonCompletion).filter_by(
+            user_id=current_user.id, language_code=language_code,
+            unit_number=payload.unit_number, lesson_step=previous_step,
+        ).first()
+        if not previous:
+            raise HTTPException(status_code=409, detail="Complete the previous lesson first")
+    elif payload.unit_number > 1:
+        previous_unit = db.query(LessonCompletion).filter_by(
+            user_id=current_user.id, language_code=language_code,
+            unit_number=payload.unit_number - 1,
+        ).count()
+        if previous_unit < 3:
+            raise HTTPException(status_code=409, detail="Complete the previous unit first")
+
+    completion = db.query(LessonCompletion).filter_by(
+        user_id=current_user.id, language_code=language_code,
+        unit_number=payload.unit_number, lesson_step=payload.lesson_step,
+    ).first()
+    stats = get_or_create_stats(current_user, db)
+    today = date.today()
+    reset_daily_stats(stats, today)
+    if completion is None:
+        xp_earned = payload.score * 10
+        completion = LessonCompletion(
+            user_id=current_user.id, language_code=language_code,
+            unit_number=payload.unit_number, lesson_step=payload.lesson_step,
+            score=payload.score, xp_earned=xp_earned,
+        )
+        db.add(completion)
+        stats.xp += xp_earned
+        stats.gems += 1 if stats.xp // 50 > (stats.xp - xp_earned) // 50 else 0
+        stats.daily_xp += xp_earned
+        stats.daily_lessons += 1
+        if stats.last_activity_date is None:
+            stats.streak_days = 1
+        elif stats.last_activity_date == today - timedelta(days=1):
+            stats.streak_days += 1
+        elif stats.last_activity_date != today:
+            stats.streak_days = 1
+        stats.last_activity_date = today
+    else:
+        completion.score = max(completion.score, payload.score)
+    db.commit()
+    return get_learning_state(current_user, db)

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from app.database import Base
@@ -176,3 +176,33 @@ class LearnerProgress(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     user = relationship("User", back_populates="progress")
     assessment = relationship("Assessment")
+
+
+class LearnerStats(Base):
+    __tablename__ = "learner_stats"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"), unique=True, nullable=False, index=True)
+    xp = Column(Integer, default=0, nullable=False)
+    gems = Column(Integer, default=0, nullable=False)
+    hearts = Column(Integer, default=5, nullable=False)
+    streak_days = Column(Integer, default=0, nullable=False)
+    last_activity_date = Column(Date, nullable=True)
+    daily_date = Column(Date, nullable=True)
+    daily_xp = Column(Integer, default=0, nullable=False)
+    daily_lessons = Column(Integer, default=0, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    user = relationship("User", back_populates="stats")
+
+
+class LessonCompletion(Base):
+    __tablename__ = "lesson_completions"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    language_code = Column(String(12), nullable=False)
+    unit_number = Column(Integer, nullable=False)
+    lesson_step = Column(Integer, nullable=False)
+    score = Column(Integer, default=0, nullable=False)
+    xp_earned = Column(Integer, default=0, nullable=False)
+    completed_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    user = relationship("User", back_populates="lesson_completions")
+    __table_args__ = (UniqueConstraint("user_id", "language_code", "unit_number", "lesson_step", name="uq_lesson_completion"),)

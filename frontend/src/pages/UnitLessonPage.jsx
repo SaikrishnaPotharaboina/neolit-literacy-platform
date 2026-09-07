@@ -162,11 +162,14 @@ export default function UnitLessonPage() {
     const [score, setScore] = useState(0)
     const [finished, setFinished] = useState(false)
     const [blocked, setBlocked] = useState(false)
+    const [learningState, setLearningState] = useState(null)
+    const [submitError, setSubmitError] = useState('')
 
     useEffect(() => {
         const loadProfile = async () => {
             try {
-                const [profile, languages] = await Promise.all([learningApi.getProfile(), learningApi.getLanguages()])
+                const [profile, languages, state] = await Promise.all([learningApi.getProfile(), learningApi.getLanguages(), learningApi.getLearningState()])
+                setLearningState(state)
                 const persistedCourseCode = localStorage.getItem('neolit_selected_language')
                 const code = lessonContent[persistedCourseCode]
                     ? persistedCourseCode
@@ -176,8 +179,7 @@ export default function UnitLessonPage() {
                 setLanguageCode(code)
                 setLanguageName(languages.find((language) => language.code === code)?.name || 'English')
                 if (Number(unit) > 1) {
-                    const savedProgress = JSON.parse(localStorage.getItem('neolit_completed_path_lessons') || '{}')
-                    const previousUnit = savedProgress[`${code}-${Number(unit) - 1}`] || []
+                    const previousUnit = (state.completions || []).filter((completion) => completion.language_code === code && completion.unit_number === Number(unit) - 1)
                     setBlocked(previousUnit.length < 3)
                 }
             } catch {
@@ -208,16 +210,21 @@ export default function UnitLessonPage() {
         chooseAnswer(answer)
     }
 
-    const nextQuestion = () => {
+    const nextQuestion = async () => {
         if (questionIndex === content.questions.length - 1) {
-            const progressKey = `${languageCode}-${unit}`
-            const savedProgress = JSON.parse(localStorage.getItem('neolit_completed_path_lessons') || '{}')
-            const completed = savedProgress[progressKey] || []
-            if (!completed.includes(lessonStep)) {
-                savedProgress[progressKey] = [...completed, lessonStep]
-                localStorage.setItem('neolit_completed_path_lessons', JSON.stringify(savedProgress))
+            setSubmitError('')
+            try {
+                const state = await learningApi.completeLesson({
+                    language_code: languageCode,
+                    unit_number: Number(unit),
+                    lesson_step: lessonStep,
+                    score,
+                })
+                setLearningState(state)
+                setFinished(true)
+            } catch (error) {
+                setSubmitError(error.response?.data?.detail || 'Unable to save lesson progress')
             }
-            setFinished(true)
             return
         }
         setQuestionIndex((current) => current + 1)
@@ -231,7 +238,7 @@ export default function UnitLessonPage() {
             <header className="unit-lesson-header">
                 <Link to="/dashboard" className="unit-lesson-close" aria-label="Exit lesson">×</Link>
                 <div className="unit-lesson-progress"><i style={{ width: `${((questionIndex + (selectedAnswer ? 1 : 0)) / content.questions.length) * 100}%` }} /></div>
-                <span className="unit-lesson-hearts">♥ 5</span>
+                <span className="unit-lesson-hearts">♥ {learningState?.hearts ?? 5}</span>
             </header>
 
             <main className="unit-lesson-main">
@@ -275,6 +282,7 @@ export default function UnitLessonPage() {
                             )}
                             {selectedAnswer && <p className={selectedAnswer === question.answer ? 'unit-answer-feedback correct' : 'unit-answer-feedback wrong'}>{selectedAnswer === question.answer ? 'Correct! +10 XP' : `The answer is: ${question.answer}`}</p>}
                         </section>
+                        {submitError && <p className="unit-answer-feedback wrong">{submitError}</p>}
                         <button type="button" className="unit-next-button" disabled={!selectedAnswer} onClick={nextQuestion}>{questionIndex === content.questions.length - 1 ? 'FINISH LESSON' : 'CONTINUE'}</button>
                     </>
                 ) : (
@@ -283,7 +291,7 @@ export default function UnitLessonPage() {
                         <div className="unit-lesson-meta">UNIT {unit} COMPLETE</div>
                         <h1>Great work!</h1>
                         <p>You scored {score} out of {content.questions.length} in {languageName}.</p>
-                        <div className="unit-complete-stats"><strong>+{score * 10} XP</strong><span>♥ 5 hearts left</span></div>
+                        <div className="unit-complete-stats"><strong>+{score * 10} XP</strong><span>♥ {learningState?.hearts ?? 5} hearts left</span></div>
                         <p style={{ margin: '0.5rem 0 1rem', color: '#b7d9cb' }}>Ready for the next step? Keep your streak going.</p>
                         {lessonStep < 2 ? <Link to={`/lesson/${unit}?step=${lessonStep + 1}`} className="unit-next-button">CONTINUE LESSON</Link> : <Link to="/dashboard" className="unit-next-button">BACK TO LEARN</Link>}
                     </section>

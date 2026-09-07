@@ -107,6 +107,7 @@ class AssessmentResult(BaseModel):
     total_marks: int
     percentage: float
     proficiency_level: str
+    xp_earned: int = 0
 
 
 class ProfileUpdate(BaseModel):
@@ -141,3 +142,30 @@ class ProgressResponse(BaseModel):
     writing: ProgressItem
     comprehension: ProgressItem
     overall: ProgressItem
+
+
+class LessonProgressRequest(BaseModel):
+    language_code: str = Field(min_length=2, max_length=12)
+    unit_number: int = Field(ge=1)
+    lesson_step: int = Field(ge=0, le=2)
+    score: int = Field(ge=0, le=3)
+
+
+class LessonCompletionResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    language_code: str
+    unit_number: int
+    lesson_step: int
+    score: int
+    xp_earned: int
+    completed_at: datetime
+
+
+class LearningStateResponse(BaseModel):
+    xp: int
+    gems: int
+    hearts: int
+    streak_days: int
+    daily_xp: int
+    daily_lessons: int
+    completions: list[LessonCompletionResponse] = []
