@@ -38,6 +38,8 @@ def test_register_and_login_flow():
     assert login_response.status_code == 200, login_response.text
     token = login_response.json()["access_token"]
     assert token
+    assert "neolit_access_token=" in login_response.headers["set-cookie"]
+    assert "Path=/" in login_response.headers["set-cookie"]
 
     me_response = client.get(
         "/auth/me",

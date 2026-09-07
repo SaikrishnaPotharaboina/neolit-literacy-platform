@@ -67,6 +67,7 @@ def login_user(payload: UserLogin, response: Response, db: Session = Depends(get
         httponly=True,
         secure=True,
         samesite="none",
+        path="/",
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
     )
     return {
@@ -93,6 +94,7 @@ def logout_user(response: Response):
         key="neolit_access_token",
         secure=True,
         samesite="none",
+        path="/",
     )
     return {"message": "Logged out successfully"}
 
