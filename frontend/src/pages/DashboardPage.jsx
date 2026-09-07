@@ -8,7 +8,7 @@ const supportedLanguageCodes = ['en', 'hi', 'kn', 'ta', 'te']
 const leaderboardRows = [
     { name: 'Aarav', xp: 1840, streak: 18 },
     { name: 'Meera', xp: 1620, streak: 14 },
-    { name: 'You', xp: 1280, streak: 9, current: true },
+    { name: 'You', xp: 0, streak: 0, current: true },
     { name: 'Rohan', xp: 1110, streak: 7 },
     { name: 'Ananya', xp: 980, streak: 6 },
 ]
@@ -53,7 +53,7 @@ const lessonStageCopy = {
 }
 
 const lessonTitles = {
-    en: 'Form basic sentences',
+    en: 'Build basic sentences',
     hi: 'मूल वाक्य बनाइए',
     kn: 'ಮೂಲ ವಾಕ್ಯಗಳನ್ನು ರಚಿಸಿ',
     ta: 'அடிப்படை வாக்கியங்களை உருவாக்கு',
@@ -62,15 +62,19 @@ const lessonTitles = {
 
 const courseUnits = {
     en: [
-        ['Form basic sentences', 'Greetings and everyday words'],
+        ['Build basic sentences', 'Greetings and everyday words'],
         ['Talk about your day', 'Simple routines and useful verbs'],
         ['Food and preferences', 'Order food and share opinions'],
         ['Make real conversations', 'Bring your new skills together'],
+        ['Travel and directions', 'Ask for help and follow instructions'],
+        ['Family and relationships', 'Talk about people you care about'],
+        ['Plans and future goals', 'Share what you want to do next'],
+        ['Daily confidence', 'Use your language naturally in real life'],
     ],
-    hi: [['मूल वाक्य बनाइए', 'अभिवादन और रोज़मर्रा के शब्द'], ['अपने दिन के बारे में बात करें', 'सरल दिनचर्या और क्रियाएँ'], ['खाने और पसंद के बारे में', 'खाना ऑर्डर करना सीखें'], ['बातचीत का अभ्यास करें', 'अपने कौशल को साथ लाएँ']],
-    kn: [['ಮೂಲ ವಾಕ್ಯಗಳನ್ನು ರಚಿಸಿ', 'ಶುಭಾಶಯಗಳು ಮತ್ತು ದೈನಂದಿನ ಪದಗಳು'], ['ನಿಮ್ಮ ದಿನದ ಬಗ್ಗೆ ಮಾತನಾಡಿ', 'ಸರಳ ದಿನಚರಿ ಮತ್ತು ಕ್ರಿಯಾಪದಗಳು'], ['ಆಹಾರ ಮತ್ತು ಇಷ್ಟಗಳು', 'ಆಹಾರವನ್ನು ಆರ್ಡರ್ ಮಾಡಲು ಕಲಿಯಿರಿ'], ['ನೈಜ ಸಂಭಾಷಣೆ ಮಾಡಿ', 'ನಿಮ್ಮ ಕೌಶಲ್ಯಗಳನ್ನು ಒಟ್ಟುಗೂಡಿಸಿ']],
-    ta: [['அடிப்படை வாக்கியங்களை உருவாக்கு', 'வாழ்த்துகள் மற்றும் அன்றாட சொற்கள்'], ['உங்கள் நாளைப் பற்றி பேசுங்கள்', 'எளிய பழக்கங்கள் மற்றும் வினைச்சொற்கள்'], ['உணவு மற்றும் விருப்பங்கள்', 'உணவை ஆர்டர் செய்ய கற்றுக்கொள்ளுங்கள்'], ['உண்மையான உரையாடல்கள்', 'உங்கள் திறன்களை ஒன்றிணைக்கவும்']],
-    te: [['ప్రాథమిక వాక్యాలను రూపొందించండి', 'శుభాకాంక్షలు మరియు రోజువారీ పదాలు'], ['మీ రోజు గురించి మాట్లాడండి', 'సులభమైన దినచర్యలు మరియు క్రియలు'], ['ఆహారం మరియు అభిరుచులు', 'ఆహారం ఆర్డర్ చేయడం నేర్చుకోండి'], ['నిజమైన సంభాషణలు చేయండి', 'మీ నైపుణ్యాలను కలపండి']],
+    hi: [['मूल वाक्य बनाइए', 'अभिवादन और रोज़मर्रा के शब्द'], ['अपने दिन के बारे में बात करें', 'सरल दिनचर्या और क्रियाएँ'], ['खाने और पसंद के बारे में', 'खाना ऑर्डर करना सीखें'], ['बातचीत का अभ्यास करें', 'अपने कौशल को साथ लाएँ'], ['यात्रा और रास्ते', 'मदद मांगें और निर्देशों का पालन करें'], ['परिवार और रिश्ते', 'अपने प्रियजनों के बारे में बात करें'], ['योजनाएँ और लक्ष्यों', 'अगला कदम साझा करें'], ['दैनिक आत्मविश्वास', 'जीवन में भाषा का सही उपयोग करें']],
+    kn: [['ಮೂಲ ವಾಕ್ಯಗಳನ್ನು ರಚಿಸಿ', 'ಶುಭಾಶಯಗಳು ಮತ್ತು ದೈನಂದಿನ ಪದಗಳು'], ['ನಿಮ್ಮ ದಿನದ ಬಗ್ಗೆ ಮಾತನಾಡಿ', 'ಸರಳ ದಿನಚರಿ ಮತ್ತು ಕ್ರಿಯಾಪದಗಳು'], ['ಆಹಾರ ಮತ್ತು ಇಷ್ಟಗಳು', 'ಆಹಾರವನ್ನು ಆರ್ಡರ್ ಮಾಡಲು ಕಲಿಯಿರಿ'], ['ನೈಜ ಸಂಭಾಷಣೆ ಮಾಡಿ', 'ನಿಮ್ಮ ಕೌಶಲ್ಯಗಳನ್ನು ಒಟ್ಟುಗೂಡಿಸಿ'], ['ಪ್ರಯಾಣ ಮತ್ತು ದಿಕ್ಕುಗಳು', 'ಸಹಾಯ ಕೇಳಿ ಮತ್ತು ಸೂಚನೆಗಳನ್ನು ಅನುಸರಿಸಿ'], ['ಕುಟುಂಬ ಮತ್ತು ಸಂಬಂಧಗಳು', 'ಪ್ಯಾರಿನ ಜನರ ಬಗ್ಗೆ ಮಾತನಾಡಿ'], ['ಯೋಜನೆಗಳು ಮತ್ತು ಗುರಿಗಳು', 'ಮುಂದಿನದನ್ನು ಹಂಚಿಕೊಳ್ಳಿ'], ['ದೈನಂದಿನ ಆತ್ಮವಿಶ್ವಾಸ', 'ನಿಮ್ಮ ಭಾಷೆಯನ್ನು ಸ್ವಾಭಾವಿಕವಾಗಿ ಬಳಸಿ']],
+    ta: [['அடிப்படை வாக்கியங்களை உருவாக்கு', 'வாழ்த்துகள் மற்றும் அன்றாட சொற்கள்'], ['உங்கள் நாளைப் பற்றி பேசுங்கள்', 'எளிய பழக்கங்கள் மற்றும் வினைச்சொற்கள்'], ['உணவு மற்றும் விருப்பங்கள்', 'உணவை ஆர்டர் செய்ய கற்றுக்கொள்ளுங்கள்'], ['உண்மையான உரையாடல்கள்', 'உங்கள் திறன்களை ஒன்றிணைக்கவும்'], ['பயணம் மற்றும் திசைகள்', 'உதவி கேட்கவும், வழிமுறைகளைப் பின்பற்றவும்'], ['குடும்பம் மற்றும் உறவுகள்', 'உங்களை நேசிக்கும் மக்களைப் பற்றி பேசுங்கள்'], ['திட்டங்கள் மற்றும் இலக்குகள்', 'அடுத்ததைப் பற்றி பகிர்ந்து கொள்ளுங்கள்'], ['அன்றாட நம்பிக்கை', 'உங்கள் மொழியை இயல்பாகப் பயன்படுத்துங்கள்']],
+    te: [['ప్రాథమిక వాక్యాలను రూపొందించండి', 'శుభాకాంక్షలు మరియు రోజువారీ పదాలు'], ['మీ రోజు గురించి మాట్లాడండి', 'సులభమైన దినచర్యలు మరియు క్రియలు'], ['ఆహారం మరియు అభిరుచులు', 'ఆహారం ఆర్డర్ చేయడం నేర్చుకోండి'], ['నిజమైన సంభాషణలు చేయండి', 'మీ నైపుణ్యాలను కలపండి'], ['ప్రయాణం మరియు దిశలు', 'సహాయం అడిగి, సూచనలను అనుసరించండి'], ['పరివారము మరియు సంబంధాలు', 'మీ చిన్నచిన్నవారిని గురించి మాట్లాడండి'], ['ప్లాన్లు మరియు లక్ష్యాలు', 'తదుపరి పనిని పంచుకోండి'], ['రోజువారీ నైపుణ్యం', 'మీ భాషను సహజంగా ఉపయోగించండి']],
 }
 
 const unitLessonLabels = ['Learn words', 'Build sentences', 'Practice conversation']
@@ -179,6 +183,8 @@ export default function DashboardPage() {
     const [changingCourse, setChangingCourse] = useState(false)
     const [leaderboardPeriod, setLeaderboardPeriod] = useState('weekly')
     const [activeUnit, setActiveUnit] = useState(1)
+    const [sectionUnlockNotice, setSectionUnlockNotice] = useState('')
+    const [seenQuestions, setSeenQuestions] = useState({})
     const [completedPathLessons, setCompletedPathLessons] = useState(() => {
         try {
             return JSON.parse(localStorage.getItem('neolit_completed_path_lessons') || '{}')
@@ -222,14 +228,27 @@ export default function DashboardPage() {
 
     const selectedLanguageCode = localStorage.getItem('neolit_selected_language') || profile?.learning_language || 'en'
     const selectedLanguageName = languages.find((item) => item.code === selectedLanguageCode)?.name || 'English'
-    const activeStageCopy = lessonStageCopy.en[selectedLesson] || 'Talk about food'
-    const selectedLessonTitle = lessonTitles.en
-    const selectedUnits = courseUnits.en
+    const activeStageCopy = lessonStageCopy[selectedLanguageCode]?.[selectedLesson] || lessonStageCopy.en[selectedLesson] || 'Talk about food'
+    const selectedLessonTitle = lessonTitles[selectedLanguageCode] || lessonTitles.en
+    const selectedUnits = courseUnits[selectedLanguageCode] || courseUnits.en
+    const totalUnitsPerSection = 4
+    const sectionNumber = Math.ceil(activeUnit / totalUnitsPerSection)
+    const sectionStartIndex = (sectionNumber - 1) * totalUnitsPerSection
+    const sectionUnits = selectedUnits.slice(sectionStartIndex, Math.min(sectionStartIndex + totalUnitsPerSection, selectedUnits.length))
     const activeUnitDetails = selectedUnits[activeUnit - 1]
     const unitProgressKey = `${selectedLanguageCode}-${activeUnit}`
     const completedLessons = completedPathLessons[unitProgressKey] || []
+    const totalCompletedLessons = Object.values(completedPathLessons).reduce((sum, unitProgress) => sum + unitProgress.length, 0)
     const currentPathLesson = completedLessons.length
-    const isUnitUnlocked = (unitNumber) => unitNumber === 1 || (completedPathLessons[`${selectedLanguageCode}-${unitNumber - 1}`] || []).length === unitLessonLabels.length
+    const examScore = Number(progress?.overall?.score || 0)
+    const xpTotal = totalCompletedLessons * 10 + examScore
+    const streakDays = Math.min(30, totalCompletedLessons + (examScore >= 70 ? 3 : examScore >= 40 ? 1 : 0))
+    const gemsTotal = xpTotal
+    const heartsRemaining = examScore === 0 ? 5 : Math.max(1, Math.min(5, Math.ceil(examScore / 20)))
+    const dailyGoalTarget = 3
+    const dailyGoalProgress = Math.min(100, (totalCompletedLessons / dailyGoalTarget) * 100)
+    const areAllLessonsCompleted = (unitNumber) => (completedPathLessons[`${selectedLanguageCode}-${unitNumber}`] || []).length === unitLessonLabels.length
+    const isUnitUnlocked = (unitNumber) => unitNumber === 1 || areAllLessonsCompleted(unitNumber - 1)
     const selectedLetters = letterLessons[selectedLanguageCode] || letterLessons.en
     const letterItems = useMemo(
         () => [...selectedLetters.vowels, ...selectedLetters.consonants],
@@ -240,14 +259,54 @@ export default function DashboardPage() {
     const quizOptions = [quizItem, letterItems[(quizIndex + 3) % letterItems.length], letterItems[(quizIndex + 7) % letterItems.length]]
 
     const levelName = (levelId) => levels.find((level) => level.id === levelId)?.name || 'Beginner'
+
+    useEffect(() => {
+        if (!selectedUnits.length) return
+        const highestUnlockedUnit = selectedUnits.reduce((highest, _, index) => {
+            const unitNumber = index + 1
+            return isUnitUnlocked(unitNumber) ? unitNumber : highest
+        }, 1)
+
+        if (activeUnit > highestUnlockedUnit) {
+            setActiveUnit(highestUnlockedUnit)
+        }
+
+        const currentSection = Math.ceil(activeUnit / totalUnitsPerSection)
+        const isFinalUnitOfSection = activeUnit % totalUnitsPerSection === 0 || activeUnit === selectedUnits.length
+        const nextSectionNumber = currentSection + 1
+
+        if (areAllLessonsCompleted(activeUnit) && activeUnit < selectedUnits.length && isUnitUnlocked(activeUnit + 1)) {
+            const targetUnit = activeUnit + 1
+            const targetSection = Math.ceil(targetUnit / totalUnitsPerSection)
+            setActiveUnit((current) => (current === activeUnit ? targetUnit : current))
+            if (isFinalUnitOfSection && targetSection > currentSection) {
+                setSectionUnlockNotice(`Section ${targetSection} unlocked`)
+            } else {
+                setSectionUnlockNotice(`Section ${targetSection} unlocked`)
+            }
+        }
+    }, [activeUnit, completedPathLessons, selectedLanguageCode, selectedUnits])
+
+    const getAssessmentRound = (assessment) => {
+        const pool = Array.isArray(assessment?.questions) ? assessment.questions : []
+        if (!pool.length) return assessment
+
+        const seenForAssessment = seenQuestions[assessment.id] || []
+        const unseen = pool.filter((question) => !seenForAssessment.includes(question.id))
+        const nextQuestions = unseen.length ? unseen : pool
+        const shuffled = [...nextQuestions].sort(() => Math.random() - 0.5)
+
+        return { ...assessment, questions: shuffled }
+    }
+
     useEffect(() => {
         if (!selected && visibleAssessments.length) {
-            setSelected(visibleAssessments[0])
+            setSelected(getAssessmentRound(visibleAssessments[0]))
         }
-    }, [selected, visibleAssessments])
+    }, [selected, visibleAssessments, seenQuestions])
 
     const selectAssessment = (assessment) => {
-        setSelected(assessment)
+        setSelected(getAssessmentRound(assessment))
         setAnswers({})
         setResult(null)
         setNextAssessment(null)
@@ -276,6 +335,12 @@ export default function DashboardPage() {
                 (assessment) => assessment.assessment_type === selected.assessment_type && assessment.level_id > selected.level_id
             )
 
+            const usedQuestionIds = (selected.questions || []).map((question) => question.id)
+            setSeenQuestions((previous) => ({
+                ...previous,
+                [selected.id]: [...(previous[selected.id] || []), ...usedQuestionIds],
+            }))
+
             setResult(assessmentResult)
             setNextAssessment(harderAssessment || null)
             setSelected(null)
@@ -298,6 +363,13 @@ export default function DashboardPage() {
         const utterance = new SpeechSynthesisUtterance(`${letter}, ${word}`)
         utterance.lang = selectedLanguageCode === 'en' ? 'en-US' : `${selectedLanguageCode}-IN`
         window.speechSynthesis.speak(utterance)
+    }
+
+    const goToNextUnlockedUnit = () => {
+        const nextUnit = selectedUnits.findIndex((_, index) => index + 1 > activeUnit && isUnitUnlocked(index + 1)) + 1
+        const targetUnit = nextUnit > 0 ? nextUnit : activeUnit
+        setActiveUnit(targetUnit)
+        setSectionUnlockNotice('')
     }
 
     const changeCourse = async (languageCode) => {
@@ -402,18 +474,52 @@ export default function DashboardPage() {
 
             <div className="leaderboard-card">
                 <div className="leaderboard-card-header"><span>RANK</span><span>LEARNER</span><span>XP</span><span>STREAK</span></div>
-                {leaderboardRows.map((row, index) => (
+                {[...leaderboardRows].map((row, index) => {
+                    const liveRow = row.current ? { ...row, xp: xpTotal, streak: streakDays, name: user?.first_name || row.name } : row
+                    return (
                     <div key={row.name} className={`leaderboard-row ${row.current ? 'current' : ''}`}>
                         <strong className="leaderboard-rank">{index + 1}</strong>
-                        <span className="leaderboard-name"><i>{row.name[0]}</i>{row.current ? (user?.first_name || row.name) : row.name}</span>
-                        <strong>{row.xp.toLocaleString()}</strong>
-                        <span className="leaderboard-streak">🔥 {row.streak}</span>
+                        <span className="leaderboard-name"><i>{liveRow.name[0]}</i>{liveRow.name}</span>
+                        <strong>{liveRow.xp.toLocaleString()}</strong>
+                        <span className="leaderboard-streak">🔥 {liveRow.streak}</span>
                     </div>
-                ))}
+                    )
+                })}
             </div>
-            <p className="leaderboard-note">Dummy rankings for your {leaderboardPeriod} {selectedLanguageName} group.</p>
+            <p className="leaderboard-note">Your {leaderboardPeriod} {selectedLanguageName} group, updated from your lesson progress.</p>
         </section>
     )
+
+    const renderQuests = () => {
+        const quests = [
+            { title: 'Complete 3 lessons', detail: 'Keep your daily goal moving', current: Math.min(totalCompletedLessons, 3), target: 3, icon: '📚' },
+            { title: 'Earn 30 XP', detail: 'Build your weekly momentum', current: Math.min(xpTotal, 30), target: 30, icon: '⚡' },
+            { title: 'Practice your streak', detail: `${streakDays} days in a row`, current: Math.min(streakDays, 7), target: 7, icon: '🔥' },
+        ]
+
+        return (
+            <section className="quests-page">
+                <div className="leaderboard-heading">
+                    <span className="section-kicker">{selectedLanguageName} course</span>
+                    <h1>Quests</h1>
+                    <p>Small goals that turn practice into progress.</p>
+                </div>
+                <div className="quests-grid">
+                    {quests.map((quest) => (
+                        <article key={quest.title} className="quest-card">
+                            <div className="quest-card-icon">{quest.icon}</div>
+                            <div className="quest-card-copy">
+                                <h2>{quest.title}</h2>
+                                <p>{quest.detail}</p>
+                                <div className="quest-progress-track"><span style={{ width: `${(quest.current / quest.target) * 100}%` }} /></div>
+                                <strong>{quest.current}/{quest.target}</strong>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+            </section>
+        )
+    }
 
     return (
         <div className="duolingo-reference-page">
@@ -424,7 +530,7 @@ export default function DashboardPage() {
                     <button type="button" className={`sidebar-item sidebar-button ${activeSection === 'learn' ? 'active' : ''}`} onClick={() => setActiveSection('learn')}><span className="nav-icon">🏠</span> LEARN</button>
                     <button type="button" className={`sidebar-item sidebar-button ${activeSection === 'letters' ? 'active' : ''}`} onClick={() => setActiveSection('letters')}><span className="nav-icon">✎</span> LETTERS</button>
                     <button type="button" className={`sidebar-item sidebar-button ${activeSection === 'leaderboard' ? 'active' : ''}`} onClick={() => setActiveSection('leaderboard')}><span className="nav-icon">🏆</span> LEADERBOARDS</button>
-                    <Link to="/dashboard" className="sidebar-item"><span className="nav-icon">🎯</span> QUESTS</Link>
+                    <button type="button" className={`sidebar-item sidebar-button ${activeSection === 'quests' ? 'active' : ''}`} onClick={() => setActiveSection('quests')}><span className="nav-icon">🎯</span> QUESTS</button>
                     <Link to="/dashboard" className="sidebar-item"><span className="nav-icon">🛒</span> SHOP</Link>
                     <Link to="/profile" className="sidebar-item"><span className="nav-icon">👤</span> PROFILE</Link>
                     <Link to="/dashboard" className="sidebar-item"><span className="nav-icon">⋯</span> MORE</Link>
@@ -459,21 +565,21 @@ export default function DashboardPage() {
                         </div>
                     )}
                 </div>
-                {activeSection === 'letters' ? renderLetters() : activeSection === 'leaderboard' ? renderLeaderboard() : <main className="duolingo-reference-main dashboard-main-only">
+                {activeSection === 'letters' ? renderLetters() : activeSection === 'leaderboard' ? renderLeaderboard() : activeSection === 'quests' ? renderQuests() : <main className="duolingo-reference-main">
                     <section className="duolingo-reference-content">
                         <div className="duolingo-reference-banner">
                             <div className="banner-left">
                                 <span className="banner-arrow">←</span>
-                                <span className="banner-text">SECTION 1, UNIT {activeUnit}</span>
+                                <span className="banner-text">SECTION {sectionNumber}, UNIT {activeUnit}</span>
                             </div>
                             <div className="banner-chip">{Math.round((completedLessons.length / unitLessonLabels.length) * 100)}% COMPLETE</div>
                         </div>
 
                         <div className="unit-selector" aria-label="Course units">
-                            {selectedUnits.map(([title, description], index) => {
-                                const unitNumber = index + 1
+                            {sectionUnits.map(([title, description], index) => {
+                                const unitNumber = sectionStartIndex + index + 1
                                 return (
-                                    <button key={title} type="button" disabled={!isUnitUnlocked(unitNumber)} className={`unit-selector-card ${activeUnit === unitNumber ? 'active' : ''} ${!isUnitUnlocked(unitNumber) ? 'locked' : ''}`} onClick={() => setActiveUnit(unitNumber)}>
+                                    <button key={`${selectedLanguageCode}-${unitNumber}`} type="button" disabled={!isUnitUnlocked(unitNumber)} className={`unit-selector-card ${activeUnit === unitNumber ? 'active' : ''} ${!isUnitUnlocked(unitNumber) ? 'locked' : ''}`} onClick={() => setActiveUnit(unitNumber)}>
                                         <span className="unit-number">UNIT {unitNumber}</span>
                                         <strong>{title}</strong>
                                         <small>{description}</small>
@@ -509,12 +615,41 @@ export default function DashboardPage() {
                                 <span>Unit {activeUnit} • 3 lessons • +10 XP each</span>
                             </div>
                             <div className="cta-actions">
-                                <Link to={`/lesson/${activeUnit}`} className="jump-btn">START UNIT {activeUnit}</Link>
-                                <Link to={`/lesson/${activeUnit}`} className="play-btn" aria-label={`Start Unit ${activeUnit}`} title={`Start Unit ${activeUnit}`}>▶</Link>
+                                <button type="button" onClick={goToNextUnlockedUnit} className="jump-btn" style={{ border: 'none', cursor: 'pointer' }}>
+                                    {activeUnit < selectedUnits.length ? `GO TO UNIT ${Math.min(activeUnit + 1, selectedUnits.length)}` : `REVIEW UNIT ${activeUnit}`}
+                                </button>
+                                <button type="button" onClick={goToNextUnlockedUnit} className="play-btn" aria-label={`Go to next unlocked unit`} title={`Go to next unlocked unit`} style={{ border: 'none', cursor: 'pointer' }}>▶</button>
                             </div>
                         </div>
                     </section>
-
+                    <aside className="duolingo-reference-side" aria-label="Progress and daily goals">
+                        <div className="reference-stat-row">
+                            <span>🌐 {selectedLanguageName}</span>
+                            <span>🔥 {streakDays}</span>
+                            <span>💎 {gemsTotal}</span>
+                            <span>♥ {heartsRemaining}</span>
+                        </div>
+                        <article className="reference-side-card leaderboard-unlock-card">
+                            <h2>Unlock Leaderboards!</h2>
+                            <div className="reference-card-detail">
+                                <span className="reference-card-icon">🏅</span>
+                                <strong>{totalCompletedLessons >= 3 ? 'You are ready to compete!' : `Complete ${Math.max(0, 3 - totalCompletedLessons)} more lessons to start competing`}</strong>
+                            </div>
+                        </article>
+                        <article className="reference-side-card daily-quests-card">
+                            <div className="reference-side-card-header"><h2>Daily Quests</h2><button type="button" onClick={() => setActiveSection('quests')}>VIEW ALL</button></div>
+                            <div className="reference-quest-row">
+                                <span className="quest-lightning">⚡</span>
+                                <div><strong>Earn 10 XP</strong><div className="reference-quest-progress"><span style={{ width: `${Math.min(100, (xpTotal / 10) * 100)}%` }} /></div><small>{Math.min(xpTotal, 10)} / 10</small></div>
+                                <span>🎁</span>
+                            </div>
+                        </article>
+                        <article className="reference-side-card profile-prompt-card">
+                            <h2>Create a profile to save your progress!</h2>
+                            <button type="button" onClick={() => window.location.assign('/register')}>CREATE A PROFILE</button>
+                            <button type="button" className="profile-sign-in" onClick={() => window.location.assign('/login')}>SIGN IN</button>
+                        </article>
+                    </aside>
                 </main>}
             </div>
         </div>

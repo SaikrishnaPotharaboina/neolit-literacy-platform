@@ -284,7 +284,8 @@ export default function UnitLessonPage() {
                         <h1>Great work!</h1>
                         <p>You scored {score} out of {content.questions.length} in {languageName}.</p>
                         <div className="unit-complete-stats"><strong>+{score * 10} XP</strong><span>♥ 5 hearts left</span></div>
-                        {lessonStep < 2 ? <Link to={`/lesson/${unit}?step=${lessonStep + 1}`} className="unit-next-button">NEXT LESSON</Link> : <Link to="/dashboard" className="unit-next-button">BACK TO LEARN</Link>}
+                        <p style={{ margin: '0.5rem 0 1rem', color: '#b7d9cb' }}>Ready for the next step? Keep your streak going.</p>
+                        {lessonStep < 2 ? <Link to={`/lesson/${unit}?step=${lessonStep + 1}`} className="unit-next-button">CONTINUE LESSON</Link> : <Link to="/dashboard" className="unit-next-button">BACK TO LEARN</Link>}
                     </section>
                 )}
             </main>
