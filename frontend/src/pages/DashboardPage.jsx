@@ -477,12 +477,12 @@ export default function DashboardPage() {
                 {[...leaderboardRows].map((row, index) => {
                     const liveRow = row.current ? { ...row, xp: xpTotal, streak: streakDays, name: user?.first_name || row.name } : row
                     return (
-                    <div key={row.name} className={`leaderboard-row ${row.current ? 'current' : ''}`}>
-                        <strong className="leaderboard-rank">{index + 1}</strong>
-                        <span className="leaderboard-name"><i>{liveRow.name[0]}</i>{liveRow.name}</span>
-                        <strong>{liveRow.xp.toLocaleString()}</strong>
-                        <span className="leaderboard-streak">🔥 {liveRow.streak}</span>
-                    </div>
+                        <div key={row.name} className={`leaderboard-row ${row.current ? 'current' : ''}`}>
+                            <strong className="leaderboard-rank">{index + 1}</strong>
+                            <span className="leaderboard-name"><i>{liveRow.name[0]}</i>{liveRow.name}</span>
+                            <strong>{liveRow.xp.toLocaleString()}</strong>
+                            <span className="leaderboard-streak">🔥 {liveRow.streak}</span>
+                        </div>
                     )
                 })}
             </div>

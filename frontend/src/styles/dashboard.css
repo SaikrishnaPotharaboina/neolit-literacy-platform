@@ -2273,7 +2273,7 @@
     color: #edf8f8;
 }
 
-.reference-side-card + .reference-side-card {
+.reference-side-card+.reference-side-card {
     margin-top: 14px;
 }
 
@@ -2479,7 +2479,7 @@
     background: #63ee8e;
 }
 
-.quest-card-copy > strong {
+.quest-card-copy>strong {
     position: absolute;
     right: 0;
     bottom: 0;
