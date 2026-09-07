@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { languages } from '../data/languages'
+import { learningApi } from '../services/learningApi'
 
 const knowledgeLevelsByLanguage = {
     en: [
@@ -666,6 +667,26 @@ export default function LearningPathPage() {
         }
     }
 
+    const selectLanguage = async (language) => {
+        try {
+            const profile = await learningApi.getProfile()
+            await learningApi.updateProfile({
+                first_name: profile.first_name,
+                last_name: profile.last_name,
+                age: profile.age,
+                native_language: profile.native_language,
+                learning_language: language.code,
+                gender: profile.gender,
+                current_level_id: profile.current_level_id,
+            })
+            setSelectedLanguage(language)
+            persistSelectedCourse(language.code)
+            setStep('knowledge')
+        } catch {
+            return
+        }
+    }
+
     const nextStep = () => {
         if (step === 'language') {
             setStep('knowledge')
@@ -780,11 +801,7 @@ export default function LearningPathPage() {
                                     }
                                     : undefined
                             }
-                            onClick={() => {
-                                setSelectedLanguage(language)
-                                persistSelectedCourse(language.code)
-                                setStep('knowledge')
-                            }}
+                            onClick={() => selectLanguage(language)}
                         >
                             <div className="duolingo-flag" style={{ background: theme.flagBackground }}>
                                 {flags[language.code] || '🌍'}

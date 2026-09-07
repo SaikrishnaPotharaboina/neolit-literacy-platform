@@ -171,11 +171,12 @@ export default function UnitLessonPage() {
                 const [profile, languages, state] = await Promise.all([learningApi.getProfile(), learningApi.getLanguages(), learningApi.getLearningState()])
                 setLearningState(state)
                 const persistedCourseCode = localStorage.getItem('neolit_selected_language')
-                const code = lessonContent[persistedCourseCode]
-                    ? persistedCourseCode
-                    : lessonContent[profile.learning_language]
-                        ? profile.learning_language
+                const code = lessonContent[profile.learning_language]
+                    ? profile.learning_language
+                    : lessonContent[persistedCourseCode]
+                        ? persistedCourseCode
                         : 'en'
+                localStorage.setItem('neolit_selected_language', code)
                 setLanguageCode(code)
                 setLanguageName(languages.find((language) => language.code === code)?.name || 'English')
                 if (Number(unit) > 1) {
