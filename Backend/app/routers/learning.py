@@ -1,7 +1,7 @@
 from datetime import date, datetime, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session, selectinload
 
 from app.database import get_db
 from app.dependencies import get_current_user
@@ -27,8 +27,8 @@ def benchmark(score: float) -> str:
 
 def full_module_query(db: Session):
     return db.query(Module).options(
-        joinedload(Module.lessons).joinedload(Lesson.activities),
-        joinedload(Module.lessons).joinedload(Lesson.contents),
+        selectinload(Module.lessons).selectinload(Lesson.activities),
+        selectinload(Module.lessons).selectinload(Lesson.contents),
     )
 
 
@@ -67,7 +67,7 @@ def get_module(module_id: int, db: Session = Depends(get_db)):
 
 @router.get("/lessons/{lesson_id}", response_model=LessonResponse)
 def get_lesson(lesson_id: int, db: Session = Depends(get_db)):
-    lesson = db.query(Lesson).options(joinedload(Lesson.activities), joinedload(Lesson.contents)).filter(Lesson.id == lesson_id).first()
+    lesson = db.query(Lesson).options(selectinload(Lesson.activities), selectinload(Lesson.contents)).filter(Lesson.id == lesson_id).first()
     if not lesson:
         raise HTTPException(404, "Lesson not found")
     return lesson
@@ -76,7 +76,7 @@ def get_lesson(lesson_id: int, db: Session = Depends(get_db)):
 @router.get("/content", response_model=list)
 def list_content(lesson_id: int | None = None, language_id: int | None = None, db: Session = Depends(get_db)):
     from app.models.learning import Content
-    query = db.query(Content).options(joinedload(Content.translations))
+    query = db.query(Content).options(selectinload(Content.translations))
     if lesson_id:
         query = query.filter(Content.lesson_id == lesson_id)
     if language_id:
@@ -86,7 +86,7 @@ def list_content(lesson_id: int | None = None, language_id: int | None = None, d
 
 @router.get("/assessments", response_model=list[AssessmentResponse])
 def list_assessments(assessment_type: str | None = None, language_id: int | None = None, db: Session = Depends(get_db)):
-    query = db.query(Assessment).options(joinedload(Assessment.questions).joinedload(Question.options))
+    query = db.query(Assessment).options(selectinload(Assessment.questions).selectinload(Question.options))
     if assessment_type:
         query = query.filter(Assessment.assessment_type == assessment_type)
     if language_id:
@@ -96,7 +96,7 @@ def list_assessments(assessment_type: str | None = None, language_id: int | None
 
 @router.get("/assessments/{assessment_id}", response_model=AssessmentResponse)
 def get_assessment(assessment_id: int, db: Session = Depends(get_db)):
-    assessment = db.query(Assessment).options(joinedload(Assessment.questions).joinedload(Question.options)).filter(Assessment.id == assessment_id).first()
+    assessment = db.query(Assessment).options(selectinload(Assessment.questions).selectinload(Question.options)).filter(Assessment.id == assessment_id).first()
     if not assessment:
         raise HTTPException(404, "Assessment not found")
     return assessment
@@ -190,8 +190,17 @@ def update_profile(payload: ProfileUpdate, current_user: User = Depends(get_curr
 @router.get("/progress/me", response_model=ProgressResponse)
 def get_progress(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     values = {}
-    for skill in ("reading", "writing", "comprehension"):
-        latest = db.query(LearnerProgress).filter(LearnerProgress.user_id == current_user.id, LearnerProgress.skill == skill).order_by(LearnerProgress.updated_at.desc()).first()
+    latest_by_skill = {}
+    skills = ("reading", "writing", "comprehension")
+    progress_rows = db.query(LearnerProgress).filter(
+        LearnerProgress.user_id == current_user.id,
+        LearnerProgress.skill.in_(skills),
+    ).order_by(LearnerProgress.updated_at.desc()).all()
+    for progress in progress_rows:
+        latest_by_skill.setdefault(progress.skill, progress)
+
+    for skill in skills:
+        latest = latest_by_skill.get(skill)
         values[skill] = {"score": latest.score if latest else 0, "level": latest.proficiency_level if latest else "Beginner"}
     overall_score = round(sum(item["score"] for item in values.values()) / 3, 2)
     values["overall"] = {"score": overall_score, "level": benchmark(overall_score)}
@@ -208,19 +217,27 @@ def get_or_create_stats(current_user: User, db: Session) -> LearnerStats:
     return stats
 
 
-def reset_daily_stats(stats: LearnerStats, today: date) -> None:
+def reset_daily_stats(stats: LearnerStats, today: date) -> bool:
     if stats.daily_date != today:
         stats.daily_date = today
         stats.daily_xp = 0
         stats.daily_lessons = 0
+        return True
+    return False
 
 
 @router.get("/learning-state/me", response_model=LearningStateResponse)
 def get_learning_state(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     today = date.today()
-    stats = get_or_create_stats(current_user, db)
-    reset_daily_stats(stats, today)
-    db.commit()
+    stats = db.query(LearnerStats).filter(LearnerStats.user_id == current_user.id).first()
+    stats_created = stats is None
+    if stats_created:
+        stats = LearnerStats(user_id=current_user.id)
+        db.add(stats)
+        db.flush()
+    stats_changed = reset_daily_stats(stats, today)
+    if stats_created or stats_changed:
+        db.commit()
     completions = db.query(LessonCompletion).filter(LessonCompletion.user_id == current_user.id).order_by(LessonCompletion.completed_at).all()
     return {
         "xp": stats.xp,

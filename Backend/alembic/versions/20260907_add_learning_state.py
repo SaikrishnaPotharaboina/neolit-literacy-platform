@@ -17,6 +17,10 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
+    existing_tables = set(sa.inspect(op.get_bind()).get_table_names())
+    if {"learner_stats", "lesson_completions"}.issubset(existing_tables):
+        return
+
     op.create_table(
         "learner_stats",
         sa.Column("id", sa.Integer(), nullable=False),

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint
+from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Index, Integer, String, Text, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from app.database import Base
@@ -49,6 +49,7 @@ class Module(Base):
     title = Column(String(150), nullable=False)
     description = Column(Text, default="", nullable=False)
     order_number = Column(Integer, default=1, nullable=False)
+    __table_args__ = (Index("ix_modules_language_level_order", "language_id", "level_id", "order_number"),)
     language = relationship("Language", back_populates="modules")
     level = relationship("Level", back_populates="modules")
     lessons = relationship("Lesson", back_populates="module", cascade="all, delete-orphan")
@@ -62,6 +63,7 @@ class Lesson(Base):
     description = Column(Text, default="", nullable=False)
     order_number = Column(Integer, default=1, nullable=False)
     lesson_type = Column(String(40), default="mixed", nullable=False)
+    __table_args__ = (Index("ix_lessons_module_order", "module_id", "order_number"),)
     module = relationship("Module", back_populates="lessons")
     activities = relationship("Activity", back_populates="lesson", cascade="all, delete-orphan")
     contents = relationship("Content", back_populates="lesson", cascade="all, delete-orphan")
@@ -75,6 +77,7 @@ class Activity(Base):
     activity_type = Column(String(40), nullable=False)
     content = Column(Text, nullable=False)
     order_number = Column(Integer, default=1, nullable=False)
+    __table_args__ = (Index("ix_activities_lesson", "lesson_id"),)
     lesson = relationship("Lesson", back_populates="activities")
 
 
@@ -88,6 +91,7 @@ class Content(Base):
     content = Column(Text, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    __table_args__ = (Index("ix_contents_lesson_language", "lesson_id", "language_id"),)
     lesson = relationship("Lesson", back_populates="contents")
     language = relationship("Language", back_populates="contents")
     translations = relationship("ContentTranslation", back_populates="content", cascade="all, delete-orphan")
@@ -113,6 +117,7 @@ class Assessment(Base):
     level_id = Column(Integer, ForeignKey("levels.id"), nullable=False)
     total_marks = Column(Integer, default=0, nullable=False)
     passing_marks = Column(Integer, default=0, nullable=False)
+    __table_args__ = (Index("ix_assessments_type_language", "assessment_type", "language_id"),)
     language = relationship("Language")
     level = relationship("Level")
     questions = relationship("Question", back_populates="assessment", cascade="all, delete-orphan")
@@ -127,6 +132,7 @@ class Question(Base):
     question_type = Column(String(30), nullable=False)
     marks = Column(Integer, default=1, nullable=False)
     correct_answer = Column(Text, default="", nullable=False)
+    __table_args__ = (Index("ix_questions_assessment", "assessment_id"),)
     assessment = relationship("Assessment", back_populates="questions")
     options = relationship("QuestionOption", back_populates="question", cascade="all, delete-orphan")
 
@@ -137,6 +143,7 @@ class QuestionOption(Base):
     question_id = Column(Integer, ForeignKey("questions.id"), nullable=False)
     option_text = Column(Text, nullable=False)
     is_correct = Column(Boolean, default=False, nullable=False)
+    __table_args__ = (Index("ix_question_options_question", "question_id"),)
     question = relationship("Question", back_populates="options")
 
 
@@ -174,6 +181,7 @@ class LearnerProgress(Base):
     proficiency_level = Column(String(40), nullable=False)
     assessment_id = Column(Integer, ForeignKey("assessments.id"), nullable=True)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    __table_args__ = (Index("ix_learner_progress_user_skill_updated", "user_id", "skill", "updated_at"),)
     user = relationship("User", back_populates="progress")
     assessment = relationship("Assessment")
 
@@ -205,4 +213,7 @@ class LessonCompletion(Base):
     xp_earned = Column(Integer, default=0, nullable=False)
     completed_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     user = relationship("User", back_populates="lesson_completions")
-    __table_args__ = (UniqueConstraint("user_id", "language_code", "unit_number", "lesson_step", name="uq_lesson_completion"),)
+    __table_args__ = (
+        UniqueConstraint("user_id", "language_code", "unit_number", "lesson_step", name="uq_lesson_completion"),
+        Index("ix_lesson_completions_user_date", "user_id", "completed_at"),
+    )
