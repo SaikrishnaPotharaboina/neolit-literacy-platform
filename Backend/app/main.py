@@ -10,13 +10,22 @@ from app.routers import learning
 from app.seed import seed_learning_content
 
 logger = logging.getLogger(__name__)
+
 app = FastAPI(title="NeoLit API", version="1.0.0")
 
 
 @app.exception_handler(Exception)
 async def handle_unexpected_error(request, exc):
-    logger.exception("Unhandled error while processing %s %s", request.method, request.url.path)
-    return JSONResponse(status_code=500, content={"detail": "Internal server error"})
+    logger.exception(
+        "Unhandled error while processing %s %s",
+        request.method,
+        request.url.path,
+    )
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal server error"},
+    )
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,14 +35,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
-app.include_router(learning.router, prefix="/api", tags=["learning"])
-app.include_router(auth.router, prefix="/auth", tags=["legacy-auth"])
+app.include_router(
+    auth.router,
+    prefix="/api/auth",
+    tags=["auth"],
+)
 
-Base.metadata.create_all(bind=engine)
-ensure_schema()
-with SessionLocal() as db:
-    seed_learning_content(db)
+app.include_router(
+    learning.router,
+    prefix="/api",
+    tags=["learning"],
+)
+
+app.include_router(
+    auth.router,
+    prefix="/auth",
+    tags=["legacy-auth"],
+)
+
+
+# Temporarily disabled to test Render startup
+# Base.metadata.create_all(bind=engine)
+# ensure_schema()
+
+# Temporarily disabled to test Render startup
+# with SessionLocal() as db:
+#     seed_learning_content(db)
 
 
 @app.get("/health")
