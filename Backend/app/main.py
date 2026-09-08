@@ -4,11 +4,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.database import Base, SessionLocal, engine, ensure_schema
 from app.config import settings
 from app.routers import auth
 from app.routers import learning
-from app.seed import seed_learning_content
 
 logger = logging.getLogger(__name__)
 

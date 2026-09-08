@@ -160,7 +160,6 @@ export default function DashboardPage() {
     const { user, logout } = useAuth()
     const [languages, setLanguages] = useState([])
     const [levels, setLevels] = useState([])
-    const [modules, setModules] = useState([])
     const [assessments, setAssessments] = useState([])
     const [profile, setProfile] = useState(null)
     const [progress, setProgress] = useState(null)
@@ -219,7 +218,6 @@ export default function DashboardPage() {
                     return groups
                 }, {}))
                 setAssessments(assessmentData)
-                setModules(await learningApi.getCurriculum({ language_id: language?.id, level_id: profileData.current_level_id || levelData[0]?.id }))
             } catch (error) {
                 setMessage(error.response?.data?.detail || 'Unable to load your learning space')
             }
@@ -651,11 +649,6 @@ export default function DashboardPage() {
                                 <div><strong>Earn 10 XP</strong><div className="reference-quest-progress"><span style={{ width: `${Math.min(100, (xpTotal / 10) * 100)}%` }} /></div><small>{Math.min(xpTotal, 10)} / 10</small></div>
                                 <span>🎁</span>
                             </div>
-                        </article>
-                        <article className="reference-side-card profile-prompt-card">
-                            <h2>Create a profile to save your progress!</h2>
-                            <button type="button" onClick={() => window.location.assign('/register')}>CREATE A PROFILE</button>
-                            <button type="button" className="profile-sign-in" onClick={() => window.location.assign('/login')}>SIGN IN</button>
                         </article>
                     </aside>
                 </main>}

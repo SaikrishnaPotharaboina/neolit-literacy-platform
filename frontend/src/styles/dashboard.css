@@ -2359,27 +2359,6 @@
     font-size: 0.65rem;
 }
 
-.profile-prompt-card h2 {
-    line-height: 1.4;
-}
-
-.profile-prompt-card button {
-    width: 100%;
-    border: 0;
-    border-radius: 12px;
-    padding: 12px;
-    background: #91d629;
-    color: #122000;
-    font-weight: 900;
-    cursor: pointer;
-}
-
-.profile-prompt-card .profile-sign-in {
-    margin-top: 10px;
-    background: #43b9e9;
-    color: #062337;
-}
-
 .daily-challenge-card {
     display: flex;
     align-items: center;
