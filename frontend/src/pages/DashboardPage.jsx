@@ -340,8 +340,12 @@ export default function DashboardPage() {
             setNextAssessment(harderAssessment || null)
             setSelected(null)
             setAnswers({})
-            setProgress(await learningApi.getProgress())
-            setLearningState(await learningApi.getLearningState())
+            const [progressData, learningStateData] = await Promise.all([
+                learningApi.getProgress(),
+                learningApi.getLearningState(),
+            ])
+            setProgress(progressData)
+            setLearningState(learningStateData)
             setMessage(harderAssessment ? 'Saved. Review your result before continuing.' : 'Assessment saved to your progress.')
         } catch (error) {
             const detail = error?.response?.data?.detail
