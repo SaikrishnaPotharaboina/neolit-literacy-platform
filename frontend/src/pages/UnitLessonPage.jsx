@@ -164,6 +164,7 @@ export default function UnitLessonPage() {
     const [blocked, setBlocked] = useState(false)
     const [learningState, setLearningState] = useState(null)
     const [submitError, setSubmitError] = useState('')
+    const [savingLesson, setSavingLesson] = useState(false)
 
     useEffect(() => {
         const loadProfile = async () => {
@@ -212,8 +213,11 @@ export default function UnitLessonPage() {
     }
 
     const nextQuestion = async () => {
+        if (savingLesson) return
+
         if (questionIndex === content.questions.length - 1) {
             setSubmitError('')
+            setSavingLesson(true)
             try {
                 const state = await learningApi.completeLesson({
                     language_code: languageCode,
@@ -225,6 +229,8 @@ export default function UnitLessonPage() {
                 setFinished(true)
             } catch (error) {
                 setSubmitError(error.response?.data?.detail || 'Unable to save lesson progress')
+            } finally {
+                setSavingLesson(false)
             }
             return
         }
@@ -284,7 +290,7 @@ export default function UnitLessonPage() {
                             {selectedAnswer && <p className={selectedAnswer === question.answer ? 'unit-answer-feedback correct' : 'unit-answer-feedback wrong'}>{selectedAnswer === question.answer ? 'Correct! +10 XP' : `The answer is: ${question.answer}`}</p>}
                         </section>
                         {submitError && <p className="unit-answer-feedback wrong">{submitError}</p>}
-                        <button type="button" className="unit-next-button" disabled={!selectedAnswer} onClick={nextQuestion}>{questionIndex === content.questions.length - 1 ? 'FINISH LESSON' : 'CONTINUE'}</button>
+                        <button type="button" className="unit-next-button" disabled={!selectedAnswer || savingLesson} onClick={nextQuestion}>{savingLesson ? 'SAVING...' : questionIndex === content.questions.length - 1 ? 'FINISH LESSON' : 'CONTINUE'}</button>
                     </>
                 ) : (
                     <section className="unit-complete-card">

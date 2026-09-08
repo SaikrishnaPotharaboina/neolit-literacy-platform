@@ -1,6 +1,7 @@
 from datetime import date, datetime, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, selectinload
 
 from app.database import get_db
@@ -314,5 +315,14 @@ def complete_lesson(payload: LessonProgressRequest, current_user: User = Depends
         stats.last_activity_date = today
     else:
         completion.score = max(completion.score, payload.score)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        existing_completion = db.query(LessonCompletion).filter_by(
+            user_id=current_user.id, language_code=language_code,
+            unit_number=payload.unit_number, lesson_step=payload.lesson_step,
+        ).first()
+        if existing_completion is None:
+            raise
     return get_learning_state(current_user, db)
