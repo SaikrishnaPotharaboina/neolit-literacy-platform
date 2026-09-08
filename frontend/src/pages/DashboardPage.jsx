@@ -304,7 +304,6 @@ export default function DashboardPage() {
         setSelected(getAssessmentRound(assessment))
         setAnswers({})
         setResult(null)
-        setNextAssessment(null)
     }
 
     const submit = async (event) => {
@@ -337,7 +336,6 @@ export default function DashboardPage() {
             }))
 
             setResult(assessmentResult)
-            setNextAssessment(harderAssessment || null)
             setSelected(null)
             setAnswers({})
             const [progressData, learningStateData] = await Promise.all([
