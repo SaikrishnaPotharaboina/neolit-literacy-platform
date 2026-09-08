@@ -125,6 +125,15 @@ class ProfileUpdate(BaseModel):
         return value.strip() if isinstance(value, str) else value
 
 
+class LanguageUpdate(BaseModel):
+    learning_language: str = Field(min_length=2, max_length=12)
+
+    @field_validator("learning_language", mode="before")
+    @classmethod
+    def strip_language(cls, value):
+        return value.strip() if isinstance(value, str) else value
+
+
 class ProfileResponse(ProfileUpdate):
     model_config = ConfigDict(from_attributes=True)
     id: int

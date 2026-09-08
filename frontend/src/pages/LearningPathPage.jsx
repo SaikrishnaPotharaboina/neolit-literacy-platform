@@ -648,6 +648,7 @@ export default function LearningPathPage() {
     const [reviewState, setReviewState] = useState(null)
     const [showReview, setShowReview] = useState(false)
     const [showQuitModal, setShowQuitModal] = useState(false)
+    const [savingLanguage, setSavingLanguage] = useState(false)
     const [scoresByLanguage, setScoresByLanguage] = useState({ en: 5, hi: 5, kn: 5, ta: 5, te: 5 })
 
     const currentLanguage = selectedLanguage || languages[1]
@@ -668,22 +669,19 @@ export default function LearningPathPage() {
     }
 
     const selectLanguage = async (language) => {
+        if (savingLanguage || selectedLanguage?.code === language.code) return
+
+        setSelectedLanguage(language)
+        persistSelectedCourse(language.code)
+        setStep('knowledge')
+        setSavingLanguage(true)
         try {
-            const profile = await learningApi.getProfile()
-            await learningApi.updateProfile({
-                first_name: profile.first_name,
-                last_name: profile.last_name,
-                age: profile.age,
-                native_language: profile.native_language,
-                learning_language: language.code,
-                gender: profile.gender,
-                current_level_id: profile.current_level_id,
-            })
-            setSelectedLanguage(language)
-            persistSelectedCourse(language.code)
-            setStep('knowledge')
+            await learningApi.updateLearningLanguage(language.code)
         } catch {
-            return
+            setSelectedLanguage(null)
+            setStep('language')
+        } finally {
+            setSavingLanguage(false)
         }
     }
 
@@ -802,6 +800,7 @@ export default function LearningPathPage() {
                                     : undefined
                             }
                             onClick={() => selectLanguage(language)}
+                            disabled={savingLanguage}
                         >
                             <div className="duolingo-flag" style={{ background: theme.flagBackground }}>
                                 {flags[language.code] || '🌍'}

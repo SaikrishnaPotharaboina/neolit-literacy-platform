@@ -15,7 +15,7 @@ from app.schemas.learning import (
     AssessmentResponse, AssessmentResult, AssessmentSubmission, LanguageResponse,
     LevelResponse, LessonResponse, ModuleResponse, ProfileResponse, ProfileUpdate,
     ProgressResponse,
-    LearningStateResponse, LessonProgressRequest, DashboardBootstrapResponse,
+    LearningStateResponse, LessonProgressRequest, DashboardBootstrapResponse, LanguageUpdate,
 )
 
 router = APIRouter()
@@ -183,6 +183,27 @@ def update_profile(payload: ProfileUpdate, current_user: User = Depends(get_curr
     for field, value in payload.model_dump().items():
         if field not in {"first_name", "last_name"}:
             setattr(profile, field, value)
+    db.add(profile)
+    db.commit()
+    db.refresh(profile)
+    return {
+        "id": profile.id,
+        "user_id": profile.user_id,
+        "first_name": current_user.first_name,
+        "last_name": current_user.last_name,
+        "age": profile.age,
+        "native_language": profile.native_language,
+        "learning_language": profile.learning_language,
+        "gender": profile.gender,
+        "current_level_id": profile.current_level_id,
+        "updated_at": profile.updated_at,
+    }
+
+
+@router.patch("/users/me/language", response_model=ProfileResponse)
+def update_learning_language(payload: LanguageUpdate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    profile = current_user.profile or LearnerProfile(user_id=current_user.id)
+    profile.learning_language = payload.learning_language
     db.add(profile)
     db.commit()
     db.refresh(profile)

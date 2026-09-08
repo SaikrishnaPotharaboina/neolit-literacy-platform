@@ -6,6 +6,7 @@ export const learningApi = {
     getLevels: async () => (await api.get('/api/levels')).data,
     getProfile: async () => (await api.get('/api/users/me')).data,
     updateProfile: async (profile) => (await api.put('/api/users/me', profile)).data,
+    updateLearningLanguage: async (learning_language) => (await api.patch('/api/users/me/language', { learning_language })).data,
     getAssessments: async (params) => (await api.get('/api/assessments', { params })).data,
     submitAssessment: async (assessmentId, answers) => {
         const payload = { answers: Object.fromEntries(Object.entries(answers || {}).map(([key, value]) => [String(key), value ?? ''])) }
