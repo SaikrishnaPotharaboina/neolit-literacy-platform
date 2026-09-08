@@ -1,6 +1,7 @@
 import api from './api'
 
 export const learningApi = {
+    getDashboardBootstrap: async () => (await api.get('/api/dashboard/bootstrap')).data,
     getLanguages: async () => (await api.get('/api/languages')).data,
     getLevels: async () => (await api.get('/api/levels')).data,
     getProfile: async () => (await api.get('/api/users/me')).data,

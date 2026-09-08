@@ -6,13 +6,24 @@ from app.config import settings
 
 DATABASE_URL = settings.DATABASE_URL.split("?")[0]
 
-engine = create_engine(
-    DATABASE_URL,
-    pool_pre_ping=True,
-    connect_args={
-        "ssl": {}
-    },
-)
+engine_options = {
+    "pool_pre_ping": True,
+}
+
+if DATABASE_URL.startswith(("mysql://", "mysql+pymysql://")):
+    engine_options.update({
+        "pool_size": 5,
+        "max_overflow": 5,
+        "pool_recycle": 1800,
+        "pool_timeout": 10,
+        "pool_use_lifo": True,
+        "connect_args": {
+            "connect_timeout": 10,
+            "ssl": {},
+        },
+    })
+
+engine = create_engine(DATABASE_URL, **engine_options)
 
 SessionLocal = sessionmaker(
     autocommit=False,

@@ -54,13 +54,36 @@ def register_user(payload: UserCreate, db: Session = Depends(get_db)):
     }
 
 
+import time
+
 @router.post("/login", response_model=dict)
 def login_user(payload: UserLogin, response: Response, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == payload.email.lower()).first()
-    if not user or not verify_password(payload.password, user.password_hash):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
+    start = time.perf_counter()
 
+    # 1. Database lookup
+    db_start = time.perf_counter()
+    user = db.query(User).filter(User.email == payload.email.lower()).first()
+    db_time = time.perf_counter() - db_start
+
+    # 2. Password verification
+    password_start = time.perf_counter()
+    password_valid = user and verify_password(
+        payload.password,
+        user.password_hash
+    )
+    password_time = time.perf_counter() - password_start
+
+    if not password_valid:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+
+    # 3. JWT creation
+    token_start = time.perf_counter()
     token = create_access_token(user.id)
+    token_time = time.perf_counter() - token_start
+
     response.set_cookie(
         key="neolit_access_token",
         value=token,
@@ -70,13 +93,23 @@ def login_user(payload: UserLogin, response: Response, db: Session = Depends(get
         path="/",
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
     )
+
+    total_time = time.perf_counter() - start
+
+    print(
+        f"LOGIN TIMING | "
+        f"DB={db_time:.3f}s | "
+        f"PASSWORD={password_time:.3f}s | "
+        f"JWT={token_time:.3f}s | "
+        f"TOTAL={total_time:.3f}s"
+    )
+
     return {
         "message": "Login successful",
         "access_token": token,
         "token_type": "bearer",
         "user": UserResponse.model_validate(user),
     }
-
 
 @router.post("/forgot-password")
 def reset_password(payload: PasswordReset, db: Session = Depends(get_db)):

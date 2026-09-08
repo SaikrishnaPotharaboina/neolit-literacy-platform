@@ -169,3 +169,12 @@ class LearningStateResponse(BaseModel):
     daily_xp: int
     daily_lessons: int
     completions: list[LessonCompletionResponse] = []
+
+
+class DashboardBootstrapResponse(BaseModel):
+    languages: list[LanguageResponse]
+    levels: list[LevelResponse]
+    profile: ProfileResponse
+    progress: ProgressResponse
+    assessments: list[AssessmentResponse]
+    learning_state: LearningStateResponse

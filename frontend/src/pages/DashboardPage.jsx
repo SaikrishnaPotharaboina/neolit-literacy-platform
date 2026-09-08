@@ -195,29 +195,19 @@ export default function DashboardPage() {
     useEffect(() => {
         const load = async () => {
             try {
-                const [languageData, levelData, profileData, progressData, assessmentData, learningStateData] = await Promise.all([
-                    learningApi.getLanguages(),
-                    learningApi.getLevels(),
-                    learningApi.getProfile(),
-                    learningApi.getProgress(),
-                    learningApi.getAssessments(),
-                    learningApi.getLearningState(),
-                ])
-
-                const supportedLanguages = languageData.filter((item) => supportedLanguageCodes.includes(item.code))
-                const effectiveLanguageCode = profileData.learning_language || localStorage.getItem('neolit_selected_language') || 'en'
-                const language = supportedLanguages.find((item) => item.code === effectiveLanguageCode) || supportedLanguages[0]
+                const dashboard = await learningApi.getDashboardBootstrap()
+                const supportedLanguages = dashboard.languages.filter((item) => supportedLanguageCodes.includes(item.code))
                 setLanguages(supportedLanguages)
-                setLevels(levelData)
-                setProfile(profileData)
-                setProgress(progressData)
-                setLearningState(learningStateData)
-                setCompletedPathLessons((learningStateData.completions || []).reduce((groups, completion) => {
+                setLevels(dashboard.levels)
+                setProfile(dashboard.profile)
+                setProgress(dashboard.progress)
+                setLearningState(dashboard.learning_state)
+                setCompletedPathLessons((dashboard.learning_state.completions || []).reduce((groups, completion) => {
                     const key = `${completion.language_code}-${completion.unit_number}`
                     groups[key] = [...(groups[key] || []), completion.lesson_step]
                     return groups
                 }, {}))
-                setAssessments(assessmentData)
+                setAssessments(dashboard.assessments)
             } catch (error) {
                 setMessage(error.response?.data?.detail || 'Unable to load your learning space')
             }

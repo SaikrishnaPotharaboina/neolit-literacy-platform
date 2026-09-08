@@ -14,7 +14,7 @@ from app.schemas.learning import (
     AssessmentResponse, AssessmentResult, AssessmentSubmission, LanguageResponse,
     LevelResponse, LessonResponse, ModuleResponse, ProfileResponse, ProfileUpdate,
     ProgressResponse,
-    LearningStateResponse, LessonProgressRequest,
+    LearningStateResponse, LessonProgressRequest, DashboardBootstrapResponse,
 )
 
 router = APIRouter()
@@ -40,6 +40,18 @@ def list_languages(db: Session = Depends(get_db)):
 @router.get("/levels", response_model=list[LevelResponse])
 def list_levels(db: Session = Depends(get_db)):
     return db.query(Level).order_by(Level.minimum_score).all()
+
+
+@router.get("/dashboard/bootstrap", response_model=DashboardBootstrapResponse)
+def dashboard_bootstrap(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    return {
+        "languages": list_languages(db=db),
+        "levels": list_levels(db=db),
+        "profile": get_profile(current_user, db),
+        "progress": get_progress(current_user, db),
+        "assessments": list_assessments(db=db),
+        "learning_state": get_learning_state(current_user, db),
+    }
 
 
 @router.get("/curriculum", response_model=list[ModuleResponse])
