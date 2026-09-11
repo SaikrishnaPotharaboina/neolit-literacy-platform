@@ -149,6 +149,54 @@ const englishQuestionHints = {
     ],
 }
 
+const additionalQuestionsByLanguage = {
+    en: [
+        { prompt: 'Which word describes a person who is glad?', options: ['Happy', 'Water', 'Walk'], answer: 'Happy' },
+        { type: 'write', prompt: 'Type the English word for a place where you learn.', options: [], answer: 'School' },
+        { type: 'arrange', prompt: 'Arrange the words into a greeting.', options: ['you', 'How', 'are'], answer: 'How are you' },
+        { prompt: 'Choose the polite question.', options: ['Can you help me?', 'Help me now!', 'You help?'], answer: 'Can you help me?' },
+        { type: 'speech', prompt: 'Say this sentence aloud: I am learning English.', options: [], answer: 'I am learning English.' },
+        { type: 'write', prompt: 'Type one word you use every day.', options: [], answer: 'Hello' },
+        { prompt: 'Which word means the opposite of goodbye?', options: ['Hello', 'Night', 'Book'], answer: 'Hello' },
+    ],
+    hi: [
+        { prompt: 'खुश व्यक्ति के लिए सही शब्द कौन-सा है?', options: ['खुश', 'पानी', 'चलना'], answer: 'खुश' },
+        { type: 'write', prompt: 'जहाँ आप सीखते हैं उस जगह का हिंदी शब्द लिखें।', options: [], answer: 'स्कूल' },
+        { type: 'arrange', prompt: 'शब्दों को अभिवादन के रूप में लगाएँ।', options: ['आप', 'कैसे', 'हैं'], answer: 'आप कैसे हैं' },
+        { prompt: 'विनम्र प्रश्न चुनें।', options: ['क्या आप मेरी मदद कर सकते हैं?', 'अभी मेरी मदद करो!', 'आप मदद?'], answer: 'क्या आप मेरी मदद कर सकते हैं?' },
+        { type: 'speech', prompt: 'यह वाक्य बोलें: मैं अंग्रेज़ी सीख रहा हूँ।', options: [], answer: 'मैं अंग्रेज़ी सीख रहा हूँ।' },
+        { type: 'write', prompt: 'हर दिन उपयोग होने वाला एक शब्द लिखें।', options: [], answer: 'नमस्ते' },
+        { prompt: 'अलविदा का विपरीत शब्द कौन-सा है?', options: ['नमस्ते', 'रात', 'किताब'], answer: 'नमस्ते' },
+    ],
+    kn: [
+        { prompt: 'ಸಂತೋಷವಾಗಿರುವ ವ್ಯಕ್ತಿಗೆ ಸರಿಯಾದ ಪದ ಯಾವುದು?', options: ['ಸಂತೋಷ', 'ನೀರು', 'ನಡೆಯಿರಿ'], answer: 'ಸಂತೋಷ' },
+        { type: 'write', prompt: 'ನೀವು ಕಲಿಯುವ ಸ್ಥಳದ ಕನ್ನಡ ಪದವನ್ನು ಬರೆಯಿರಿ.', options: [], answer: 'ಶಾಲೆ' },
+        { type: 'arrange', prompt: 'ಪದಗಳನ್ನು ಶುಭಾಶಯವಾಗಿ ಜೋಡಿಸಿ.', options: ['ನೀವು', 'ಹೇಗಿದ್ದೀರಿ'], answer: 'ನೀವು ಹೇಗಿದ್ದೀರಿ' },
+        { prompt: 'ವಿನಯಪೂರ್ವಕ ಪ್ರಶ್ನೆಯನ್ನು ಆರಿಸಿ.', options: ['ನೀವು ನನಗೆ ಸಹಾಯ ಮಾಡಬಹುದೇ?', 'ಈಗ ಸಹಾಯ ಮಾಡಿ!', 'ನೀವು ಸಹಾಯ?'], answer: 'ನೀವು ನನಗೆ ಸಹಾಯ ಮಾಡಬಹುದೇ?' },
+        { type: 'speech', prompt: 'ಈ ವಾಕ್ಯವನ್ನು ಹೇಳಿ: ನಾನು ಇಂಗ್ಲಿಷ್ ಕಲಿಯುತ್ತಿದ್ದೇನೆ.', options: [], answer: 'ನಾನು ಇಂಗ್ಲಿಷ್ ಕಲಿಯುತ್ತಿದ್ದೇನೆ.' },
+        { type: 'write', prompt: 'ಪ್ರತಿದಿನ ಬಳಸುವ ಒಂದು ಪದವನ್ನು ಬರೆಯಿರಿ.', options: [], answer: 'ನಮಸ್ಕಾರ' },
+        { prompt: 'ವಿದಾಯದ ವಿರುದ್ಧ ಪದ ಯಾವುದು?', options: ['ನಮಸ್ಕಾರ', 'ರಾತ್ರಿ', 'ಪುಸ್ತಕ'], answer: 'ನಮಸ್ಕಾರ' },
+    ],
+    ta: [
+        { prompt: 'மகிழ்ச்சியான நபருக்கான சரியான சொல் எது?', options: ['மகிழ்ச்சி', 'தண்ணீர்', 'நடக்கவும்'], answer: 'மகிழ்ச்சி' },
+        { type: 'write', prompt: 'நீங்கள் கற்கும் இடத்திற்கான தமிழ் சொல்லை எழுதுங்கள்.', options: [], answer: 'பள்ளி' },
+        { type: 'arrange', prompt: 'சொற்களை வாழ்த்தாக அமைக்கவும்.', options: ['நீங்கள்', 'எப்படி', 'இருக்கிறீர்கள்'], answer: 'நீங்கள் எப்படி இருக்கிறீர்கள்' },
+        { prompt: 'மரியாதையான கேள்வியைத் தேர்ந்தெடுக்கவும்.', options: ['நீங்கள் எனக்கு உதவ முடியுமா?', 'இப்போது உதவி செய்!', 'நீங்கள் உதவி?'], answer: 'நீங்கள் எனக்கு உதவ முடியுமா?' },
+        { type: 'speech', prompt: 'இந்த வாக்கியத்தைச் சொல்லுங்கள்: நான் ஆங்கிலம் கற்கிறேன்.', options: [], answer: 'நான் ஆங்கிலம் கற்கிறேன்.' },
+        { type: 'write', prompt: 'தினமும் பயன்படுத்தும் ஒரு சொல்லை எழுதுங்கள்.', options: [], answer: 'வணக்கம்' },
+        { prompt: 'விடைபெறுதலுக்கு எதிர்ச்சொல் எது?', options: ['வணக்கம்', 'இரவு', 'புத்தகம்'], answer: 'வணக்கம்' },
+    ],
+    te: [
+        { prompt: 'సంతోషంగా ఉన్న వ్యక్తికి సరైన పదం ఏది?', options: ['సంతోషం', 'నీరు', 'నడవండి'], answer: 'సంతోషం' },
+        { type: 'write', prompt: 'మీరు నేర్చుకునే ప్రదేశానికి తెలుగు పదాన్ని రాయండి.', options: [], answer: 'పాఠశాల' },
+        { type: 'arrange', prompt: 'పదాలను అభివాదంగా అమర్చండి.', options: ['మీరు', 'ఎలా', 'ఉన్నారు'], answer: 'మీరు ఎలా ఉన్నారు' },
+        { prompt: 'మర్యాదపూర్వకమైన ప్రశ్నను ఎంచుకోండి.', options: ['మీరు నాకు సహాయం చేయగలరా?', 'ఇప్పుడు సహాయం చేయి!', 'మీరు సహాయం?'], answer: 'మీరు నాకు సహాయం చేయగలరా?' },
+        { type: 'speech', prompt: 'ఈ వాక్యాన్ని చెప్పండి: నేను ఇంగ్లీష్ నేర్చుకుంటున్నాను.', options: [], answer: 'నేను ఇంగ్లీష్ నేర్చుకుంటున్నాను.' },
+        { type: 'write', prompt: 'ప్రతిరోజూ ఉపయోగించే ఒక పదాన్ని రాయండి.', options: [], answer: 'నమస్కారం' },
+        { prompt: 'వీడ్కోలుకు వ్యతిరేక పదం ఏది?', options: ['నమస్కారం', 'రాత్రి', 'పుస్తకం'], answer: 'నమస్కారం' },
+    ],
+}
+
 export default function UnitLessonPage() {
     const { unit = '1' } = useParams()
     const [searchParams] = useSearchParams()
@@ -165,6 +213,7 @@ export default function UnitLessonPage() {
     const [learningState, setLearningState] = useState(null)
     const [submitError, setSubmitError] = useState('')
     const [savingLesson, setSavingLesson] = useState(false)
+    const [listening, setListening] = useState(false)
 
     useEffect(() => {
         const loadProfile = async () => {
@@ -195,7 +244,10 @@ export default function UnitLessonPage() {
     const content = {
         ...baseContent,
         title: stageTitles[languageCode]?.[lessonStep] || stageTitles.en[lessonStep],
-        questions: localizedStageQuestions[languageCode]?.[lessonStep] || stageQuestions[lessonStep],
+        questions: [
+            ...(localizedStageQuestions[languageCode]?.[lessonStep] || stageQuestions[lessonStep]),
+            ...(additionalQuestionsByLanguage[languageCode] || additionalQuestionsByLanguage.en),
+        ],
     }
     const question = content.questions[questionIndex]
     const englishHint = englishQuestionHints[languageCode]?.[lessonStep]?.[questionIndex]
@@ -207,9 +259,26 @@ export default function UnitLessonPage() {
 
     const submitAnswer = () => {
         if (selectedAnswer) return
-        const answer = question.type === 'write' ? textAnswer.trim() : selectedTokens.join(' ')
+        const answer = question.type === 'write' || question.type === 'speech' ? textAnswer.trim() : selectedTokens.join(' ')
         if (!answer) return
         chooseAnswer(answer)
+    }
+
+    const startSpeechAnswer = () => {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+        if (!SpeechRecognition) {
+            setSubmitError('Speech input is not supported in this browser. Please type your answer.')
+            return
+        }
+        const recognition = new SpeechRecognition()
+        recognition.lang = languageCode === 'en' ? 'en-US' : `${languageCode}-IN`
+        recognition.interimResults = false
+        recognition.maxAlternatives = 1
+        setListening(true)
+        recognition.onresult = (event) => setTextAnswer(event.results[0][0].transcript)
+        recognition.onerror = () => setSubmitError('We could not hear your answer. Please try again.')
+        recognition.onend = () => setListening(false)
+        recognition.start()
     }
 
     const nextQuestion = async () => {
@@ -265,9 +334,10 @@ export default function UnitLessonPage() {
                         <section className="unit-question-card">
                             <h2>{question.prompt}</h2>
                             {englishHint && <p className="question-english-help">English: {englishHint[0]}</p>}
-                            {question.type === 'write' ? (
+                            {question.type === 'write' || question.type === 'speech' ? (
                                 <div className="unit-write-answer">
-                                    <input value={textAnswer} onChange={(event) => setTextAnswer(event.target.value)} placeholder="Type your answer" disabled={Boolean(selectedAnswer)} onKeyDown={(event) => { if (event.key === 'Enter') submitAnswer() }} />
+                                    <input value={textAnswer} onChange={(event) => setTextAnswer(event.target.value)} placeholder={question.type === 'speech' ? 'Speak or type your answer' : 'Type your answer'} disabled={Boolean(selectedAnswer)} onKeyDown={(event) => { if (event.key === 'Enter') submitAnswer() }} />
+                                    {question.type === 'speech' && <button type="button" onClick={startSpeechAnswer} disabled={listening || Boolean(selectedAnswer)}>{listening ? 'LISTENING...' : '🎙 SPEAK'}</button>}
                                     <button type="button" onClick={submitAnswer} disabled={!textAnswer.trim() || Boolean(selectedAnswer)}>CHECK</button>
                                 </div>
                             ) : question.type === 'arrange' ? (
