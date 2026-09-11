@@ -80,8 +80,62 @@ def add_extra_questions(db: Session) -> None:
                 correct_answer=answer,
                 options=[QuestionOption(option_text=choice, is_correct=choice == answer) for choice in choices],
             ))
+        question_number = len(assessment.questions)
+        while question_number < 10:
+            question_number += 1
+            if question_number in (7, 8):
+                question_type = "speech"
+                question_text = f"Say this sentence aloud: Hello, how are you? (Speaking {question_number - 6})"
+                answer = "Hello, how are you?"
+                choices = []
+            elif question_number in (6, 10):
+                question_type = "long_text"
+                question_text = f"Write one sentence about your daily language practice ({question_number})."
+                answer = ""
+                choices = []
+            else:
+                question_type = "multiple_choice"
+                question_text = f"Which answer is useful in everyday conversation? ({question_number})"
+                answer = "Hello"
+                choices = ["Hello", "Table", "Window"]
+            if question_text not in existing_questions:
+                assessment.questions.append(Question(
+                    question_text=question_text,
+                    question_type=question_type,
+                    marks=1,
+                    correct_answer=answer,
+                    options=[QuestionOption(option_text=choice, is_correct=choice == answer) for choice in choices],
+                ))
+                existing_questions.add(question_text)
+
         assessment.total_marks = sum(question.marks for question in assessment.questions)
         assessment.passing_marks = max(1, (assessment.total_marks + 1) // 2)
+
+    english = db.query(Language).filter(Language.code == "en").first()
+    if english:
+        english_assessments = db.query(Assessment).filter(Assessment.language_id == english.id).all()
+        for language in db.query(Language).filter(Language.id != english.id).all():
+            existing_titles = {item.title for item in db.query(Assessment).filter(Assessment.language_id == language.id).all()}
+            for source in english_assessments:
+                if source.title in existing_titles:
+                    continue
+                clone = Assessment(
+                    title=source.title,
+                    description=source.description,
+                    assessment_type=source.assessment_type,
+                    language=language,
+                    level_id=source.level_id,
+                    total_marks=source.total_marks,
+                    passing_marks=source.passing_marks,
+                )
+                clone.questions = [Question(
+                    question_text=question.question_text,
+                    question_type=question.question_type,
+                    marks=question.marks,
+                    correct_answer=question.correct_answer,
+                    options=[QuestionOption(option_text=option.option_text, is_correct=option.is_correct) for option in question.options],
+                ) for question in source.questions]
+                db.add(clone)
 
 
 def seed_learning_content(db: Session) -> None:

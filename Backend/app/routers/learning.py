@@ -45,12 +45,14 @@ def list_levels(db: Session = Depends(get_db)):
 
 @router.get("/dashboard/bootstrap", response_model=DashboardBootstrapResponse)
 def dashboard_bootstrap(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    profile = current_user.profile
+    course_language = db.query(Language).filter(Language.code == (profile.learning_language if profile else "en")).first()
     return {
         "languages": list_languages(db=db),
         "levels": list_levels(db=db),
         "profile": get_profile(current_user, db),
         "progress": get_progress(current_user, db),
-        "assessments": list_assessments(db=db),
+        "assessments": list_assessments(db=db, language_id=course_language.id if course_language else None),
         "learning_state": get_learning_state(current_user, db),
     }
 

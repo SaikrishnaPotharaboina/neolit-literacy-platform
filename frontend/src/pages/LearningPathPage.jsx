@@ -651,7 +651,7 @@ export default function LearningPathPage() {
     const [savingLanguage, setSavingLanguage] = useState(false)
     const [scoresByLanguage, setScoresByLanguage] = useState({ en: 5, hi: 5, kn: 5, ta: 5, te: 5 })
 
-    const currentLanguage = selectedLanguage || languages[1]
+    const currentLanguage = selectedLanguage || languages[0]
     const lessonBank = (lessonBankByLanguage[currentLanguage.code] || lessonBankByLanguage.hi).filter((item) => item.type === 'choice')
     const knowledgeLevels = knowledgeLevelsByLanguage[currentLanguage.code] || knowledgeLevelsByLanguage.en
     const currentScore = scoresByLanguage[currentLanguage.code] ?? 5

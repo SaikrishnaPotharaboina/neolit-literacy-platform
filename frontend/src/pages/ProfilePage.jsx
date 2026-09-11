@@ -113,7 +113,12 @@ export default function ProfilePage() {
                                 </label>
                                 <label className="field">
                                     <span>Native language</span>
-                                    <input value={safeProfile.native_language || ''} onChange={(event) => updateField('native_language', event.target.value)} />
+                                    <select value={safeProfile.native_language || ''} onChange={(event) => updateField('native_language', event.target.value)}>
+                                        <option value="">Select your mother tongue</option>
+                                        {languages.map((language) => (
+                                            <option key={language.code} value={language.name}>{language.name}</option>
+                                        ))}
+                                    </select>
                                 </label>
                                 <label className="field">
                                     <span>Gender</span>
@@ -130,7 +135,7 @@ export default function ProfilePage() {
                                     />
                                 </label>
                                 <label className="field">
-                                    <span>Preferred language</span>
+                                    <span>Learning course language</span>
                                     <select value={safeProfile.learning_language || 'en'} onChange={(event) => updateField('learning_language', event.target.value)}>
                                         {languages.map((language) => (
                                             <option key={language.code} value={language.code}>{language.name}</option>

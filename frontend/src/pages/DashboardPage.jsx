@@ -386,6 +386,8 @@ export default function DashboardPage() {
             })
             setProfile(updatedProfile)
             localStorage.setItem('neolit_selected_language', languageCode)
+            const refreshedDashboard = await learningApi.getDashboardBootstrap()
+            setAssessments(refreshedDashboard.assessments)
             setCourseMenuOpen(false)
             setMessage('Course changed successfully.')
         } catch (error) {
@@ -393,6 +395,24 @@ export default function DashboardPage() {
         } finally {
             setChangingCourse(false)
         }
+    }
+
+    const listenForAnswer = (question) => {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+        if (!SpeechRecognition) {
+            setMessage('Speech input is not supported in this browser. You can type the answer instead.')
+            return
+        }
+
+        const recognition = new SpeechRecognition()
+        recognition.lang = selectedLanguageCode === 'en' ? 'en-US' : `${selectedLanguageCode}-IN`
+        recognition.interimResults = false
+        recognition.maxAlternatives = 1
+        recognition.onresult = (event) => {
+            setAnswers((previous) => ({ ...previous, [question.id]: event.results[0][0].transcript }))
+        }
+        recognition.onerror = () => setMessage('We could not hear that. Please try speaking again.')
+        recognition.start()
     }
 
     const renderLetters = () => (
@@ -619,6 +639,7 @@ export default function DashboardPage() {
                                 <button type="button" onClick={goToNextUnlockedUnit} className="play-btn" aria-label={`Go to next unlocked unit`} title={`Go to next unlocked unit`} style={{ border: 'none', cursor: 'pointer' }}>▶</button>
                             </div>
                         </div>
+
                     </section>
                     <aside className="duolingo-reference-side" aria-label="Progress and daily goals">
                         <div className="reference-stat-row">

@@ -163,15 +163,20 @@ export default function RegisterPage() {
                         <div className="neo-two-col">
                             <label>
                                 <span>Native language</span>
-                                <input
+                                <select
                                     name="native_language"
                                     value={form.native_language}
                                     onChange={handleChange}
-                                    placeholder="English"
-                                />
+                                    required
+                                >
+                                    <option value="">Select your mother tongue</option>
+                                    {languages.map((language) => (
+                                        <option key={language.code} value={language.name}>{language.name}</option>
+                                    ))}
+                                </select>
                             </label>
                             <label>
-                                <span>Choose language</span>
+                                <span>Learning course language</span>
                                 <select
                                     name="learning_language"
                                     value={form.learning_language}
