@@ -197,12 +197,68 @@ const additionalQuestionsByLanguage = {
     ],
 }
 
+const unitTopics = {
+    en: ['Greetings', 'Family', 'Food', 'Daily routines', 'Travel', 'Shopping', 'Work and study', 'Plans'],
+    hi: ['अभिवादन', 'परिवार', 'खाना', 'दैनिक दिनचर्या', 'यात्रा', 'खरीदारी', 'काम और पढ़ाई', 'योजनाएँ'],
+    kn: ['ಶುಭಾಶಯಗಳು', 'ಕುಟುಂಬ', 'ಆಹಾರ', 'ದೈನಂದಿನ ದಿನಚರಿ', 'ಪ್ರಯಾಣ', 'ಖರೀದಿ', 'ಕೆಲಸ ಮತ್ತು ಅಧ್ಯಯನ', 'ಯೋಜನೆಗಳು'],
+    ta: ['வாழ்த்துகள்', 'குடும்பம்', 'உணவு', 'அன்றாட பழக்கங்கள்', 'பயணம்', 'கடைக்குச் செல்வது', 'வேலை மற்றும் படிப்பு', 'திட்டங்கள்'],
+    te: ['అభివాదాలు', 'కుటుంబం', 'ఆహారం', 'రోజువారీ పనులు', 'ప్రయాణం', 'కొనుగోలు', 'పని మరియు చదువు', 'ప్రణాళికలు'],
+}
+
+const englishTopicNames = ['Greetings', 'Family', 'Food', 'Daily routines', 'Travel', 'Shopping', 'Work and study', 'Plans']
+
+const shuffleWithSeed = (items, seed) => {
+    const result = [...items]
+    let value = seed
+    for (let index = result.length - 1; index > 0; index -= 1) {
+        value = (value * 9301 + 49297) % 233280
+        const swapIndex = Math.floor((value / 233280) * (index + 1))
+            ;[result[index], result[swapIndex]] = [result[swapIndex], result[index]]
+    }
+    return result
+}
+
+const getUnitQuestions = (languageCode, lessonStep, unitNumber, learnerId) => {
+    const baseQuestions = [
+        ...(localizedStageQuestions[languageCode]?.[lessonStep] || stageQuestions[lessonStep]),
+        ...(additionalQuestionsByLanguage[languageCode] || additionalQuestionsByLanguage.en),
+    ]
+    const englishQuestions = [
+        ...stageQuestions[lessonStep],
+        ...additionalQuestionsByLanguage.en,
+    ]
+    const topic = (unitTopics[languageCode] || unitTopics.en)[(Number(unitNumber) - 1) % 8]
+    const englishTopic = englishTopicNames[(Number(unitNumber) - 1) % 8]
+    const uniqueQuestions = baseQuestions.map((question, index) => ({
+        ...question,
+        prompt: `${topic}: ${question.prompt}`,
+        englishPrompt: `${englishTopic}: ${englishQuestions[index].prompt}`,
+        englishOptions: englishQuestions[index].options || [],
+    }))
+    const storageKey = `neolit_lesson_question_order_${learnerId || 'guest'}_${languageCode}_${unitNumber}_${lessonStep}`
+
+    try {
+        const savedPrompts = JSON.parse(localStorage.getItem(storageKey) || 'null')
+        if (Array.isArray(savedPrompts) && savedPrompts.length === uniqueQuestions.length) {
+            const savedQuestions = savedPrompts.map((prompt) => uniqueQuestions.find((item) => item.prompt === prompt)).filter(Boolean)
+            if (savedQuestions.length === uniqueQuestions.length) return savedQuestions
+        }
+    } catch {
+        // Use a deterministic order when saved lesson state is unavailable.
+    }
+
+    const shuffledQuestions = shuffleWithSeed(uniqueQuestions, Number(unitNumber) * 31 + lessonStep * 17)
+    localStorage.setItem(storageKey, JSON.stringify(shuffledQuestions.map((question) => question.prompt)))
+    return shuffledQuestions
+}
+
 export default function UnitLessonPage() {
     const { unit = '1' } = useParams()
     const [searchParams] = useSearchParams()
     const lessonStep = Math.min(2, Math.max(0, Number(searchParams.get('step') || 0)))
     const [languageCode, setLanguageCode] = useState('en')
     const [languageName, setLanguageName] = useState('English')
+    const [learnerId, setLearnerId] = useState('')
     const [questionIndex, setQuestionIndex] = useState(0)
     const [selectedAnswer, setSelectedAnswer] = useState(null)
     const [textAnswer, setTextAnswer] = useState('')
@@ -220,6 +276,7 @@ export default function UnitLessonPage() {
             try {
                 const [profile, languages, state] = await Promise.all([learningApi.getProfile(), learningApi.getLanguages(), learningApi.getLearningState()])
                 setLearningState(state)
+                setLearnerId(String(profile.user_id || ''))
                 const persistedCourseCode = localStorage.getItem('neolit_selected_language')
                 const code = lessonContent[profile.learning_language]
                     ? profile.learning_language
@@ -244,13 +301,9 @@ export default function UnitLessonPage() {
     const content = {
         ...baseContent,
         title: stageTitles[languageCode]?.[lessonStep] || stageTitles.en[lessonStep],
-        questions: [
-            ...(localizedStageQuestions[languageCode]?.[lessonStep] || stageQuestions[lessonStep]),
-            ...(additionalQuestionsByLanguage[languageCode] || additionalQuestionsByLanguage.en),
-        ],
+        questions: getUnitQuestions(languageCode, lessonStep, unit, learnerId),
     }
     const question = content.questions[questionIndex]
-    const englishHint = englishQuestionHints[languageCode]?.[lessonStep]?.[questionIndex]
     const chooseAnswer = (answer) => {
         if (selectedAnswer) return
         setSelectedAnswer(answer)
@@ -333,7 +386,7 @@ export default function UnitLessonPage() {
                         <p className="unit-lesson-question-count">Question {questionIndex + 1} of {content.questions.length}</p>
                         <section className="unit-question-card">
                             <h2>{question.prompt}</h2>
-                            {englishHint && <p className="question-english-help">English: {englishHint[0]}</p>}
+                            <p className="question-english-help">English: {question.englishPrompt}</p>
                             {question.type === 'write' || question.type === 'speech' ? (
                                 <div className="unit-write-answer">
                                     <input value={textAnswer} onChange={(event) => setTextAnswer(event.target.value)} placeholder={question.type === 'speech' ? 'Speak or type your answer' : 'Type your answer'} disabled={Boolean(selectedAnswer)} onKeyDown={(event) => { if (event.key === 'Enter') submitAnswer() }} />
@@ -344,8 +397,11 @@ export default function UnitLessonPage() {
                                 <div className="unit-arrange-answer">
                                     <div className="unit-selected-tokens">{selectedTokens.length ? selectedTokens.join(' ') : 'Select the words below'}</div>
                                     <div className="unit-token-list">
-                                        {question.options.map((option) => (
-                                            <button key={option} type="button" disabled={selectedTokens.includes(option) || Boolean(selectedAnswer)} onClick={() => setSelectedTokens((tokens) => [...tokens, option])}>{option}</button>
+                                        {question.options.map((option, optionIndex) => (
+                                            <button key={option} type="button" disabled={selectedTokens.includes(option) || Boolean(selectedAnswer)} onClick={() => setSelectedTokens((tokens) => [...tokens, option])}>
+                                                {option}
+                                                {question.englishOptions[optionIndex] && <small className="option-english-help">{question.englishOptions[optionIndex]}</small>}
+                                            </button>
                                         ))}
                                     </div>
                                     <button type="button" className="unit-check-arrangement" onClick={submitAnswer} disabled={!selectedTokens.length || Boolean(selectedAnswer)}>CHECK ORDER</button>
@@ -353,7 +409,10 @@ export default function UnitLessonPage() {
                             ) : (
                                 <div className="unit-answer-list">
                                     {question.options.map((option, optionIndex) => (
-                                        <button key={option} type="button" className={selectedAnswer === option ? (option === question.answer ? 'correct' : 'wrong') : ''} onClick={() => chooseAnswer(option)}>{option}{englishHint?.[1]?.[optionIndex] && <small className="option-english-help">{englishHint[1][optionIndex]}</small>}</button>
+                                        <button key={option} type="button" className={selectedAnswer === option ? (option === question.answer ? 'correct' : 'wrong') : ''} onClick={() => chooseAnswer(option)}>
+                                            {option}
+                                            {question.englishOptions[optionIndex] && <small className="option-english-help">{question.englishOptions[optionIndex]}</small>}
+                                        </button>
                                     ))}
                                 </div>
                             )}
