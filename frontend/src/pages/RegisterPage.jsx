@@ -50,11 +50,13 @@ export default function RegisterPage() {
         } catch (err) {
             const detail = err.response?.data?.detail
             const message = Array.isArray(detail)
-                ? detail.map((item) => item.msg).join(', ')
-                : detail ||
-                (err.request
-                    ? 'Cannot connect to the server. Start the backend on port 8000 and try again.'
-                    : 'Registration failed')
+                ? detail.map((item) => (typeof item === 'string' ? item : item?.msg || item?.error || JSON.stringify(item))).join(', ')
+                : typeof detail === 'object' && detail
+                    ? detail.msg || detail.error || JSON.stringify(detail)
+                    : detail ||
+                    (err.request
+                        ? 'Cannot connect to the server. Start the backend on port 8000 and try again.'
+                        : 'Registration failed')
             setError(message)
         } finally {
             setLoading(false)

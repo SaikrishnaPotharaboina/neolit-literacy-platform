@@ -207,6 +207,29 @@ const unitTopics = {
 
 const englishTopicNames = ['Greetings', 'Family', 'Food', 'Daily routines', 'Travel', 'Shopping', 'Work and study', 'Plans']
 
+const formatApiError = (error, fallback = 'Something went wrong.') => {
+    const detail = error?.response?.data?.detail
+
+    if (Array.isArray(detail)) {
+        const items = detail.map((item) => {
+            if (typeof item === 'string') return item
+            if (typeof item === 'object' && item) {
+                return item.msg || item.error || JSON.stringify(item)
+            }
+            return String(item)
+        })
+        return items.join(', ') || fallback
+    }
+
+    if (typeof detail === 'object' && detail) {
+        if (detail.msg) return detail.msg
+        if (detail.error) return detail.error
+        return JSON.stringify(detail)
+    }
+
+    return detail || fallback
+}
+
 const shuffleWithSeed = (items, seed) => {
     const result = [...items]
     let value = seed
@@ -350,7 +373,7 @@ export default function UnitLessonPage() {
                 setLearningState(state)
                 setFinished(true)
             } catch (error) {
-                setSubmitError(error.response?.data?.detail || 'Unable to save lesson progress')
+                setSubmitError(formatApiError(error, 'Unable to save lesson progress'))
             } finally {
                 setSavingLesson(false)
             }
@@ -363,76 +386,93 @@ export default function UnitLessonPage() {
     }
 
     return (
-        <div className="unit-lesson-page">
-            <header className="unit-lesson-header">
-                <Link to="/dashboard" className="unit-lesson-close" aria-label="Exit lesson">×</Link>
-                <div className="unit-lesson-progress"><i style={{ width: `${((questionIndex + (selectedAnswer ? 1 : 0)) / content.questions.length) * 100}%` }} /></div>
-                <span className="unit-lesson-hearts">♥ {learningState?.hearts ?? 5}</span>
+        <div className="duolingo-page-shell">
+            <header className="duolingo-page-header">
+                <div className="duolingo-page-brand">
+                    <span className="duolingo-page-badge">N</span>
+                    <strong>NeoLit</strong>
+                </div>
+                <nav className="duolingo-page-nav" aria-label="Lesson navigation">
+                    <span className="duolingo-page-nav-item active">Learn</span>
+                    <span className="duolingo-page-nav-item">Journey</span>
+                </nav>
+                <div className="duolingo-page-actions">
+                    <span className="duolingo-page-action">♥ {learningState?.hearts ?? 5}</span>
+                    <Link to="/dashboard" className="duolingo-page-close" aria-label="Exit lesson">×</Link>
+                </div>
             </header>
 
-            <main className="unit-lesson-main">
-                {blocked ? (
-                    <section className="unit-complete-card">
-                        <div className="unit-complete-icon">🔒</div>
-                        <div className="unit-lesson-meta">UNIT {unit} LOCKED</div>
-                        <h1>Finish the previous unit first</h1>
-                        <p>Complete all three lessons in Unit {Number(unit) - 1} to unlock this unit.</p>
-                        <Link to="/dashboard" className="unit-next-button">BACK TO LEARN</Link>
-                    </section>
-                ) : !finished ? (
-                    <>
-                        <div className="unit-lesson-meta">SECTION 1 • UNIT {unit} • {['LEARN WORDS', 'BUILD SENTENCES', 'PRACTICE CONVERSATION'][lessonStep]} • {languageName.toUpperCase()}</div>
-                        <h1>{content.title}</h1>
-                        <p className="unit-lesson-question-count">Question {questionIndex + 1} of {content.questions.length}</p>
-                        <section className="unit-question-card">
-                            <h2>{question.prompt}</h2>
-                            <p className="question-english-help">English: {question.englishPrompt}</p>
-                            {question.type === 'write' || question.type === 'speech' ? (
-                                <div className="unit-write-answer">
-                                    <input value={textAnswer} onChange={(event) => setTextAnswer(event.target.value)} placeholder={question.type === 'speech' ? 'Speak or type your answer' : 'Type your answer'} disabled={Boolean(selectedAnswer)} onKeyDown={(event) => { if (event.key === 'Enter') submitAnswer() }} />
-                                    {question.type === 'speech' && <button type="button" onClick={startSpeechAnswer} disabled={listening || Boolean(selectedAnswer)}>{listening ? 'LISTENING...' : '🎙 SPEAK'}</button>}
-                                    <button type="button" onClick={submitAnswer} disabled={!textAnswer.trim() || Boolean(selectedAnswer)}>CHECK</button>
-                                </div>
-                            ) : question.type === 'arrange' ? (
-                                <div className="unit-arrange-answer">
-                                    <div className="unit-selected-tokens">{selectedTokens.length ? selectedTokens.join(' ') : 'Select the words below'}</div>
-                                    <div className="unit-token-list">
+            <div className="unit-lesson-page">
+                <header className="unit-lesson-header">
+                    <Link to="/dashboard" className="unit-lesson-close" aria-label="Exit lesson">×</Link>
+                    <div className="unit-lesson-progress"><i style={{ width: `${((questionIndex + (selectedAnswer ? 1 : 0)) / content.questions.length) * 100}%` }} /></div>
+                    <span className="unit-lesson-hearts">♥ {learningState?.hearts ?? 5}</span>
+                </header>
+
+                <main className="unit-lesson-main">
+                    {blocked ? (
+                        <section className="unit-complete-card">
+                            <div className="unit-complete-icon">🔒</div>
+                            <div className="unit-lesson-meta">UNIT {unit} LOCKED</div>
+                            <h1>Finish the previous unit first</h1>
+                            <p>Complete all three lessons in Unit {Number(unit) - 1} to unlock this unit.</p>
+                            <Link to="/dashboard" className="unit-next-button">BACK TO LEARN</Link>
+                        </section>
+                    ) : !finished ? (
+                        <>
+                            <div className="unit-lesson-meta">SECTION 1 • UNIT {unit} • {['LEARN WORDS', 'BUILD SENTENCES', 'PRACTICE CONVERSATION'][lessonStep]} • {languageName.toUpperCase()}</div>
+                            <h1>{content.title}</h1>
+                            <p className="unit-lesson-question-count">Question {questionIndex + 1} of {content.questions.length}</p>
+                            <section className="unit-question-card">
+                                <h2>{question.prompt}</h2>
+                                <p className="question-english-help">English: {question.englishPrompt}</p>
+                                {question.type === 'write' || question.type === 'speech' ? (
+                                    <div className="unit-write-answer">
+                                        <input value={textAnswer} onChange={(event) => setTextAnswer(event.target.value)} placeholder={question.type === 'speech' ? 'Speak or type your answer' : 'Type your answer'} disabled={Boolean(selectedAnswer)} onKeyDown={(event) => { if (event.key === 'Enter') submitAnswer() }} />
+                                        {question.type === 'speech' && <button type="button" onClick={startSpeechAnswer} disabled={listening || Boolean(selectedAnswer)}>{listening ? 'LISTENING...' : '🎙 SPEAK'}</button>}
+                                        <button type="button" onClick={submitAnswer} disabled={!textAnswer.trim() || Boolean(selectedAnswer)}>CHECK</button>
+                                    </div>
+                                ) : question.type === 'arrange' ? (
+                                    <div className="unit-arrange-answer">
+                                        <div className="unit-selected-tokens">{selectedTokens.length ? selectedTokens.join(' ') : 'Select the words below'}</div>
+                                        <div className="unit-token-list">
+                                            {question.options.map((option, optionIndex) => (
+                                                <button key={option} type="button" disabled={selectedTokens.includes(option) || Boolean(selectedAnswer)} onClick={() => setSelectedTokens((tokens) => [...tokens, option])}>
+                                                    {option}
+                                                    {question.englishOptions[optionIndex] && <small className="option-english-help">{question.englishOptions[optionIndex]}</small>}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <button type="button" className="unit-check-arrangement" onClick={submitAnswer} disabled={!selectedTokens.length || Boolean(selectedAnswer)}>CHECK ORDER</button>
+                                    </div>
+                                ) : (
+                                    <div className="unit-answer-list">
                                         {question.options.map((option, optionIndex) => (
-                                            <button key={option} type="button" disabled={selectedTokens.includes(option) || Boolean(selectedAnswer)} onClick={() => setSelectedTokens((tokens) => [...tokens, option])}>
+                                            <button key={option} type="button" className={selectedAnswer === option ? (option === question.answer ? 'correct' : 'wrong') : ''} onClick={() => chooseAnswer(option)}>
                                                 {option}
                                                 {question.englishOptions[optionIndex] && <small className="option-english-help">{question.englishOptions[optionIndex]}</small>}
                                             </button>
                                         ))}
                                     </div>
-                                    <button type="button" className="unit-check-arrangement" onClick={submitAnswer} disabled={!selectedTokens.length || Boolean(selectedAnswer)}>CHECK ORDER</button>
-                                </div>
-                            ) : (
-                                <div className="unit-answer-list">
-                                    {question.options.map((option, optionIndex) => (
-                                        <button key={option} type="button" className={selectedAnswer === option ? (option === question.answer ? 'correct' : 'wrong') : ''} onClick={() => chooseAnswer(option)}>
-                                            {option}
-                                            {question.englishOptions[optionIndex] && <small className="option-english-help">{question.englishOptions[optionIndex]}</small>}
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-                            {selectedAnswer && <p className={selectedAnswer === question.answer ? 'unit-answer-feedback correct' : 'unit-answer-feedback wrong'}>{selectedAnswer === question.answer ? 'Correct! +10 XP' : `The answer is: ${question.answer}`}</p>}
+                                )}
+                                {selectedAnswer && <p className={selectedAnswer === question.answer ? 'unit-answer-feedback correct' : 'unit-answer-feedback wrong'}>{selectedAnswer === question.answer ? 'Correct! +10 XP' : `The answer is: ${question.answer}`}</p>}
+                            </section>
+                            {submitError && <p className="unit-answer-feedback wrong">{submitError}</p>}
+                            <button type="button" className="unit-next-button" disabled={!selectedAnswer || savingLesson} onClick={nextQuestion}>{savingLesson ? 'SAVING...' : questionIndex === content.questions.length - 1 ? 'FINISH LESSON' : 'CONTINUE'}</button>
+                        </>
+                    ) : (
+                        <section className="unit-complete-card">
+                            <div className="unit-complete-icon">✓</div>
+                            <div className="unit-lesson-meta">UNIT {unit} COMPLETE</div>
+                            <h1>Great work!</h1>
+                            <p>You scored {score} out of {content.questions.length} in {languageName}.</p>
+                            <div className="unit-complete-stats"><strong>+{score * 10} XP</strong><span>♥ {learningState?.hearts ?? 5} hearts left</span></div>
+                            <p style={{ margin: '0.5rem 0 1rem', color: '#b7d9cb' }}>Ready for the next step? Keep your streak going.</p>
+                            {lessonStep < 2 ? <Link to={`/lesson/${unit}?step=${lessonStep + 1}`} className="unit-next-button">CONTINUE LESSON</Link> : <Link to="/dashboard" className="unit-next-button">BACK TO LEARN</Link>}
                         </section>
-                        {submitError && <p className="unit-answer-feedback wrong">{submitError}</p>}
-                        <button type="button" className="unit-next-button" disabled={!selectedAnswer || savingLesson} onClick={nextQuestion}>{savingLesson ? 'SAVING...' : questionIndex === content.questions.length - 1 ? 'FINISH LESSON' : 'CONTINUE'}</button>
-                    </>
-                ) : (
-                    <section className="unit-complete-card">
-                        <div className="unit-complete-icon">✓</div>
-                        <div className="unit-lesson-meta">UNIT {unit} COMPLETE</div>
-                        <h1>Great work!</h1>
-                        <p>You scored {score} out of {content.questions.length} in {languageName}.</p>
-                        <div className="unit-complete-stats"><strong>+{score * 10} XP</strong><span>♥ {learningState?.hearts ?? 5} hearts left</span></div>
-                        <p style={{ margin: '0.5rem 0 1rem', color: '#b7d9cb' }}>Ready for the next step? Keep your streak going.</p>
-                        {lessonStep < 2 ? <Link to={`/lesson/${unit}?step=${lessonStep + 1}`} className="unit-next-button">CONTINUE LESSON</Link> : <Link to="/dashboard" className="unit-next-button">BACK TO LEARN</Link>}
-                    </section>
-                )}
-            </main>
+                    )}
+                </main>
+            </div>
         </div>
     )
 }

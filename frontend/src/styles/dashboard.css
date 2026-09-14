@@ -725,15 +725,95 @@
 
 .duolingo-page-shell {
     min-height: 100vh;
-    background: linear-gradient(180deg, #051d1d 0%, #0a1a24 100%);
+    background: linear-gradient(180deg, #041a1d 0%, #0b1f2a 100%);
     color: #edf4f7;
-    padding: 0;
+    padding: 18px 20px 0;
+}
+
+.duolingo-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: min(980px, calc(100% - 8px));
+    margin: 0 auto 16px;
+    padding: 12px 18px;
+    border: 1px solid rgba(138, 196, 202, 0.16);
+    border-radius: 18px;
+    background: rgba(8, 24, 31, 0.72);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.duolingo-page-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+}
+
+.duolingo-page-badge {
+    display: grid;
+    width: 26px;
+    height: 26px;
+    place-items: center;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #7ce7b8, #5cc4e6);
+    color: #071d22;
+    font-size: 0.9rem;
+}
+
+.duolingo-page-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(223, 242, 244, 0.72);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.duolingo-page-nav-item {
+    opacity: 0.7;
+}
+
+.duolingo-page-nav-item.active {
+    opacity: 1;
+    color: #eafaf8;
+}
+
+.duolingo-page-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.duolingo-page-action {
+    color: #ffd873;
+    font-weight: 900;
+}
+
+.duolingo-page-close {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    color: #edf8f8;
+    font-size: 1.6rem;
 }
 
 .unit-lesson-page {
-    min-height: 100vh;
-    background: linear-gradient(180deg, #061e22 0%, #0d2029 100%);
+    width: min(980px, calc(100% - 8px));
+    min-height: calc(100vh - 90px);
+    margin: 0 auto;
+    border: 1px solid rgba(138, 196, 202, 0.14);
+    border-radius: 24px;
+    background: linear-gradient(180deg, rgba(5, 28, 29, 0.82), rgba(12, 28, 38, 0.9));
     color: #edf8f8;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
 }
 
 .unit-lesson-header {

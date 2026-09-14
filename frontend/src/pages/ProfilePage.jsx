@@ -34,7 +34,13 @@ export default function ProfilePage() {
                 setProfile(profileData)
                 setLevels(levelData)
             } catch (requestError) {
-                setError(requestError.response?.data?.detail || 'Unable to load your profile')
+                const detail = requestError.response?.data?.detail
+                const message = Array.isArray(detail)
+                    ? detail.map((item) => (typeof item === 'string' ? item : item?.msg || item?.error || JSON.stringify(item))).join(', ')
+                    : typeof detail === 'object' && detail
+                        ? detail.msg || detail.error || JSON.stringify(detail)
+                        : detail || 'Unable to load your profile'
+                setError(message)
             }
         }
         loadProfile()
@@ -59,7 +65,13 @@ export default function ProfilePage() {
             setProfile(updated)
             setMessage('Profile updated successfully.')
         } catch (requestError) {
-            setError(requestError.response?.data?.detail || 'Unable to update your profile')
+            const detail = requestError.response?.data?.detail
+            const message = Array.isArray(detail)
+                ? detail.map((item) => (typeof item === 'string' ? item : item?.msg || item?.error || JSON.stringify(item))).join(', ')
+                : typeof detail === 'object' && detail
+                    ? detail.msg || detail.error || JSON.stringify(detail)
+                    : detail || 'Unable to update your profile'
+            setError(message)
         }
     }
 
