@@ -154,9 +154,10 @@
 .hero-copy h1 {
     margin: 0;
     font-size: clamp(2.2rem, 3vw, 4rem);
-    line-height: 1.02;
-    letter-spacing: -0.07em;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
     max-width: 760px;
+    word-wrap: break-word;
 }
 
 .hero-text {
@@ -2162,7 +2163,9 @@
 .letters-heading h1 {
     margin: 0;
     font-size: clamp(2rem, 4vw, 3.3rem);
-    letter-spacing: -0.06em;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    word-wrap: break-word;
 }
 
 .letters-heading p {
