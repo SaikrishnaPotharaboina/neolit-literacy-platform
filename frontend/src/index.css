@@ -62,27 +62,30 @@
     font-family: 'Noto Sans Telugu', 'Nirmala UI', 'Segoe UI', sans-serif;
     line-height: 1.5;
     font-weight: 400;
-    color: #0f172a;
-    background: #f5f1ea;
-    --bg-cream: #f5f1ea;
+    color: #1d2042;
+    background: #f5f3f7;
+    --bg-cream: #f5f3f7;
     --bg-ivory: #fffdfb;
     --surface: #ffffff;
-    --surface-soft: #f8fafc;
+    --surface-soft: #f8f5ff;
     --navy: #0f172a;
-    --navy-strong: #0b1220;
+    --navy-strong: #101a35;
     --slate: #1e293b;
     --teal: #14b8a6;
     --mint: #8ae6c2;
     --green: #22c55e;
     --indigo: #6366f1;
-    --purple: #8b5cf6;
+    --primary: #3ebd75;
+    --primary-strong: #2ea867;
+    --primary-soft: rgba(62, 189, 117, 0.12);
+    --purple: #3ebd75;
     --gold: #fbbf24;
     --orange: #f97316;
     --rose: #fb7185;
     --muted: #5b6475;
     --border: rgba(15, 23, 42, 0.08);
-    --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.10);
-    --shadow-strong: 0 20px 50px rgba(15, 23, 42, 0.18);
+    --shadow-soft: 0 18px 40px rgba(109, 94, 241, 0.08);
+    --shadow-strong: 0 20px 50px rgba(38, 32, 67, 0.12);
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -116,8 +119,8 @@ body,
 body {
     margin: 0;
     background:
-        radial-gradient(circle at top left, rgba(45, 212, 191, 0.12), transparent 16%),
-        linear-gradient(135deg, #f7f4ef 0%, #f4efe8 44%, #eef6f4 100%);
+        radial-gradient(circle at top left, rgba(62, 189, 117, 0.12), transparent 18%),
+        linear-gradient(135deg, #f5faf6 0%, #edf9f3 42%, #f3faf7 100%);
 }
 
 * {
