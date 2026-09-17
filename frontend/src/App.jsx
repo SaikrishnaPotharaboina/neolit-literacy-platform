@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import SiteNavbar from './components/SiteNavbar'
+import SiteFooter from './components/SiteFooter'
 
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'))
@@ -10,6 +11,7 @@ const DashboardPage = lazy(() => import('./pages/DashboardPage'))
 const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 const LearningPathPage = lazy(() => import('./pages/LearningPathPage'))
 const UnitLessonPage = lazy(() => import('./pages/UnitLessonPage'))
+const GamesPage = lazy(() => import('./pages/GamesPage'))
 
 function PageLoading() {
     return <div className="flex min-h-screen items-center justify-center">Loading...</div>
@@ -30,6 +32,7 @@ function ProtectedRoute({ children }) {
         <>
             <SiteNavbar />
             {children}
+            <SiteFooter />
         </>
     )
 }
@@ -81,6 +84,14 @@ function AppRoutes() {
                     element={
                         <ProtectedRoute>
                             <UnitLessonPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/games"
+                    element={
+                        <ProtectedRoute>
+                            <GamesPage />
                         </ProtectedRoute>
                     }
                 />

@@ -188,7 +188,9 @@ export default function DashboardPage() {
 
     useEffect(() => {
         const section = searchParams.get('section')
-        if (['learn', 'letters', 'leaderboard', 'quests'].includes(section)) {
+        if (section === 'progress') {
+            setActiveSection('leaderboard')
+        } else if (['learn', 'letters', 'leaderboard', 'quests'].includes(section)) {
             setActiveSection(section)
         }
     }, [searchParams])

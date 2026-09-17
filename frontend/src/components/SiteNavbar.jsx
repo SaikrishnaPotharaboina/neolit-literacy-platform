@@ -4,11 +4,13 @@ import { useAuth } from '../context/AuthContext'
 import { learningApi } from '../services/learningApi'
 
 const navigation = [
+    { label: 'Home', to: '/learning-path' },
     { label: 'Learn', to: '/dashboard?section=learn' },
     { label: 'Letters', to: '/dashboard?section=letters' },
     { label: 'Leaderboard', to: '/dashboard?section=leaderboard' },
     { label: 'Quests', to: '/dashboard?section=quests' },
-    { label: 'Shop', to: '/dashboard?section=shop' },
+    { label: 'Games', to: '/games' },
+    { label: 'Progress', to: '/dashboard?section=progress' },
     { label: 'Profile', to: '/profile' },
 ]
 
@@ -18,6 +20,7 @@ export default function SiteNavbar() {
     const { user, logout } = useAuth()
     const location = useLocation()
     const [languages, setLanguages] = useState([])
+    const [profile, setProfile] = useState(null)
     const [selectedLanguageCode, setSelectedLanguageCode] = useState(localStorage.getItem('neolit_selected_language') || user?.learning_language || 'en')
     const [courseMenuOpen, setCourseMenuOpen] = useState(false)
     const [changingCourse, setChangingCourse] = useState(false)
@@ -26,9 +29,21 @@ export default function SiteNavbar() {
         learningApi.getLanguages()
             .then((items) => setLanguages(items.filter((language) => supportedLanguageCodes.includes(language.code))))
             .catch(() => setLanguages([]))
+
+        learningApi.getProfile()
+            .then(setProfile)
+            .catch(() => setProfile(null))
     }, [])
 
+    useEffect(() => {
+        if (user?.learning_language && supportedLanguageCodes.includes(user.learning_language)) {
+            setSelectedLanguageCode(user.learning_language)
+            localStorage.setItem('neolit_selected_language', user.learning_language)
+        }
+    }, [user?.learning_language])
+
     const selectedLanguageName = languages.find((language) => language.code === selectedLanguageCode)?.name || (selectedLanguageCode === 'en' ? 'English' : selectedLanguageCode.toUpperCase())
+    const nativeLanguage = profile?.native_language || user?.native_language || 'English'
 
     const changeCourse = async (languageCode) => {
         if (languageCode === selectedLanguageCode) {
@@ -69,22 +84,28 @@ export default function SiteNavbar() {
                 ))}
             </nav>
             <div className="site-navbar-actions">
-                <div className="site-course-switcher">
-                    <button type="button" className="site-course-button" onClick={() => setCourseMenuOpen((open) => !open)} aria-expanded={courseMenuOpen}>
-                        <span className="site-course-icon">🌐</span>
-                        <span><small>MY COURSE</small><strong>{selectedLanguageName}</strong></span>
-                        <span className="site-course-chevron">⌄</span>
-                    </button>
-                    {courseMenuOpen && (
-                        <div className="site-course-menu">
-                            <strong>MY COURSES</strong>
-                            {languages.map((language) => (
-                                <button key={language.code} type="button" disabled={changingCourse} className={language.code === selectedLanguageCode ? 'selected' : ''} onClick={() => changeCourse(language.code)}>
-                                    {language.name}
-                                </button>
-                            ))}
-                        </div>
-                    )}
+                <div className="site-language-pair">
+                    <div className="site-language-card">
+                        <small>NATIVE</small>
+                        <strong>{nativeLanguage}</strong>
+                    </div>
+                    <div className="site-course-switcher">
+                        <button type="button" className="site-course-button" onClick={() => setCourseMenuOpen((open) => !open)} aria-expanded={courseMenuOpen}>
+                            <span className="site-course-icon">🌐</span>
+                            <span><small>LEARNING</small><strong>{selectedLanguageName}</strong></span>
+                            <span className="site-course-chevron">⌄</span>
+                        </button>
+                        {courseMenuOpen && (
+                            <div className="site-course-menu">
+                                <strong>MY COURSES</strong>
+                                {languages.map((language) => (
+                                    <button key={language.code} type="button" disabled={changingCourse} className={language.code === selectedLanguageCode ? 'selected' : ''} onClick={() => changeCourse(language.code)}>
+                                        {language.name}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <button type="button" className="site-navbar-logout" onClick={logout}>Logout</button>
             </div>
