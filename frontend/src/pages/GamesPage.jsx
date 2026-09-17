@@ -383,6 +383,14 @@ const GAME_LIBRARY_BY_LANGUAGE = {
     ],
 }
 
+const MEMORY_DECOYS_BY_LANGUAGE = {
+    en: ['Garden', 'Star'],
+    hi: ['बगीचा', 'तारा'],
+    kn: ['ತೋಟ', 'ನಕ್ಷತ್ರ'],
+    ta: ['தோட்டம்', 'நட்சத்திரம்'],
+    te: ['తోట', 'నక్షత్రం'],
+}
+
 const getGameLibrary = (languageCode) => GAME_LIBRARY_BY_LANGUAGE[languageCode] || GAME_LIBRARY_BY_LANGUAGE.en
 const shuffleQuestions = (items) => [...items].sort(() => Math.random() - 0.5)
 
@@ -567,7 +575,7 @@ export default function GamesPage() {
                     <span className="game-question-count">Question {Math.min(questionIndex + 1, selectedGame.questions.length)}/{selectedGame.questions.length}</span>
                     <span className={`game-timer ${timeLeft <= 4 ? 'warning' : ''}`}>{timeLeft}s</span>
                 </div>
-                <h2>{question.prompt}</h2>
+                {selectedGame.type !== 'memory' && <h2>{question.prompt}</h2>}
 
                 {selectedGame.type === 'cards' ? (
                     <div className="catch-word-stage" aria-label="Catch the correct word">
@@ -587,7 +595,7 @@ export default function GamesPage() {
                     </div>
                 ) : selectedGame.type === 'memory' ? (
                     <div className="memory-grid">
-                        {question.answers.map((choice) => {
+                        {[...question.answers, ...(MEMORY_DECOYS_BY_LANGUAGE[languageCode] || MEMORY_DECOYS_BY_LANGUAGE.en)].map((choice) => {
                             const isVisible = memorySelection.includes(choice) || answer === choice
                             return (
                                 <button

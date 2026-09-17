@@ -2593,7 +2593,7 @@
 
 .letters-heading h1 {
     margin: 0;
-    font-size: clamp(2rem, 4vw, 3.3rem);
+    font-size: clamp(1.15rem, 2.2vw, 1.8rem);
     line-height: 1.12;
     letter-spacing: -0.02em;
     word-wrap: break-word;
@@ -4006,6 +4006,10 @@
     background: rgba(17, 41, 45, 0.82);
 }
 
+.memory-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
 .memory-card.visible {
     background: rgba(85, 139, 113, 0.2);
 }
@@ -4049,6 +4053,18 @@
 .game-answer-grid button.wrong {
     border-color: rgba(239, 99, 99, 0.35);
     background: rgba(239, 99, 99, 0.06);
+}
+
+@media (max-width: 720px) {
+    .memory-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 460px) {
+    .memory-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 .catch-word-stage {
