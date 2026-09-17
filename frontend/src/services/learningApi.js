@@ -14,5 +14,6 @@ export const learningApi = {
     },
     getProgress: async () => (await api.get('/api/progress/me')).data,
     getLearningState: async () => (await api.get('/api/learning-state/me')).data,
+    getSpeech: async (text, language) => (await api.get('/api/speech', { params: { text, language }, responseType: 'blob' })).data,
     completeLesson: async (payload) => (await api.post('/api/lesson-progress', payload)).data,
 }

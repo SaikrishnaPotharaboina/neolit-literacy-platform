@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { learningApi } from '../services/learningApi'
@@ -175,6 +175,9 @@ export default function DashboardPage() {
     const [searchParams] = useSearchParams()
     const [lettersStarted, setLettersStarted] = useState(false)
     const [letterProgress, setLetterProgress] = useState({})
+    const [speakingLetter, setSpeakingLetter] = useState(null)
+    const speechAudioRef = useRef(null)
+    const speechObjectUrlRef = useRef(null)
     const [quizOpen, setQuizOpen] = useState(false)
     const [quizAnswer, setQuizAnswer] = useState(null)
     const [quizScore, setQuizScore] = useState(0)
@@ -364,13 +367,69 @@ export default function DashboardPage() {
         }
     }
 
-    const speakLetter = (letter, word) => {
+    const speakLetter = async (letter, word) => {
         setLetterProgress((prev) => ({ ...prev, [letter]: true }))
-        if (!window.speechSynthesis) return
-        window.speechSynthesis.cancel()
-        const utterance = new SpeechSynthesisUtterance(`${letter}, ${word}`)
-        utterance.lang = selectedLanguageCode === 'en' ? 'en-US' : `${selectedLanguageCode}-IN`
-        window.speechSynthesis.speak(utterance)
+        const localeByLanguage = {
+            en: 'en-US',
+            hi: 'hi-IN',
+            kn: 'kn-IN',
+            ta: 'ta-IN',
+            te: 'te-IN',
+        }
+        const locale = localeByLanguage[selectedLanguageCode] || 'en-US'
+        const phrase = `${letter}. ${word}.`
+
+        if (window.speechSynthesis) window.speechSynthesis.cancel()
+        if (speechAudioRef.current) {
+            speechAudioRef.current.pause()
+            speechAudioRef.current = null
+        }
+        if (speechObjectUrlRef.current) {
+            URL.revokeObjectURL(speechObjectUrlRef.current)
+            speechObjectUrlRef.current = null
+        }
+
+        const voices = window.speechSynthesis?.getVoices() || []
+        const matchingVoice = voices.find((voice) => voice.lang?.toLowerCase().startsWith(selectedLanguageCode))
+
+        if (matchingVoice || selectedLanguageCode === 'en') {
+            if (!window.speechSynthesis) return
+            const utterance = new SpeechSynthesisUtterance(phrase)
+            utterance.lang = locale
+            utterance.voice = matchingVoice || null
+            utterance.rate = 0.78
+            utterance.pitch = 1
+            utterance.onstart = () => setSpeakingLetter(letter)
+            utterance.onend = () => setSpeakingLetter(null)
+            utterance.onerror = () => setSpeakingLetter(null)
+            window.speechSynthesis.speak(utterance)
+            return
+        }
+
+        try {
+            const audioBlob = await learningApi.getSpeech(phrase, selectedLanguageCode)
+            const objectUrl = URL.createObjectURL(audioBlob)
+            speechObjectUrlRef.current = objectUrl
+            const audio = new Audio(objectUrl)
+            speechAudioRef.current = audio
+            setSpeakingLetter(letter)
+            audio.onended = () => {
+                speechAudioRef.current = null
+                URL.revokeObjectURL(objectUrl)
+                speechObjectUrlRef.current = null
+                setSpeakingLetter(null)
+            }
+            audio.onerror = () => {
+                speechAudioRef.current = null
+                URL.revokeObjectURL(objectUrl)
+                speechObjectUrlRef.current = null
+                setSpeakingLetter(null)
+            }
+            await audio.play()
+        } catch {
+            speechAudioRef.current = null
+            setSpeakingLetter(null)
+        }
     }
 
     const goToNextUnlockedUnit = () => {
@@ -479,10 +538,9 @@ export default function DashboardPage() {
                     <h2><span />{group === 'vowels' ? 'Vowels' : 'Consonants'}<span /></h2>
                     <div className="letters-grid">
                         {selectedLetters[group].map(([letter, word]) => (
-                            <button key={`${letter}-${word}`} type="button" className="letter-card" onClick={() => speakLetter(letter, word)} title={`Hear ${letter}`}>
+                            <button key={`${letter}-${word}`} type="button" className={`letter-card ${speakingLetter === letter ? 'speaking' : ''}`} onClick={() => speakLetter(letter, word)} title={`Hear ${letter} in ${selectedLanguageName}`} aria-label={`Hear ${letter} and ${word} in ${selectedLanguageName}`}>
                                 <strong>{letter}</strong>
                                 <small>{word}</small>
-                                <i />
                             </button>
                         ))}
                     </div>

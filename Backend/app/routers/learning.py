@@ -1,6 +1,9 @@
 from datetime import date, datetime, timedelta
+from io import BytesIO
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi.responses import StreamingResponse
+from gtts import gTTS
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, selectinload
 
@@ -20,6 +23,21 @@ from app.schemas.learning import (
 
 router = APIRouter()
 BENCHMARKS = ((0, "Beginner"), (40, "Elementary"), (60, "Intermediate"), (75, "Upper Intermediate"), (90, "Advanced"))
+
+
+@router.get("/speech")
+def generate_speech(
+    text: str = Query(min_length=1, max_length=160),
+    language: str = Query(pattern="^(en|hi|kn|ta|te)$"),
+    current_user: User = Depends(get_current_user),
+):
+    try:
+        audio = BytesIO()
+        gTTS(text=text, lang=language, slow=False).write_to_fp(audio)
+        audio.seek(0)
+        return StreamingResponse(audio, media_type="audio/mpeg", headers={"Cache-Control": "public, max-age=86400"})
+    except Exception as error:
+        raise HTTPException(status_code=502, detail="Speech service is temporarily unavailable") from error
 
 
 def benchmark(score: float) -> str:
