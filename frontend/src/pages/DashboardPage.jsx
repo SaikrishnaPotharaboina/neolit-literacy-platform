@@ -541,48 +541,45 @@ export default function DashboardPage() {
 
     return (
         <div className="duolingo-reference-page">
-            <aside className="duolingo-sidebar">
+            <header className="duolingo-topbar">
                 <div className="duolingo-logo">NeoLit</div>
 
-                <nav className="duolingo-sidebar-nav" aria-label="Main navigation">
-                    <button type="button" className={`sidebar-item sidebar-button ${activeSection === 'learn' ? 'active' : ''}`} onClick={() => setActiveSection('learn')}><span className="nav-icon">🏠</span> LEARN</button>
-                    <button type="button" className={`sidebar-item sidebar-button ${activeSection === 'letters' ? 'active' : ''}`} onClick={() => setActiveSection('letters')}><span className="nav-icon">✎</span> LETTERS</button>
-                    <button type="button" className={`sidebar-item sidebar-button ${activeSection === 'leaderboard' ? 'active' : ''}`} onClick={() => setActiveSection('leaderboard')}><span className="nav-icon">🏆</span> LEADERBOARDS</button>
-                    <button type="button" className={`sidebar-item sidebar-button ${activeSection === 'quests' ? 'active' : ''}`} onClick={() => setActiveSection('quests')}><span className="nav-icon">🎯</span> QUESTS</button>
-                    <Link to="/dashboard" className="sidebar-item"><span className="nav-icon">🛒</span> SHOP</Link>
-                    <Link to="/profile" className="sidebar-item"><span className="nav-icon">👤</span> PROFILE</Link>
-                    <Link to="/dashboard" className="sidebar-item"><span className="nav-icon">⋯</span> MORE</Link>
+                <nav className="duolingo-top-nav" aria-label="Main navigation">
+                    <button type="button" className={`nav-link ${activeSection === 'learn' ? 'active' : ''}`} onClick={() => setActiveSection('learn')}><span className="nav-icon">🏠</span>Learn</button>
+                    <button type="button" className={`nav-link ${activeSection === 'letters' ? 'active' : ''}`} onClick={() => setActiveSection('letters')}><span className="nav-icon">✎</span>Letters</button>
+                    <button type="button" className={`nav-link ${activeSection === 'leaderboard' ? 'active' : ''}`} onClick={() => setActiveSection('leaderboard')}><span className="nav-icon">🏆</span>Leaderboard</button>
+                    <button type="button" className={`nav-link ${activeSection === 'quests' ? 'active' : ''}`} onClick={() => setActiveSection('quests')}><span className="nav-icon">🎯</span>Quests</button>
+                    <Link to="/dashboard" className="nav-link"><span className="nav-icon">🛒</span>Shop</Link>
+                    <Link to="/profile" className="nav-link"><span className="nav-icon">👤</span>Profile</Link>
+                    <Link to="/dashboard" className="nav-link"><span className="nav-icon">⋯</span>More</Link>
                 </nav>
 
-                <div className="duolingo-sidebar-status">
-                    <span>31°C</span>
-                    <small>Partly sunny</small>
+                <div className="duolingo-header-actions">
+                    <div className="course-switcher header-course-switcher">
+                        <button type="button" className="course-switcher-button" onClick={() => setCourseMenuOpen((open) => !open)} aria-expanded={courseMenuOpen}>
+                            <span className="course-switcher-flag">🌐</span>
+                            <span><small>MY COURSE</small><strong>{selectedLanguageName}</strong></span>
+                            <span className="course-switcher-chevron">⌄</span>
+                        </button>
+                        {courseMenuOpen && (
+                            <div className="course-menu">
+                                <strong>MY COURSES</strong>
+                                {languages.map((language) => (
+                                    <button key={language.code} type="button" className={language.code === selectedLanguageCode ? 'selected' : ''} onClick={() => changeCourse(language.code)} disabled={changingCourse}>
+                                        <span>{language.code === selectedLanguageCode ? '✓' : '+'}</span>
+                                        {language.name}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    <button type="button" className="duolingo-logout-button" onClick={logout}>
+                        Logout
+                    </button>
                 </div>
-
-                <button type="button" className="duolingo-logout-button" onClick={logout}>
-                    LOG OUT
-                </button>
-            </aside>
+            </header>
 
             <div className="duolingo-app-content">
-                <div className="course-switcher">
-                    <button type="button" className="course-switcher-button" onClick={() => setCourseMenuOpen((open) => !open)} aria-expanded={courseMenuOpen}>
-                        <span className="course-switcher-flag">🌐</span>
-                        <span><small>MY COURSE</small><strong>{selectedLanguageName}</strong></span>
-                        <span className="course-switcher-chevron">⌄</span>
-                    </button>
-                    {courseMenuOpen && (
-                        <div className="course-menu">
-                            <strong>MY COURSES</strong>
-                            {languages.map((language) => (
-                                <button key={language.code} type="button" className={language.code === selectedLanguageCode ? 'selected' : ''} onClick={() => changeCourse(language.code)} disabled={changingCourse}>
-                                    <span>{language.code === selectedLanguageCode ? '✓' : '+'}</span>
-                                    {language.name}
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                </div>
                 {activeSection === 'letters' ? renderLetters() : activeSection === 'leaderboard' ? renderLeaderboard() : activeSection === 'quests' ? renderQuests() : <main className="duolingo-reference-main">
                     <section className="duolingo-reference-content">
                         <div className="duolingo-reference-banner">

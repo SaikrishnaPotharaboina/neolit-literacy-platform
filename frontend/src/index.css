@@ -2,6 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    :root {
+        color-scheme: light;
+    }
+
+    body {
+        @apply antialiased;
+    }
+
+    button,
+    a,
+    input,
+    select,
+    textarea {
+        @apply outline-offset-2;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+        @apply outline-2 outline-emerald-500;
+    }
+}
+
+@layer components {
+    .ui-page-shell {
+        @apply min-h-screen bg-slate-950 text-slate-100;
+    }
+
+    .ui-surface {
+        @apply rounded-2xl border border-slate-200 bg-white shadow-sm;
+    }
+
+    .ui-dark-surface {
+        @apply rounded-2xl border border-slate-700/70 bg-slate-900/90 shadow-xl;
+    }
+
+    .ui-button {
+        @apply inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-800 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50;
+    }
+
+    .ui-button-primary {
+        @apply inline-flex items-center justify-center rounded-lg bg-emerald-500 px-4 py-2 text-sm font-bold text-emerald-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-50;
+    }
+
+    .ui-input {
+        @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20;
+    }
+
+    .ui-muted {
+        @apply text-sm text-slate-500;
+    }
+}
+
 :root {
     font-family: 'Noto Sans Telugu', 'Nirmala UI', 'Segoe UI', sans-serif;
     line-height: 1.5;
