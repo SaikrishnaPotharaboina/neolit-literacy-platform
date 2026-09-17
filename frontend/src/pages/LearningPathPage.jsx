@@ -992,14 +992,18 @@ export default function LearningPathPage() {
 
             {showQuitModal && (
                 <div className="duolingo-quit-overlay">
-                    <div className="duolingo-quit-modal">
-                        <div className="duolingo-quit-avatar">🙂</div>
-                        <div className="duolingo-quit-message">Wait, don’t go! You’ll lose your progress if you quit now</div>
+                    <div className="duolingo-quit-modal" role="dialog" aria-modal="true" aria-labelledby="quit-session-title">
+                        <div className="duolingo-quit-avatar" aria-hidden="true">
+                            <span>✦</span>
+                        </div>
+                        <div className="duolingo-quit-eyebrow">SESSION PAUSED</div>
+                        <h2 id="quit-session-title" className="duolingo-quit-message">Keep your learning streak alive?</h2>
+                        <p className="duolingo-quit-detail">Your progress is saved. You can return to this lesson whenever you are ready.</p>
                         <button type="button" className="duolingo-keep-button" onClick={handleKeepLearning}>
-                            KEEP LEARNING
+                            Continue learning <span aria-hidden="true">→</span>
                         </button>
                         <button type="button" className="duolingo-end-button" onClick={handleEndSession}>
-                            END SESSION
+                            End session
                         </button>
                     </div>
                 </div>

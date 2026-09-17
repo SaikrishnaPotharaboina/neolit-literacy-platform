@@ -230,7 +230,7 @@ export default function DashboardPage() {
         [assessments, activeSkill]
     )
 
-    const selectedLanguageCode = profile?.learning_language || localStorage.getItem('neolit_selected_language') || 'en'
+    const selectedLanguageCode = localStorage.getItem('neolit_selected_language') || profile?.learning_language || 'en'
     const selectedLanguageName = languages.find((item) => item.code === selectedLanguageCode)?.name || 'English'
     const activeStageCopy = lessonStageCopy[selectedLanguageCode]?.[selectedLesson] || lessonStageCopy.en[selectedLesson] || 'Talk about food'
     const selectedLessonTitle = lessonTitles[selectedLanguageCode] || lessonTitles.en

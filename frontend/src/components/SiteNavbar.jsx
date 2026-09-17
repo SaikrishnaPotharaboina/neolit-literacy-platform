@@ -36,9 +36,16 @@ export default function SiteNavbar() {
     }, [])
 
     useEffect(() => {
-        if (user?.learning_language && supportedLanguageCodes.includes(user.learning_language)) {
-            setSelectedLanguageCode(user.learning_language)
-            localStorage.setItem('neolit_selected_language', user.learning_language)
+        const syncSelectedCourse = () => {
+            const storedCourse = localStorage.getItem('neolit_selected_language')
+            if (storedCourse && supportedLanguageCodes.includes(storedCourse)) setSelectedLanguageCode(storedCourse)
+        }
+
+        window.addEventListener('neolit-course-changed', syncSelectedCourse)
+        window.addEventListener('storage', syncSelectedCourse)
+        return () => {
+            window.removeEventListener('neolit-course-changed', syncSelectedCourse)
+            window.removeEventListener('storage', syncSelectedCourse)
         }
     }, [user?.learning_language])
 
@@ -53,13 +60,7 @@ export default function SiteNavbar() {
 
         setChangingCourse(true)
         try {
-            const profile = await learningApi.getProfile()
-            const updatedProfile = await learningApi.updateProfile({
-                ...profile,
-                first_name: profile.first_name || user?.first_name || 'Learner',
-                last_name: profile.last_name || user?.last_name || '',
-                learning_language: languageCode,
-            })
+            const updatedProfile = await learningApi.updateLearningLanguage(languageCode)
 
             setProfile(updatedProfile)
             setUser((currentUser) => ({
@@ -69,6 +70,7 @@ export default function SiteNavbar() {
             }))
             localStorage.setItem('neolit_selected_language', languageCode)
             setSelectedLanguageCode(languageCode)
+            window.dispatchEvent(new Event('neolit-course-changed'))
             setCourseMenuOpen(false)
         } finally {
             setChangingCourse(false)

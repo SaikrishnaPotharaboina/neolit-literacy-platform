@@ -14,14 +14,30 @@ const UnitLessonPage = lazy(() => import('./pages/UnitLessonPage'))
 const GamesPage = lazy(() => import('./pages/GamesPage'))
 
 function PageLoading() {
-    return <div className="flex min-h-screen items-center justify-center">Loading...</div>
+    return (
+        <div className="neo-page-loader" role="status" aria-label="Loading page">
+            <div className="neo-loader-mark" aria-hidden="true">
+                <span className="neo-loader-ring neo-loader-ring-one" />
+                <span className="neo-loader-ring neo-loader-ring-two" />
+                <span className="neo-loader-orbit neo-loader-orbit-one" />
+                <span className="neo-loader-orbit neo-loader-orbit-two" />
+                <span className="neo-loader-core">N</span>
+            </div>
+            <strong className="neo-loader-wordmark">NeoLit</strong>
+            <div className="neo-loader-dots" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+            </div>
+        </div>
+    )
 }
 
 function ProtectedRoute({ children }) {
     const { user, loading } = useAuth()
 
     if (loading) {
-        return <div className="flex min-h-screen items-center justify-center">Loading...</div>
+        return <PageLoading />
     }
 
     if (!user) {
@@ -41,7 +57,7 @@ function RootRedirect() {
     const { user, loading } = useAuth()
 
     if (loading) {
-        return <div className="flex min-h-screen items-center justify-center">Loading...</div>
+        return <PageLoading />
     }
 
     return <Navigate to={user ? '/learning-path' : '/login'} replace />

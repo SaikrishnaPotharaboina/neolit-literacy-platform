@@ -406,8 +406,12 @@ export default function GamesPage() {
         }
 
         syncLanguage()
+        window.addEventListener('neolit-course-changed', syncLanguage)
         window.addEventListener('storage', syncLanguage)
-        return () => window.removeEventListener('storage', syncLanguage)
+        return () => {
+            window.removeEventListener('neolit-course-changed', syncLanguage)
+            window.removeEventListener('storage', syncLanguage)
+        }
     }, [])
 
     useEffect(() => {
