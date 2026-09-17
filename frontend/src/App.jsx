@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import SiteNavbar from './components/SiteNavbar'
 
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'))
@@ -25,7 +26,12 @@ function ProtectedRoute({ children }) {
         return <Navigate to="/login" replace />
     }
 
-    return children
+    return (
+        <>
+            <SiteNavbar />
+            {children}
+        </>
+    )
 }
 
 function RootRedirect() {

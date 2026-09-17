@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { learningApi } from '../services/learningApi'
 
@@ -172,6 +172,7 @@ export default function DashboardPage() {
     const [activeSkill, setActiveSkill] = useState('reading')
     const [selectedLesson, setSelectedLesson] = useState('reading')
     const [activeSection, setActiveSection] = useState('learn')
+    const [searchParams] = useSearchParams()
     const [lettersStarted, setLettersStarted] = useState(false)
     const [letterProgress, setLetterProgress] = useState({})
     const [quizOpen, setQuizOpen] = useState(false)
@@ -184,6 +185,13 @@ export default function DashboardPage() {
     const [activeUnit, setActiveUnit] = useState(1)
     const [sectionUnlockNotice, setSectionUnlockNotice] = useState('')
     const [seenQuestions, setSeenQuestions] = useState({})
+
+    useEffect(() => {
+        const section = searchParams.get('section')
+        if (['learn', 'letters', 'leaderboard', 'quests'].includes(section)) {
+            setActiveSection(section)
+        }
+    }, [searchParams])
     const [completedPathLessons, setCompletedPathLessons] = useState(() => {
         try {
             return JSON.parse(localStorage.getItem('neolit_completed_path_lessons') || '{}')

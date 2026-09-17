@@ -1813,30 +1813,208 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
+.site-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1100;
+    display: grid;
+    grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr);
+    align-items: center;
+    gap: 20px;
+    min-height: 72px;
+    padding: 0 5.5%;
+    background: #021e25;
+    border-bottom: 1px solid rgba(148, 205, 211, 0.16);
+}
+
+.site-navbar-brand {
+    justify-self: start;
+    color: #2563eb;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.08em;
+}
+
+.site-navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 7px;
+    border: 1px solid rgba(226, 232, 240, 0.7);
+    border-radius: 999px;
+    background: rgba(2, 30, 37, 0.78);
+}
+
+.site-navbar-link {
+    padding: 10px 18px;
+    border-radius: 999px;
+    color: rgba(241, 245, 249, 0.86);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.site-navbar-link:hover,
+.site-navbar-link.active {
+    background: #f8fafc;
+    color: #3f8f31;
+}
+
+.site-navbar-logout {
+    justify-self: end;
+    min-width: 86px;
+    padding: 10px 16px;
+    border: 1px solid rgba(226, 232, 240, 0.72);
+    border-radius: 10px;
+    background: transparent;
+    color: #f8fafc;
+    font-weight: 700;
+}
+
+.site-navbar-logout:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.site-navbar-actions {
+    display: flex;
+    align-items: center;
+    justify-self: end;
+    gap: 10px;
+}
+
+.site-course-switcher {
+    position: relative;
+}
+
+.site-course-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 145px;
+    min-height: 50px;
+    padding: 6px 12px;
+    border: 1px solid rgba(226, 232, 240, 0.72);
+    border-radius: 999px;
+    background: transparent;
+    color: #f8fafc;
+    text-align: left;
+}
+
+.site-course-button small,
+.site-course-button strong {
+    display: block;
+}
+
+.site-course-button small {
+    color: rgba(226, 232, 240, 0.72);
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+}
+
+.site-course-button strong {
+    margin-top: 2px;
+    color: #f8fafc;
+    font-size: 0.84rem;
+}
+
+.site-course-icon {
+    font-size: 1.15rem;
+}
+
+.site-course-chevron {
+    margin-left: auto;
+    color: #93c5fd;
+}
+
+.site-course-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    z-index: 1200;
+    width: 210px;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.2);
+}
+
+.site-course-menu>strong {
+    display: block;
+    padding: 8px 10px;
+    color: #6b7280;
+    font-size: 0.68rem;
+}
+
+.site-course-menu button {
+    display: block;
+    width: 100%;
+    padding: 9px 10px;
+    border-radius: 8px;
+    background: transparent;
+    color: #374151;
+    text-align: left;
+    font-weight: 700;
+}
+
+.site-course-menu button:hover,
+.site-course-menu button.selected {
+    background: #eef8e9;
+    color: #3f8f31;
+}
+
+@media (max-width: 900px) {
+    .site-navbar {
+        grid-template-columns: 1fr auto;
+        gap: 10px 14px;
+        padding: 12px 16px;
+    }
+
+    .site-navbar-links {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        justify-content: flex-start;
+        overflow-x: auto;
+        max-width: 100%;
+    }
+
+    .site-navbar-actions {
+        justify-self: end;
+    }
+}
+
+.duolingo-reference-page>.duolingo-topbar {
+    display: none;
+}
+
+.profile-header,
+.duolingo-page-shell>.duolingo-page-header {
+    display: none;
+}
+
 .duolingo-topbar {
     position: sticky;
     top: 0;
     z-index: 1000;
 
     width: 100%;
-    min-height: 72px;
+    min-height: 88px;
 
     margin: 0;
-    padding: 0 32px;
+    padding: 0 5.5%;
 
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(150px, 1fr) auto minmax(250px, 1fr);
     align-items: center;
 
-    background: #a5eb86;
-
-    border-bottom: 2px solid #58cc02;
-
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    background: #021e25;
+    border-bottom: 1px solid rgba(148, 205, 211, 0.16);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
 }
 
 .duolingo-logo {
+    justify-self: start;
     flex: 0 0 auto;
-    color: #3f8f31;
+    color: #2563eb;
     font-size: clamp(1.9rem, 2.6vw, 2.7rem);
     font-weight: 900;
     letter-spacing: -0.08em;
@@ -1847,19 +2025,14 @@
 .duolingo-top-nav {
     display: flex;
     align-items: center;
-
-    gap: 8px;
-
-    flex: 1;
-}
-
-.duolingo-top-nav {
-    display: flex;
-    align-items: center;
     justify-content: center;
+    gap: 4px;
     justify-self: center;
-    align-self: center;
-    gap: 12px;
+    padding: 8px;
+    border: 1px solid rgba(226, 232, 240, 0.7);
+    border-radius: 999px;
+    background: rgba(2, 30, 37, 0.78);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
     white-space: nowrap;
 }
 
@@ -1869,7 +2042,7 @@
     display: flex;
     align-items: center;
 
-    padding: 12px 16px;
+    padding: 11px 16px;
 
     border: none;
     border-radius: 10px;
@@ -1887,13 +2060,13 @@
 }
 
 .nav-link:hover {
-    background: #f3f4f6;
-    color: #111827;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
 }
 
 .nav-link.active {
     background: #eef8e9;
-    color: #58a946;
+    color: #3f8f31;
 }
 
 .nav-link.active::after {
@@ -1915,17 +2088,17 @@
 .nav-link:hover,
 .nav-link.active {
     opacity: 1;
-    background: #eef8e9;
-    color: #58a946;
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border-radius: 999px;
 }
 
 .duolingo-top-nav .nav-link {
-    color: #263238;
+    color: rgba(241, 245, 249, 0.86);
 }
 
-.duolingo-top-nav .nav-link:hover,
 .duolingo-top-nav .nav-link.active {
+    background: #f8fafc;
     color: #3f8f31;
 }
 
@@ -1936,10 +2109,10 @@
 .duolingo-header-actions {
     display: flex;
     align-items: center;
-
-    gap: 12px;
-
-    margin-left: auto;
+    gap: 10px;
+    justify-self: end;
+    margin-left: 0;
+    flex-shrink: 0;
 }
 
 .duolingo-mini-status {
@@ -1992,15 +2165,16 @@
 
 
 .duolingo-logout-button {
-    min-width: 86px;
-    padding: 10px 16px;
+    min-width: 90px;
+    height: 50px;
+    padding: 0 18px;
 
-    border: 1px solid #d1d5db;
-    border-radius: 10px;
+    border: 1px solid rgba(226, 232, 240, 0.72);
+    border-radius: 12px;
 
-    background: #ffffff;
+    background: transparent;
 
-    color: #374151;
+    color: #f8fafc;
 
     font-size: 14px;
     font-weight: 700;
@@ -2012,16 +2186,18 @@
 }
 
 .duolingo-logout-button:hover {
-    background: #eef8e9;
-    border-color: #58cc02;
-    color: #3f8f31;
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #93c5fd;
+    color: #ffffff;
 }
 
 @media (max-width: 760px) {
     .duolingo-topbar {
-        grid-template-columns: 1fr auto;
-        gap: 10px 14px;
-        padding: 12px 14px;
+        display: flex;
+        min-height: auto;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 14px 16px;
     }
 
     .duolingo-logo {
@@ -2029,16 +2205,15 @@
     }
 
     .duolingo-top-nav {
-        grid-column: 1 / -1;
-        grid-row: 2;
+        order: 3;
+        width: 100%;
         justify-content: flex-start;
         overflow-x: auto;
-        padding-top: 2px;
+        margin-left: 0;
     }
 
     .duolingo-header-actions {
-        grid-column: 2;
-        grid-row: 1;
+        margin-left: auto;
     }
 }
 
@@ -2054,7 +2229,7 @@
 
 .duolingo-app-content {
     flex: 1;
-    background: linear-gradient(180deg, rgba(1, 20, 24, 0.88), rgba(2, 16, 22, 0.96));
+    background: #021e25;
 }
 
 .course-switcher {
@@ -2079,20 +2254,23 @@
 }
 
 .header-course-switcher .course-switcher-button {
-    min-width: 160px;
+    min-width: 145px;
 }
 
 .course-switcher-button {
     display: flex;
     align-items: center;
-    gap: 10px;
-    min-width: 170px;
-    padding: 9px 12px;
-    border: 1px solid rgba(148, 205, 211, 0.16);
-    border-radius: 12px;
-    background: #183039;
-    color: #edf8f8;
+    gap: 8px;
+    min-width: 145px;
+    min-height: 50px;
+    padding: 6px 12px;
+    border: 1px solid rgba(226, 232, 240, 0.72);
+    border-radius: 999px;
+    background: transparent;
+    color: #f8fafc;
     text-align: left;
+    box-shadow: 0 3px 8px rgba(15, 23, 42, 0.06);
+    cursor: pointer;
 }
 
 .course-switcher-button small,
@@ -2101,23 +2279,24 @@
 }
 
 .course-switcher-button small {
-    color: rgba(203, 232, 234, 0.66);
-    font-size: 0.62rem;
+    color: rgba(226, 232, 240, 0.72);
+    font-size: 0.58rem;
     letter-spacing: 0.08em;
 }
 
 .course-switcher-button strong {
     margin-top: 2px;
-    font-size: 0.9rem;
+    font-size: 0.84rem;
+    color: #f8fafc;
 }
 
 .course-switcher-flag {
-    font-size: 1.35rem;
+    font-size: 1.15rem;
 }
 
 .course-switcher-chevron {
     margin-left: auto;
-    color: #8ae6c2;
+    color: #93c5fd;
     font-size: 1.1rem;
 }
 
@@ -2346,6 +2525,95 @@
 
 .letters-progress-summary i {
     display: block;
+
+    .site-navbar-actions {
+        display: flex;
+        align-items: center;
+        justify-self: end;
+        gap: 10px;
+    }
+
+    .site-course-switcher {
+        position: relative;
+    }
+
+    .site-course-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 145px;
+        min-height: 50px;
+        padding: 6px 12px;
+        border: 1px solid rgba(226, 232, 240, 0.72);
+        border-radius: 999px;
+        background: transparent;
+        color: #f8fafc;
+        text-align: left;
+    }
+
+    .site-course-button small,
+    .site-course-button strong {
+        display: block;
+    }
+
+    .site-course-button small {
+        color: rgba(226, 232, 240, 0.72);
+        font-size: 0.58rem;
+        letter-spacing: 0.08em;
+    }
+
+    .site-course-button strong {
+        margin-top: 2px;
+        color: #f8fafc;
+        font-size: 0.84rem;
+    }
+
+    .site-course-icon {
+        font-size: 1.15rem;
+    }
+
+    .site-course-chevron {
+        margin-left: auto;
+        color: #93c5fd;
+    }
+
+    .site-course-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        z-index: 1200;
+        width: 210px;
+        padding: 8px;
+        border: 1px solid #d1d5db;
+        border-radius: 14px;
+        background: #ffffff;
+        box-shadow: 0 16px 30px rgba(15, 23, 42, 0.2);
+    }
+
+    .site-course-menu>strong {
+        display: block;
+        padding: 8px 10px;
+        color: #6b7280;
+        font-size: 0.68rem;
+    }
+
+    .site-course-menu button {
+        display: block;
+        width: 100%;
+        padding: 9px 10px;
+        border-radius: 8px;
+        background: transparent;
+        color: #374151;
+        text-align: left;
+        font-weight: 700;
+    }
+
+    .site-course-menu button:hover,
+    .site-course-menu button.selected {
+        background: #eef8e9;
+        color: #3f8f31;
+    }
+
     height: 100%;
     border-radius: inherit;
     background: #6fe3a1;
