@@ -17,7 +17,7 @@ const navigation = [
 const supportedLanguageCodes = ['en', 'hi', 'kn', 'ta', 'te']
 
 export default function SiteNavbar() {
-    const { user, logout } = useAuth()
+    const { user, logout, setUser } = useAuth()
     const location = useLocation()
     const [languages, setLanguages] = useState([])
     const [profile, setProfile] = useState(null)
@@ -54,16 +54,22 @@ export default function SiteNavbar() {
         setChangingCourse(true)
         try {
             const profile = await learningApi.getProfile()
-            await learningApi.updateProfile({
+            const updatedProfile = await learningApi.updateProfile({
                 ...profile,
                 first_name: profile.first_name || user?.first_name || 'Learner',
                 last_name: profile.last_name || user?.last_name || '',
                 learning_language: languageCode,
             })
+
+            setProfile(updatedProfile)
+            setUser((currentUser) => ({
+                ...(currentUser || {}),
+                ...updatedProfile,
+                learning_language: updatedProfile.learning_language,
+            }))
             localStorage.setItem('neolit_selected_language', languageCode)
             setSelectedLanguageCode(languageCode)
             setCourseMenuOpen(false)
-            window.location.reload()
         } finally {
             setChangingCourse(false)
         }

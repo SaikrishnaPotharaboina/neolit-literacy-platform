@@ -157,7 +157,7 @@ function AssessmentCard({ assessment, levelName, active, onSelect }) {
 }
 
 export default function DashboardPage() {
-    const { user, logout } = useAuth()
+    const { user, logout, setUser } = useAuth()
     const [languages, setLanguages] = useState([])
     const [levels, setLevels] = useState([])
     const [assessments, setAssessments] = useState([])
@@ -394,7 +394,14 @@ export default function DashboardPage() {
                 last_name: profile.last_name || user?.last_name || '',
                 learning_language: languageCode,
             })
+
             setProfile(updatedProfile)
+            setUser((currentUser) => ({
+                ...(currentUser || {}),
+                ...updatedProfile,
+                learning_language: updatedProfile.learning_language,
+                native_language: updatedProfile.native_language,
+            }))
             localStorage.setItem('neolit_selected_language', languageCode)
             const refreshedDashboard = await learningApi.getDashboardBootstrap()
             setAssessments(refreshedDashboard.assessments)

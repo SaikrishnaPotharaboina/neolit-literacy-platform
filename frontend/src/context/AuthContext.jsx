@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { authApi } from '../services/authApi'
+import { learningApi } from '../services/learningApi'
 
 const AuthContext = createContext(null)
 
@@ -7,6 +8,32 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
     const [token, setToken] = useState(localStorage.getItem('neolit_token'))
     const [loading, setLoading] = useState(true)
+
+    const mergeProfileIntoUser = (profile, currentUser = user) => {
+        if (!profile && !currentUser) return null
+
+        const merged = { ...(currentUser || {}), ...(profile || {}) }
+
+        if (profile?.learning_language) {
+            merged.learning_language = profile.learning_language
+            localStorage.setItem('neolit_selected_language', profile.learning_language)
+        }
+
+        return merged
+    }
+
+    const refreshProfile = async (currentToken = token) => {
+        if (!currentToken) return null
+
+        try {
+            const profile = await learningApi.getProfile()
+            const nextUser = mergeProfileIntoUser(profile, user)
+            setUser(nextUser)
+            return profile
+        } catch (error) {
+            return null
+        }
+    }
 
     useEffect(() => {
         const bootstrapAuth = async () => {
@@ -17,7 +44,11 @@ export function AuthProvider({ children }) {
 
             try {
                 const response = await authApi.getCurrentUser(token)
-                setUser(response)
+                const mergedUser = mergeProfileIntoUser(response, response)
+                setUser(mergedUser)
+
+                const profile = await learningApi.getProfile()
+                setUser(mergeProfileIntoUser(profile, mergedUser))
             } catch (error) {
                 localStorage.removeItem('neolit_token')
                 setToken(null)
@@ -34,7 +65,8 @@ export function AuthProvider({ children }) {
         const data = await authApi.login(payload)
         localStorage.setItem('neolit_token', data.access_token)
         setToken(data.access_token)
-        setUser(data.user)
+        setUser(mergeProfileIntoUser(data.user, data.user))
+        await refreshProfile(data.access_token)
         return data
     }
 
@@ -53,7 +85,7 @@ export function AuthProvider({ children }) {
     }
 
     const value = useMemo(
-        () => ({ user, token, loading, login, register, logout, setUser }),
+        () => ({ user, token, loading, login, register, logout, setUser, refreshProfile }),
         [user, token, loading]
     )
 
