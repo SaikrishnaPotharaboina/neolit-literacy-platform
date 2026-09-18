@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "10080"))
     CORS_ORIGINS: str = os.getenv(
         "CORS_ORIGINS",
-        "https://neolit-literacy-platform.vercel.app,http://localhost:5173,http://localhost:4173",
+        "https://neolit-literacy-platform.vercel.app,http://localhost:5173,http://localhost:4173,http://127.0.0.1:5173,http://127.0.0.1:4173",
     )
 
     model_config = SettingsConfigDict(
