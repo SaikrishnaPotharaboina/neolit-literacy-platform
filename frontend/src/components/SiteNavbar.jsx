@@ -10,7 +10,6 @@ const navigation = [
     { label: 'Leaderboard', to: '/dashboard?section=leaderboard' },
     { label: 'Quests', to: '/dashboard?section=quests' },
     { label: 'Games', to: '/games' },
-    { label: 'Progress', to: '/dashboard?section=progress' },
     { label: 'Profile', to: '/profile' },
 ]
 
@@ -86,7 +85,7 @@ export default function SiteNavbar() {
         }
     }
 
-    const localizedNavigation = navigation.map((item) => ({ ...item, label: uiCopy[item.to.includes('learning-path') ? 'home' : item.to.includes('section=learn') ? 'learn' : item.to.includes('section=letters') ? 'letters' : item.to.includes('section=leaderboard') ? 'leaderboard' : item.to.includes('section=quests') ? 'quests' : item.to.includes('/games') ? 'games' : item.to.includes('progress') ? 'progress' : 'profile'] }))
+    const localizedNavigation = navigation.map((item) => ({ ...item, label: uiCopy[item.to.includes('learning-path') ? 'home' : item.to.includes('section=learn') ? 'learn' : item.to.includes('section=letters') ? 'letters' : item.to.includes('section=leaderboard') ? 'leaderboard' : item.to.includes('section=quests') ? 'quests' : item.to.includes('/games') ? 'games' : 'profile'] }))
 
     return (
         <header className="site-navbar">
