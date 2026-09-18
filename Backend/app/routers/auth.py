@@ -125,8 +125,6 @@ def reset_password(payload: PasswordReset, db: Session = Depends(get_db)):
 def logout_user(response: Response):
     response.delete_cookie(
         key="neolit_access_token",
-        max_age=0,
-        expires=0,
         secure=True,
         samesite="none",
         path="/",
