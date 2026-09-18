@@ -12,7 +12,15 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="NeoLit API", version="1.0.0")
 
-cors_origins = [origin.strip() for origin in settings.CORS_ORIGINS.split(",") if origin.strip()]
+configured_origins = [origin.strip() for origin in settings.CORS_ORIGINS.split(",") if origin.strip()]
+required_frontend_origins = [
+    "https://neolit-literacy-platform.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:4173",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:4173",
+]
+cors_origins = list(dict.fromkeys(configured_origins + required_frontend_origins))
 
 
 @app.exception_handler(Exception)
