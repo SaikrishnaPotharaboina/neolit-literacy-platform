@@ -87,6 +87,7 @@ export function AuthProvider({ children }) {
         try {
             await authApi.logout(token)
         } finally {
+            document.cookie = 'neolit_access_token=; Max-Age=0; path=/; SameSite=None; Secure'
             localStorage.removeItem('neolit_token')
             setToken(null)
             setUser(null)
