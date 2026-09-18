@@ -52,8 +52,13 @@ export function AuthProvider({ children }) {
                 const mergedUser = mergeProfileIntoUser(response, response)
                 setUser(mergedUser)
 
-                const profile = await learningApi.getProfile()
-                setUser(mergeProfileIntoUser(profile, mergedUser))
+                try {
+                    const profile = await learningApi.getProfile()
+                    setUser(mergeProfileIntoUser(profile, mergedUser))
+                } catch {
+                    // Keep the authenticated session when profile loading is temporarily unavailable.
+                    setUser(mergedUser)
+                }
             } catch (error) {
                 localStorage.removeItem('neolit_token')
                 setToken(null)
