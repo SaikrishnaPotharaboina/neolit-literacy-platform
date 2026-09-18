@@ -84,13 +84,17 @@ export function AuthProvider({ children }) {
     }
 
     const logout = async () => {
+        const logoutToken = token
+
+        document.cookie = 'neolit_access_token=; Max-Age=0; path=/; SameSite=None; Secure'
+        localStorage.removeItem('neolit_token')
+        setToken(null)
+        setUser(null)
+
         try {
-            await authApi.logout(token)
-        } finally {
-            document.cookie = 'neolit_access_token=; Max-Age=0; path=/; SameSite=None; Secure'
-            localStorage.removeItem('neolit_token')
-            setToken(null)
-            setUser(null)
+            await authApi.logout(logoutToken)
+        } catch {
+            // Local logout is complete even if the server is temporarily unavailable.
         }
     }
 
