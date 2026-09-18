@@ -62,7 +62,7 @@ export default function ProfilePage() {
                 native_language: safeProfile.native_language || '',
                 learning_language: safeProfile.learning_language || 'en',
                 gender: safeProfile.gender || '',
-                current_level_id: safeProfile.current_level_id || 1,
+                current_level_id: safeProfile.current_level_id || null,
             })
             setProfile(updated)
             setMessage('Profile updated successfully.')

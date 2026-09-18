@@ -204,10 +204,13 @@ def get_profile(current_user: User = Depends(get_current_user), db: Session = De
 @router.put("/users/me", response_model=ProfileResponse)
 def update_profile(payload: ProfileUpdate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     profile = current_user.profile or LearnerProfile(user_id=current_user.id)
+    selected_level_id = payload.current_level_id
+    if selected_level_id is not None and not db.query(Level.id).filter(Level.id == selected_level_id).first():
+        selected_level_id = profile.current_level_id
     current_user.first_name, current_user.last_name = payload.first_name.strip(), payload.last_name.strip()
     for field, value in payload.model_dump().items():
         if field not in {"first_name", "last_name"}:
-            setattr(profile, field, value)
+            setattr(profile, field, selected_level_id if field == "current_level_id" else value)
     db.add(profile)
     try:
         db.commit()
