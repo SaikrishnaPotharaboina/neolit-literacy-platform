@@ -5,12 +5,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.config import settings
+from app.database import ensure_schema
 from app.routers import auth
 from app.routers import learning
 
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="NeoLit API", version="1.0.0")
+
+
+@app.on_event("startup")
+def prepare_database():
+    ensure_schema()
 
 configured_origins = [origin.strip() for origin in settings.CORS_ORIGINS.split(",") if origin.strip()]
 required_frontend_origins = [
