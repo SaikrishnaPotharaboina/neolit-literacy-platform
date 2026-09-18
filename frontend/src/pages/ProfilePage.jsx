@@ -5,7 +5,7 @@ import { learningApi } from '../services/learningApi'
 import { languages } from '../data/languages'
 
 export default function ProfilePage() {
-    const { user } = useAuth()
+    const { user, setUser } = useAuth()
     const navigate = useNavigate()
     const [levels, setLevels] = useState([])
     const [profile, setProfile] = useState(null)
@@ -18,8 +18,8 @@ export default function ProfilePage() {
         first_name: user?.first_name || '',
         last_name: user?.last_name || '',
         age: user?.age || '',
-        native_language: user?.native_language || '',
-        learning_language: user?.learning_language || 'en',
+        native_language: user?.native_language || localStorage.getItem('neolit_native_language') || '',
+        learning_language: user?.learning_language || localStorage.getItem('neolit_selected_language') || 'en',
         gender: user?.gender || '',
         current_level_id: user?.current_level_id || levels[0]?.id || 1,
     }
@@ -32,6 +32,9 @@ export default function ProfilePage() {
                     learningApi.getLevels(),
                 ])
                 setProfile(profileData)
+                if (profileData.native_language && !localStorage.getItem('neolit_native_language')) {
+                    localStorage.setItem('neolit_native_language', profileData.native_language)
+                }
                 setLevels(levelData)
             } catch (requestError) {
                 const detail = requestError.response?.data?.detail
@@ -65,6 +68,12 @@ export default function ProfilePage() {
                 current_level_id: safeProfile.current_level_id || null,
             })
             setProfile(updated)
+            setUser((currentUser) => ({ ...(currentUser || {}), ...updated }))
+            if (updated.native_language) localStorage.setItem('neolit_native_language', updated.native_language)
+            if (updated.learning_language) {
+                localStorage.setItem('neolit_selected_language', updated.learning_language)
+                window.dispatchEvent(new Event('neolit-course-changed'))
+            }
             setMessage('Profile updated successfully.')
         } catch (requestError) {
             const detail = requestError.response?.data?.detail

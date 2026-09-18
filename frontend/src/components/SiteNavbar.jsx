@@ -57,7 +57,7 @@ export default function SiteNavbar() {
         }
     }, [user?.learning_language])
 
-    const nativeLanguage = profile?.native_language || user?.native_language || 'English'
+    const nativeLanguage = localStorage.getItem('neolit_native_language') || profile?.native_language || user?.native_language || 'English'
     const uiCopy = navbarUiCopy[nativeLanguageCodes[nativeLanguage] || 'en'] || navbarUiCopy.en
     const selectedLanguageName = languages.find((language) => language.code === selectedLanguageCode)?.name || (selectedLanguageCode === 'en' ? 'English' : selectedLanguageCode.toUpperCase())
 

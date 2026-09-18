@@ -14,9 +14,14 @@ export function AuthProvider({ children }) {
 
         const merged = { ...(currentUser || {}), ...(profile || {}) }
 
-        if (profile?.learning_language) {
+        if (profile?.learning_language && !localStorage.getItem('neolit_selected_language')) {
             merged.learning_language = profile.learning_language
             localStorage.setItem('neolit_selected_language', profile.learning_language)
+        }
+
+        if (profile?.learning_language) merged.learning_language = profile.learning_language
+        if (profile?.native_language && !localStorage.getItem('neolit_native_language')) {
+            localStorage.setItem('neolit_native_language', profile.native_language)
         }
 
         return merged

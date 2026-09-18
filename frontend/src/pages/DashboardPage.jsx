@@ -294,7 +294,7 @@ export default function DashboardPage() {
 
     const selectedLanguageCode = localStorage.getItem('neolit_selected_language') || profile?.learning_language || 'en'
     const selectedLanguageName = languages.find((item) => item.code === selectedLanguageCode)?.name || 'English'
-    const nativeLanguageName = profile?.native_language || user?.native_language || 'English'
+    const nativeLanguageName = localStorage.getItem('neolit_native_language') || profile?.native_language || user?.native_language || 'English'
     const nativeLanguageCode = nativeLanguageCodes[nativeLanguageName] || 'en'
     const uiCopy = dashboardUiCopy[nativeLanguageCode] || dashboardUiCopy.en
     const activeStageCopy = lessonStageCopy[selectedLanguageCode]?.[selectedLesson] || lessonStageCopy.en[selectedLesson] || 'Talk about food'
