@@ -36,6 +36,12 @@ export default function RegisterPage() {
     const handleSubmit = async (event) => {
         event.preventDefault()
         setError('')
+
+        if (form.password.length < 8) {
+            setError('Password must be at least 8 characters long.')
+            return
+        }
+
         setLoading(true)
 
         const payload = {
@@ -50,7 +56,12 @@ export default function RegisterPage() {
         } catch (err) {
             const detail = err.response?.data?.detail
             const message = Array.isArray(detail)
-                ? detail.map((item) => (typeof item === 'string' ? item : item?.msg || item?.error || JSON.stringify(item))).join(', ')
+                ? detail.map((item) => {
+                    const text = typeof item === 'string' ? item : item?.msg || item?.error || JSON.stringify(item)
+                    return text.toLowerCase().includes('at least 8') || text.toLowerCase().includes('8 characters')
+                        ? 'Password must be at least 8 characters long.'
+                        : text
+                }).join(', ')
                 : typeof detail === 'object' && detail
                     ? detail.msg || detail.error || JSON.stringify(detail)
                     : detail ||
@@ -62,6 +73,21 @@ export default function RegisterPage() {
             setLoading(false)
         }
     }
+
+    const passwordChecks = [
+        form.password.length >= 8,
+        /[A-Z]/.test(form.password),
+        /[a-z]/.test(form.password),
+        /\d/.test(form.password),
+        /[^A-Za-z0-9]/.test(form.password),
+    ].filter(Boolean).length
+    const passwordStrength = !form.password
+        ? { label: 'Enter a password', width: '0%', color: '#cbd5e1' }
+        : passwordChecks >= 4
+            ? { label: 'Strong', width: '100%', color: '#22c55e' }
+            : passwordChecks >= 2
+                ? { label: 'Medium', width: '65%', color: '#f59e0b' }
+                : { label: 'Weak', width: '30%', color: '#ef4444' }
 
     return (
         <div className="neo-auth-page single-form-page">
@@ -133,8 +159,8 @@ export default function RegisterPage() {
                         </label>
 
                         <div className="neo-strength">
-                            <div className="neo-strength-bar"><span /></div>
-                            <small>Password strength: Strong</small>
+                            <div className="neo-strength-bar"><span style={{ width: passwordStrength.width, background: passwordStrength.color }} /></div>
+                            <small>Password strength: {passwordStrength.label}</small>
                         </div>
 
                         <div className="neo-two-col">
