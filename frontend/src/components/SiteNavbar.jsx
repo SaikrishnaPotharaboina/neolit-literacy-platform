@@ -15,6 +15,14 @@ const navigation = [
 ]
 
 const supportedLanguageCodes = ['en', 'hi', 'kn', 'ta', 'te']
+const nativeLanguageCodes = { English: 'en', Hindi: 'hi', Kannada: 'kn', Tamil: 'ta', Telugu: 'te' }
+const navbarUiCopy = {
+    en: { home: 'Home', learn: 'Learn', letters: 'Letters', leaderboard: 'Leaderboard', quests: 'Quests', games: 'Games', progress: 'Progress', profile: 'Profile', native: 'NATIVE', learning: 'LEARNING', myCourses: 'MY COURSES', logout: 'Logout' },
+    hi: { home: 'होम', learn: 'सीखें', letters: 'अक्षर', leaderboard: 'लीडरबोर्ड', quests: 'अभियान', games: 'गेम्स', progress: 'प्रगति', profile: 'प्रोफ़ाइल', native: 'मातृभाषा', learning: 'सीखने की भाषा', myCourses: 'मेरे कोर्स', logout: 'लॉग आउट' },
+    kn: { home: 'ಮುಖಪುಟ', learn: 'ಕಲಿಯಿರಿ', letters: 'ಅಕ್ಷರಗಳು', leaderboard: 'ಮುನ್ನಡೆ ಪಟ್ಟಿ', quests: 'ಗುರಿಗಳು', games: 'ಆಟಗಳು', progress: 'ಪ್ರಗತಿ', profile: 'ಪ್ರೊಫೈಲ್', native: 'ಮಾತೃಭಾಷೆ', learning: 'ಕಲಿಯುವ ಭಾಷೆ', myCourses: 'ನನ್ನ ಕೋರ್ಸ್‌ಗಳು', logout: 'ಲಾಗ್ ಔಟ್' },
+    ta: { home: 'முகப்பு', learn: 'கற்க', letters: 'எழுத்துகள்', leaderboard: 'முன்னணி பட்டியல்', quests: 'சவால்கள்', games: 'விளையாட்டுகள்', progress: 'முன்னேற்றம்', profile: 'சுயவிவரம்', native: 'தாய்மொழி', learning: 'கற்கும் மொழி', myCourses: 'என் பாடநெறிகள்', logout: 'வெளியேறு' },
+    te: { home: 'హోమ్', learn: 'నేర్చుకోండి', letters: 'అక్షరాలు', leaderboard: 'లీడర్‌బోర్డ్', quests: 'లక్ష్యాలు', games: 'గేమ్స్', progress: 'పురోగతి', profile: 'ప్రొఫైల్', native: 'మాతృభాష', learning: 'నేర్చుకునే భాష', myCourses: 'నా కోర్సులు', logout: 'లాగ్ అవుట్' },
+}
 
 export default function SiteNavbar() {
     const { user, logout, setUser } = useAuth()
@@ -49,8 +57,9 @@ export default function SiteNavbar() {
         }
     }, [user?.learning_language])
 
-    const selectedLanguageName = languages.find((language) => language.code === selectedLanguageCode)?.name || (selectedLanguageCode === 'en' ? 'English' : selectedLanguageCode.toUpperCase())
     const nativeLanguage = profile?.native_language || user?.native_language || 'English'
+    const uiCopy = navbarUiCopy[nativeLanguageCodes[nativeLanguage] || 'en'] || navbarUiCopy.en
+    const selectedLanguageName = languages.find((language) => language.code === selectedLanguageCode)?.name || (selectedLanguageCode === 'en' ? 'English' : selectedLanguageCode.toUpperCase())
 
     const changeCourse = async (languageCode) => {
         if (languageCode === selectedLanguageCode) {
@@ -77,11 +86,13 @@ export default function SiteNavbar() {
         }
     }
 
+    const localizedNavigation = navigation.map((item) => ({ ...item, label: uiCopy[item.to.includes('learning-path') ? 'home' : item.to.includes('section=learn') ? 'learn' : item.to.includes('section=letters') ? 'letters' : item.to.includes('section=leaderboard') ? 'leaderboard' : item.to.includes('section=quests') ? 'quests' : item.to.includes('/games') ? 'games' : item.to.includes('progress') ? 'progress' : 'profile'] }))
+
     return (
         <header className="site-navbar">
             <Link to="/learning-path" className="site-navbar-brand">NeoLit</Link>
             <nav className="site-navbar-links" aria-label="Main navigation">
-                {navigation.map((item) => (
+                {localizedNavigation.map((item) => (
                     <Link
                         key={item.to}
                         to={item.to}
@@ -94,18 +105,18 @@ export default function SiteNavbar() {
             <div className="site-navbar-actions">
                 <div className="site-language-pair">
                     <div className="site-language-card">
-                        <small>NATIVE</small>
+                        <small>{uiCopy.native}</small>
                         <strong>{nativeLanguage}</strong>
                     </div>
                     <div className="site-course-switcher">
                         <button type="button" className="site-course-button" onClick={() => setCourseMenuOpen((open) => !open)} aria-expanded={courseMenuOpen}>
                             <span className="site-course-icon">🌐</span>
-                            <span><small>LEARNING</small><strong>{selectedLanguageName}</strong></span>
+                            <span><small>{uiCopy.learning}</small><strong>{selectedLanguageName}</strong></span>
                             <span className="site-course-chevron">⌄</span>
                         </button>
                         {courseMenuOpen && (
                             <div className="site-course-menu">
-                                <strong>MY COURSES</strong>
+                                <strong>{uiCopy.myCourses}</strong>
                                 {languages.map((language) => (
                                     <button key={language.code} type="button" disabled={changingCourse} className={language.code === selectedLanguageCode ? 'selected' : ''} onClick={() => changeCourse(language.code)}>
                                         {language.name}
@@ -115,7 +126,7 @@ export default function SiteNavbar() {
                         )}
                     </div>
                 </div>
-                <button type="button" className="site-navbar-logout" onClick={logout}>Logout</button>
+                <button type="button" className="site-navbar-logout" onClick={logout}>{uiCopy.logout}</button>
             </div>
         </header>
     )

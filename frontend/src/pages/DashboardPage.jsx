@@ -5,13 +5,21 @@ import { learningApi } from '../services/learningApi'
 
 const skills = ['reading', 'writing', 'comprehension']
 const supportedLanguageCodes = ['en', 'hi', 'kn', 'ta', 'te']
-const leaderboardRows = [
-    { name: 'Aarav', xp: 1840, streak: 18 },
-    { name: 'Meera', xp: 1620, streak: 14 },
-    { name: 'You', xp: 0, streak: 0, current: true },
-    { name: 'Rohan', xp: 1110, streak: 7 },
-    { name: 'Ananya', xp: 980, streak: 6 },
-]
+const nativeLanguageCodes = {
+    English: 'en',
+    Hindi: 'hi',
+    Kannada: 'kn',
+    Tamil: 'ta',
+    Telugu: 'te',
+}
+
+const dashboardUiCopy = {
+    en: { learn: 'Learn', letters: 'Letters', leaderboard: 'Leaderboard', quests: 'Quests', shop: 'Shop', profile: 'Profile', more: 'More', logout: 'Logout', myCourse: 'MY COURSE', myCourses: 'MY COURSES', native: 'NATIVE', learning: 'LEARNING' },
+    hi: { learn: 'सीखें', letters: 'अक्षर', leaderboard: 'लीडरबोर्ड', quests: 'अभियान', shop: 'दुकान', profile: 'प्रोफ़ाइल', more: 'और', logout: 'लॉग आउट', myCourse: 'मेरा कोर्स', myCourses: 'मेरे कोर्स', native: 'मातृभाषा', learning: 'सीखने की भाषा' },
+    kn: { learn: 'ಕಲಿಯಿರಿ', letters: 'ಅಕ್ಷರಗಳು', leaderboard: 'ಮುನ್ನಡೆ ಪಟ್ಟಿ', quests: 'ಗುರಿಗಳು', shop: 'ಅಂಗಡಿ', profile: 'ಪ್ರೊಫೈಲ್', more: 'ಇನ್ನಷ್ಟು', logout: 'ಲಾಗ್ ಔಟ್', myCourse: 'ನನ್ನ ಕೋರ್ಸ್', myCourses: 'ನನ್ನ ಕೋರ್ಸ್‌ಗಳು', native: 'ಮಾತೃಭಾಷೆ', learning: 'ಕಲಿಯುವ ಭಾಷೆ' },
+    ta: { learn: 'கற்க', letters: 'எழுத்துகள்', leaderboard: 'முன்னணி பட்டியல்', quests: 'சவால்கள்', shop: 'கடை', profile: 'சுயவிவரம்', more: 'மேலும்', logout: 'வெளியேறு', myCourse: 'என் பாடநெறி', myCourses: 'என் பாடநெறிகள்', native: 'தாய்மொழி', learning: 'கற்கும் மொழி' },
+    te: { learn: 'నేర్చుకోండి', letters: 'అక్షరాలు', leaderboard: 'లీడర్‌బోర్డ్', quests: 'లక్ష్యాలు', shop: 'దుకాణం', profile: 'ప్రొఫైల్', more: 'మరిన్ని', logout: 'లాగ్ అవుట్', myCourse: 'నా కోర్సు', myCourses: 'నా కోర్సులు', native: 'మాతృభాష', learning: 'నేర్చుకునే భాష' },
+}
 const lessonStages = [
     { id: 'reading', icon: '🧠', label: 'Reading' },
     { id: 'writing', icon: '💡', label: 'Writing' },
@@ -60,6 +68,52 @@ const lessonTitles = {
     te: 'ప్రాథమిక వాక్యాలను రూపొందించండి',
 }
 
+const questCopy = {
+    en: {
+        title: 'Quests',
+        subtitle: 'Small goals that turn practice into progress.',
+        lessons: ['Complete 3 lessons', 'Keep your daily goal moving'],
+        xp: ['Earn 30 XP', 'Build your weekly momentum'],
+        streak: ['Practice your streak', (days) => `${days} days in a row`],
+    },
+    hi: {
+        title: 'अभियान',
+        subtitle: 'छोटे लक्ष्य अभ्यास को प्रगति में बदलते हैं।',
+        lessons: ['3 पाठ पूरे करें', 'अपना दैनिक लक्ष्य पूरा करें'],
+        xp: ['30 XP कमाएँ', 'साप्ताहिक प्रगति बनाएँ'],
+        streak: ['अपनी स्ट्रीक का अभ्यास करें', (days) => `${days} दिन लगातार`],
+    },
+    kn: {
+        title: 'ಗುರಿಗಳು',
+        subtitle: 'ಸಣ್ಣ ಗುರಿಗಳು ಅಭ್ಯಾಸವನ್ನು ಪ್ರಗತಿಯಾಗಿ ಬದಲಿಸುತ್ತವೆ.',
+        lessons: ['3 ಪಾಠಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ', 'ನಿಮ್ಮ ದೈನಂದಿನ ಗುರಿಯನ್ನು ಮುಂದುವರಿಸಿ'],
+        xp: ['30 XP ಗಳಿಸಿ', 'ನಿಮ್ಮ ವಾರದ ಪ್ರಗತಿಯನ್ನು ಬೆಳೆಸಿ'],
+        streak: ['ನಿಮ್ಮ ಸ್ಟ್ರೀಕ್ ಅಭ್ಯಾಸ ಮಾಡಿ', (days) => `${days} ದಿನಗಳು ಸತತವಾಗಿ`],
+    },
+    ta: {
+        title: 'சவால்கள்',
+        subtitle: 'சிறிய இலக்குகள் பயிற்சியை முன்னேற்றமாக மாற்றும்.',
+        lessons: ['3 பாடங்களை முடிக்கவும்', 'உங்கள் தினசரி இலக்கை தொடரவும்'],
+        xp: ['30 XP பெறுங்கள்', 'வாராந்திர முன்னேற்றத்தை உருவாக்குங்கள்'],
+        streak: ['உங்கள் தொடர்ச்சியைப் பயிற்சி செய்யுங்கள்', (days) => `${days} நாட்கள் தொடர்ந்து`],
+    },
+    te: {
+        title: 'లక్ష్యాలు',
+        subtitle: 'చిన్న లక్ష్యాలు అభ్యాసాన్ని పురోగతిగా మారుస్తాయి.',
+        lessons: ['3 పాఠాలను పూర్తి చేయండి', 'మీ రోజువారీ లక్ష్యాన్ని కొనసాగించండి'],
+        xp: ['30 XP సంపాదించండి', 'వారపు పురోగతిని పెంచండి'],
+        streak: ['మీ స్ట్రీక్‌ను సాధన చేయండి', (days) => `${days} రోజులు వరుసగా`],
+    },
+}
+
+const leaderboardCopy = {
+    en: { title: 'Leaderboards', subtitle: 'Compete with learners and keep your streak moving.', weekly: 'Weekly', monthly: 'Monthly', note: (period, language) => `Your ${period.toLowerCase()} ${language} group, updated from your lesson progress.` },
+    hi: { title: 'लीडरबोर्ड', subtitle: 'अन्य शिक्षार्थियों के साथ प्रतिस्पर्धा करें और अपनी स्ट्रीक बनाए रखें।', weekly: 'साप्ताहिक', monthly: 'मासिक', note: (period, language) => `${language} का ${period.toLowerCase()} समूह, आपकी प्रगति के अनुसार अपडेट किया गया।` },
+    kn: { title: 'ಮುನ್ನಡೆ ಪಟ್ಟಿ', subtitle: 'ಇತರ ಕಲಿಯುವವರೊಂದಿಗೆ ಸ್ಪರ್ಧಿಸಿ ಮತ್ತು ನಿಮ್ಮ ಸ್ಟ್ರೀಕ್ ಮುಂದುವರಿಸಿ.', weekly: 'ವಾರದ', monthly: 'ಮಾಸಿಕ', note: (period, language) => `${language} ${period.toLowerCase()} ಗುಂಪು, ನಿಮ್ಮ ಪಾಠದ ಪ್ರಗತಿಯ ಆಧಾರದ ಮೇಲೆ ನವೀಕರಿಸಲಾಗಿದೆ.` },
+    ta: { title: 'முன்னணி பட்டியல்', subtitle: 'கற்றவர்களுடன் போட்டியிட்டு உங்கள் தொடர்ச்சியைத் தொடருங்கள்.', weekly: 'வாராந்திர', monthly: 'மாதாந்திர', note: (period, language) => `${language} ${period.toLowerCase()} குழு, உங்கள் பாட முன்னேற்றத்தின் அடிப்படையில் புதுப்பிக்கப்பட்டது.` },
+    te: { title: 'లీడర్‌బోర్డ్', subtitle: 'ఇతర అభ్యాసకులతో పోటీ పడి మీ స్ట్రీక్‌ను కొనసాగించండి.', weekly: 'వారపు', monthly: 'నెలవారీ', note: (period, language) => `${language} ${period.toLowerCase()} సమూహం, మీ పాఠాల పురోగతి ఆధారంగా నవీకరించబడింది.` },
+}
+
 const courseUnits = {
     en: [
         ['Build basic sentences', 'Greetings and everyday words'],
@@ -77,7 +131,7 @@ const courseUnits = {
     te: [['ప్రాథమిక వాక్యాలను రూపొందించండి', 'శుభాకాంక్షలు మరియు రోజువారీ పదాలు'], ['మీ రోజు గురించి మాట్లాడండి', 'సులభమైన దినచర్యలు మరియు క్రియలు'], ['ఆహారం మరియు అభిరుచులు', 'ఆహారం ఆర్డర్ చేయడం నేర్చుకోండి'], ['నిజమైన సంభాషణలు చేయండి', 'మీ నైపుణ్యాలను కలపండి'], ['ప్రయాణం మరియు దిశలు', 'సహాయం అడిగి, సూచనలను అనుసరించండి'], ['పరివారము మరియు సంబంధాలు', 'మీ చిన్నచిన్నవారిని గురించి మాట్లాడండి'], ['ప్లాన్లు మరియు లక్ష్యాలు', 'తదుపరి పనిని పంచుకోండి'], ['రోజువారీ నైపుణ్యం', 'మీ భాషను సహజంగా ఉపయోగించండి']],
 }
 
-const unitLessonLabels = ['Learn words', 'Build sentences', 'Practice conversation']
+const unitLessonLabels = ['Reading', 'Word forms', 'Comprehension']
 
 const letterLessons = {
     en: {
@@ -164,6 +218,8 @@ export default function DashboardPage() {
     const [profile, setProfile] = useState(null)
     const [progress, setProgress] = useState(null)
     const [learningState, setLearningState] = useState(null)
+    const [leaderboardRows, setLeaderboardRows] = useState([])
+    const [leaderboardPage, setLeaderboardPage] = useState(1)
     const [selected, setSelected] = useState(null)
     const [answers, setAnswers] = useState({})
     const [expandedModule, setExpandedModule] = useState(null)
@@ -209,6 +265,7 @@ export default function DashboardPage() {
         const load = async () => {
             try {
                 const dashboard = await learningApi.getDashboardBootstrap()
+                const leaderboard = await learningApi.getLeaderboard().catch(() => [])
                 const supportedLanguages = dashboard.languages.filter((item) => supportedLanguageCodes.includes(item.code))
                 setLanguages(supportedLanguages)
                 setLevels(dashboard.levels)
@@ -221,6 +278,8 @@ export default function DashboardPage() {
                     return groups
                 }, {}))
                 setAssessments(dashboard.assessments)
+                setLeaderboardRows(leaderboard)
+                setLeaderboardPage(1)
             } catch (error) {
                 setMessage(error.response?.data?.detail || 'Unable to load your learning space')
             }
@@ -235,6 +294,9 @@ export default function DashboardPage() {
 
     const selectedLanguageCode = localStorage.getItem('neolit_selected_language') || profile?.learning_language || 'en'
     const selectedLanguageName = languages.find((item) => item.code === selectedLanguageCode)?.name || 'English'
+    const nativeLanguageName = profile?.native_language || user?.native_language || 'English'
+    const nativeLanguageCode = nativeLanguageCodes[nativeLanguageName] || 'en'
+    const uiCopy = dashboardUiCopy[nativeLanguageCode] || dashboardUiCopy.en
     const activeStageCopy = lessonStageCopy[selectedLanguageCode]?.[selectedLesson] || lessonStageCopy.en[selectedLesson] || 'Talk about food'
     const selectedLessonTitle = lessonTitles[selectedLanguageCode] || lessonTitles.en
     const selectedUnits = courseUnits[selectedLanguageCode] || courseUnits.en
@@ -355,8 +417,10 @@ export default function DashboardPage() {
                 learningApi.getProgress(),
                 learningApi.getLearningState(),
             ])
+            const refreshedLeaderboard = await learningApi.getLeaderboard().catch(() => null)
             setProgress(progressData)
             setLearningState(learningStateData)
+            if (refreshedLeaderboard) setLeaderboardRows(refreshedLeaderboard)
             setMessage(harderAssessment ? 'Saved. Review your result before continuing.' : 'Assessment saved to your progress.')
         } catch (error) {
             const detail = error?.response?.data?.detail
@@ -463,7 +527,10 @@ export default function DashboardPage() {
             }))
             localStorage.setItem('neolit_selected_language', languageCode)
             const refreshedDashboard = await learningApi.getDashboardBootstrap()
+            const refreshedLeaderboard = await learningApi.getLeaderboard().catch(() => [])
             setAssessments(refreshedDashboard.assessments)
+            setLeaderboardRows(refreshedLeaderboard)
+            setLeaderboardPage(1)
             setCourseMenuOpen(false)
             setMessage('Course changed successfully.')
         } catch (error) {
@@ -550,52 +617,68 @@ export default function DashboardPage() {
     )
 
     const renderLeaderboard = () => (
-        <section className="leaderboard-page">
-            <div className="leaderboard-heading">
-                <span className="section-kicker">{selectedLanguageName} course</span>
-                <h1>Leaderboards</h1>
-                <p>Compete with learners and keep your streak moving.</p>
-            </div>
+        (() => {
+            const copy = leaderboardCopy[nativeLanguageCode] || leaderboardCopy.en
+            const pageSize = 6
+            const pageCount = Math.max(1, Math.ceil(leaderboardRows.length / pageSize))
+            const visibleRows = leaderboardRows.slice((leaderboardPage - 1) * pageSize, leaderboardPage * pageSize)
+            return (
+                <section className="leaderboard-page">
+                    <div className="leaderboard-heading">
+                        <span className="section-kicker">{selectedLanguageName} course</span>
+                        <h1>{copy.title}</h1>
+                        <p>{copy.subtitle}</p>
+                    </div>
 
-            <div className="leaderboard-tabs" role="tablist" aria-label="Leaderboard period">
-                {['weekly', 'monthly'].map((period) => (
-                    <button key={period} type="button" className={leaderboardPeriod === period ? 'active' : ''} onClick={() => setLeaderboardPeriod(period)} role="tab" aria-selected={leaderboardPeriod === period}>
-                        {period}
-                    </button>
-                ))}
-            </div>
+                    <div className="leaderboard-tabs" role="tablist" aria-label="Leaderboard period">
+                        {['weekly', 'monthly'].map((period) => (
+                            <button key={period} type="button" className={leaderboardPeriod === period ? 'active' : ''} onClick={() => setLeaderboardPeriod(period)} role="tab" aria-selected={leaderboardPeriod === period}>
+                                {copy[period]}
+                            </button>
+                        ))}
+                    </div>
 
-            <div className="leaderboard-card">
-                <div className="leaderboard-card-header"><span>RANK</span><span>LEARNER</span><span>XP</span><span>STREAK</span></div>
-                {[...leaderboardRows].map((row, index) => {
-                    const liveRow = row.current ? { ...row, xp: xpTotal, streak: streakDays, name: user?.first_name || row.name } : row
-                    return (
-                        <div key={row.name} className={`leaderboard-row ${row.current ? 'current' : ''}`}>
-                            <strong className="leaderboard-rank">{index + 1}</strong>
-                            <span className="leaderboard-name"><i>{liveRow.name[0]}</i>{liveRow.name}</span>
-                            <strong>{liveRow.xp.toLocaleString()}</strong>
-                            <span className="leaderboard-streak">🔥 {liveRow.streak}</span>
-                        </div>
-                    )
-                })}
-            </div>
-            <p className="leaderboard-note">Your {leaderboardPeriod} {selectedLanguageName} group, updated from your lesson progress.</p>
-        </section>
+                    <div className="leaderboard-card">
+                        <div className="leaderboard-card-header"><span>RANK</span><span>LEARNER</span><span>XP</span><span>STREAK</span></div>
+                        {visibleRows.map((row, index) => {
+                            const liveRow = row.current ? { ...row, xp: xpTotal, streak: streakDays, name: user?.first_name || row.name } : row
+                            return (
+                                <div key={row.id || `${leaderboardPage}-${index}-${row.name}`} className={`leaderboard-row ${row.current ? 'current' : ''}`}>
+                                    <strong className="leaderboard-rank">{(leaderboardPage - 1) * pageSize + index + 1}</strong>
+                                    <span className="leaderboard-name"><i>{liveRow.name[0]}</i>{liveRow.name}</span>
+                                    <strong>{liveRow.xp.toLocaleString()}</strong>
+                                    <span className="leaderboard-streak">🔥 {liveRow.streak}</span>
+                                </div>
+                            )
+                        })}
+                    </div>
+                    {pageCount > 1 && <div className="leaderboard-pagination" aria-label="Leaderboard pages">
+                        <button type="button" onClick={() => setLeaderboardPage((page) => Math.max(1, page - 1))} disabled={leaderboardPage === 1} aria-label="Previous leaderboard page">←</button>
+                        {Array.from({ length: pageCount }, (_, index) => index + 1).map((page) => (
+                            <button key={page} type="button" className={leaderboardPage === page ? 'active' : ''} onClick={() => setLeaderboardPage(page)} aria-label={`Leaderboard page ${page}`}>{page}</button>
+                        ))}
+                        <button type="button" onClick={() => setLeaderboardPage((page) => Math.min(pageCount, page + 1))} disabled={leaderboardPage === pageCount} aria-label="Next leaderboard page">→</button>
+                    </div>}
+                    <p className="leaderboard-note">{copy.note(copy[leaderboardPeriod], selectedLanguageName)}</p>
+                </section>
+            )
+        })()
     )
 
     const renderQuests = () => {
+        const copy = questCopy[nativeLanguageCode] || questCopy.en
         const quests = [
-            { title: 'Complete 3 lessons', detail: 'Keep your daily goal moving', current: Math.min(totalCompletedLessons, 3), target: 3, icon: '📚' },
-            { title: 'Earn 30 XP', detail: 'Build your weekly momentum', current: Math.min(xpTotal, 30), target: 30, icon: '⚡' },
-            { title: 'Practice your streak', detail: `${streakDays} days in a row`, current: Math.min(streakDays, 7), target: 7, icon: '🔥' },
+            { title: copy.lessons[0], detail: copy.lessons[1], current: Math.min(totalCompletedLessons, 3), target: 3, icon: '📚' },
+            { title: copy.xp[0], detail: copy.xp[1], current: Math.min(xpTotal, 30), target: 30, icon: '⚡' },
+            { title: copy.streak[0], detail: copy.streak[1](streakDays), current: Math.min(streakDays, 7), target: 7, icon: '🔥' },
         ]
 
         return (
             <section className="quests-page">
                 <div className="leaderboard-heading">
                     <span className="section-kicker">{selectedLanguageName} course</span>
-                    <h1>Quests</h1>
-                    <p>Small goals that turn practice into progress.</p>
+                    <h1>{copy.title}</h1>
+                    <p>{copy.subtitle}</p>
                 </div>
                 <div className="quests-grid">
                     {quests.map((quest) => (
@@ -620,25 +703,25 @@ export default function DashboardPage() {
                 <div className="duolingo-logo">NeoLit</div>
 
                 <nav className="duolingo-top-nav" aria-label="Main navigation">
-                    <button type="button" className={`nav-link ${activeSection === 'learn' ? 'active' : ''}`} onClick={() => setActiveSection('learn')}><span className="nav-icon">🏠</span>Learn</button>
-                    <button type="button" className={`nav-link ${activeSection === 'letters' ? 'active' : ''}`} onClick={() => setActiveSection('letters')}><span className="nav-icon">✎</span>Letters</button>
-                    <button type="button" className={`nav-link ${activeSection === 'leaderboard' ? 'active' : ''}`} onClick={() => setActiveSection('leaderboard')}><span className="nav-icon">🏆</span>Leaderboard</button>
-                    <button type="button" className={`nav-link ${activeSection === 'quests' ? 'active' : ''}`} onClick={() => setActiveSection('quests')}><span className="nav-icon">🎯</span>Quests</button>
-                    <Link to="/dashboard" className="nav-link"><span className="nav-icon">🛒</span>Shop</Link>
-                    <Link to="/profile" className="nav-link"><span className="nav-icon">👤</span>Profile</Link>
-                    <Link to="/dashboard" className="nav-link"><span className="nav-icon">⋯</span>More</Link>
+                    <button type="button" className={`nav-link ${activeSection === 'learn' ? 'active' : ''}`} onClick={() => setActiveSection('learn')}><span className="nav-icon">🏠</span>{uiCopy.learn}</button>
+                    <button type="button" className={`nav-link ${activeSection === 'letters' ? 'active' : ''}`} onClick={() => setActiveSection('letters')}><span className="nav-icon">✎</span>{uiCopy.letters}</button>
+                    <button type="button" className={`nav-link ${activeSection === 'leaderboard' ? 'active' : ''}`} onClick={() => setActiveSection('leaderboard')}><span className="nav-icon">🏆</span>{uiCopy.leaderboard}</button>
+                    <button type="button" className={`nav-link ${activeSection === 'quests' ? 'active' : ''}`} onClick={() => setActiveSection('quests')}><span className="nav-icon">🎯</span>{uiCopy.quests}</button>
+                    <Link to="/dashboard" className="nav-link"><span className="nav-icon">🛒</span>{uiCopy.shop}</Link>
+                    <Link to="/profile" className="nav-link"><span className="nav-icon">👤</span>{uiCopy.profile}</Link>
+                    <Link to="/dashboard" className="nav-link"><span className="nav-icon">⋯</span>{uiCopy.more}</Link>
                 </nav>
 
                 <div className="duolingo-header-actions">
                     <div className="course-switcher header-course-switcher">
                         <button type="button" className="course-switcher-button" onClick={() => setCourseMenuOpen((open) => !open)} aria-expanded={courseMenuOpen}>
                             <span className="course-switcher-flag">🌐</span>
-                            <span><small>MY COURSE</small><strong>{selectedLanguageName}</strong></span>
+                            <span><small>{uiCopy.myCourse}</small><strong>{selectedLanguageName}</strong></span>
                             <span className="course-switcher-chevron">⌄</span>
                         </button>
                         {courseMenuOpen && (
                             <div className="course-menu">
-                                <strong>MY COURSES</strong>
+                                <strong>{uiCopy.myCourses}</strong>
                                 {languages.map((language) => (
                                     <button key={language.code} type="button" className={language.code === selectedLanguageCode ? 'selected' : ''} onClick={() => changeCourse(language.code)} disabled={changingCourse}>
                                         <span>{language.code === selectedLanguageCode ? '✓' : '+'}</span>
@@ -649,7 +732,7 @@ export default function DashboardPage() {
                         )}
                     </div>
                     <button type="button" className="duolingo-logout-button" onClick={logout}>
-                        Logout
+                        {uiCopy.logout}
                     </button>
                 </div>
             </header>

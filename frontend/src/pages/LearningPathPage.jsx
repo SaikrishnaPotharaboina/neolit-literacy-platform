@@ -75,6 +75,369 @@ const lessonBankByLanguage = {
             solution: 'सेब',
         },
         {
+
+            extraChoiceQuestionsByLanguage: {
+                en: [
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: 'Which one of these is “Coffee”?',
+                        options: [
+                            { id: 1, label: 'coffee', emoji: '☕', accent: 'brown' },
+                            { id: 2, label: 'juice', emoji: '🧃', accent: 'orange' },
+                            { id: 3, label: 'milk', emoji: '🥛', accent: 'blue' },
+                            { id: 4, label: 'soup', emoji: '🍲', accent: 'amber' },
+                            { id: 5, label: 'rice', emoji: '🍚', accent: 'green' },
+                        ],
+                        correctOption: 1,
+                        solution: 'coffee',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: 'Which one of these is “Window”?',
+                        options: [
+                            { id: 1, label: 'wall', emoji: '🧱', accent: 'red' },
+                            { id: 2, label: 'window', emoji: '🪟', accent: 'blue' },
+                            { id: 3, label: 'floor', emoji: '🟫', accent: 'brown' },
+                            { id: 4, label: 'roof', emoji: '🏠', accent: 'orange' },
+                            { id: 5, label: 'gate', emoji: '🚪', accent: 'purple' },
+                        ],
+                        correctOption: 2,
+                        solution: 'window',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: 'Which one of these is “Morning”?',
+                        options: [
+                            { id: 1, label: 'night', emoji: '🌙', accent: 'purple' },
+                            { id: 2, label: 'evening', emoji: '🌆', accent: 'orange' },
+                            { id: 3, label: 'morning', emoji: '🌅', accent: 'amber' },
+                            { id: 4, label: 'winter', emoji: '❄️', accent: 'blue' },
+                            { id: 5, label: 'weekend', emoji: '🎉', accent: 'pink' },
+                        ],
+                        correctOption: 3,
+                        solution: 'morning',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: 'Which one of these is “Friend”?',
+                        options: [
+                            { id: 1, label: 'friend', emoji: '🧑‍🤝‍🧑', accent: 'green' },
+                            { id: 2, label: 'teacher', emoji: '🧑‍🏫', accent: 'blue' },
+                            { id: 3, label: 'doctor', emoji: '🧑‍⚕️', accent: 'red' },
+                            { id: 4, label: 'pilot', emoji: '🧑‍✈️', accent: 'purple' },
+                            { id: 5, label: 'artist', emoji: '🧑‍🎨', accent: 'orange' },
+                        ],
+                        correctOption: 1,
+                        solution: 'friend',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: 'Which one of these is “Flower”?',
+                        options: [
+                            { id: 1, label: 'leaf', emoji: '🍃', accent: 'green' },
+                            { id: 2, label: 'flower', emoji: '🌸', accent: 'pink' },
+                            { id: 3, label: 'stone', emoji: '🪨', accent: 'gray' },
+                            { id: 4, label: 'shell', emoji: '🐚', accent: 'amber' },
+                            { id: 5, label: 'star', emoji: '⭐', accent: 'yellow' },
+                        ],
+                        correctOption: 2,
+                        solution: 'flower',
+                    },
+                ],
+                hi: [
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: '“दरवाज़ा” का अर्थ क्या है?',
+                        options: [
+                            { id: 1, label: 'खिड़की', emoji: '🪟', accent: 'blue' },
+                            { id: 2, label: 'दरवाज़ा', emoji: '🚪', accent: 'brown' },
+                            { id: 3, label: 'छत', emoji: '🏠', accent: 'orange' },
+                            { id: 4, label: 'दीवार', emoji: '🧱', accent: 'red' },
+                            { id: 5, label: 'फर्श', emoji: '🟫', accent: 'purple' },
+                        ],
+                        correctOption: 2,
+                        solution: 'दरवाज़ा',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: '“दूध” कौन-सा पेय है?',
+                        options: [
+                            { id: 1, label: 'चाय', emoji: '🍵', accent: 'amber' },
+                            { id: 2, label: 'रस', emoji: '🧃', accent: 'orange' },
+                            { id: 3, label: 'दूध', emoji: '🥛', accent: 'blue' },
+                            { id: 4, label: 'कॉफी', emoji: '☕', accent: 'brown' },
+                            { id: 5, label: 'सूप', emoji: '🍲', accent: 'green' },
+                        ],
+                        correctOption: 3,
+                        solution: 'दूध',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: '“सुबह” का सही अर्थ चुनें।',
+                        options: [
+                            { id: 1, label: 'रात', emoji: '🌙', accent: 'purple' },
+                            { id: 2, label: 'शाम', emoji: '🌆', accent: 'orange' },
+                            { id: 3, label: 'सुबह', emoji: '🌅', accent: 'amber' },
+                            { id: 4, label: 'सर्दी', emoji: '❄️', accent: 'blue' },
+                            { id: 5, label: 'छुट्टी', emoji: '🎉', accent: 'pink' },
+                        ],
+                        correctOption: 3,
+                        solution: 'सुबह',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: 'दोस्त के लिए सही शब्द कौन-सा है?',
+                        options: [
+                            { id: 1, label: 'दोस्त', emoji: '🧑‍🤝‍🧑', accent: 'green' },
+                            { id: 2, label: 'शिक्षक', emoji: '🧑‍🏫', accent: 'blue' },
+                            { id: 3, label: 'डॉक्टर', emoji: '🧑‍⚕️', accent: 'red' },
+                            { id: 4, label: 'कलाकार', emoji: '🧑‍🎨', accent: 'orange' },
+                            { id: 5, label: 'पायलट', emoji: '🧑‍✈️', accent: 'purple' },
+                        ],
+                        correctOption: 1,
+                        solution: 'दोस्त',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: 'फूल की तस्वीर कौन-सी है?',
+                        options: [
+                            { id: 1, label: 'पत्ता', emoji: '🍃', accent: 'green' },
+                            { id: 2, label: 'फूल', emoji: '🌸', accent: 'pink' },
+                            { id: 3, label: 'पत्थर', emoji: '🪨', accent: 'gray' },
+                            { id: 4, label: 'सीप', emoji: '🐚', accent: 'amber' },
+                            { id: 5, label: 'तारा', emoji: '⭐', accent: 'yellow' },
+                        ],
+                        correctOption: 2,
+                        solution: 'फूल',
+                    },
+                ],
+                kn: [
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: '“ಕಿಟಕಿ” ಎಂದರೆ ಏನು?',
+                        options: [
+                            { id: 1, label: 'ಕಿಟಕಿ', emoji: '🪟', accent: 'blue' },
+                            { id: 2, label: 'ಬಾಗಿಲು', emoji: '🚪', accent: 'brown' },
+                            { id: 3, label: 'ಗೋಡೆ', emoji: '🧱', accent: 'red' },
+                            { id: 4, label: 'ಮೇಲುಕಟ್ಟು', emoji: '🏠', accent: 'orange' },
+                            { id: 5, label: 'ನೆಲ', emoji: '🟫', accent: 'purple' },
+                        ],
+                        correctOption: 1,
+                        solution: 'ಕಿಟಕಿ',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: '“ಹಾಲು” ಯಾವ ಪಾನೀಯ?',
+                        options: [
+                            { id: 1, label: 'ಚಹಾ', emoji: '🍵', accent: 'amber' },
+                            { id: 2, label: 'ರಸ', emoji: '🧃', accent: 'orange' },
+                            { id: 3, label: 'ಹಾಲು', emoji: '🥛', accent: 'blue' },
+                            { id: 4, label: 'ಕಾಫಿ', emoji: '☕', accent: 'brown' },
+                            { id: 5, label: 'ಸಾರು', emoji: '🍲', accent: 'green' },
+                        ],
+                        correctOption: 3,
+                        solution: 'ಹಾಲು',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: '“ಬೆಳಗ್ಗೆ” ಎಂಬ ಪದದ ಅರ್ಥ ಯಾವುದು?',
+                        options: [
+                            { id: 1, label: 'ರಾತ್ರಿ', emoji: '🌙', accent: 'purple' },
+                            { id: 2, label: 'ಸಂಜೆ', emoji: '🌆', accent: 'orange' },
+                            { id: 3, label: 'ಬೆಳಗ್ಗೆ', emoji: '🌅', accent: 'amber' },
+                            { id: 4, label: 'ಚಳಿಗಾಲ', emoji: '❄️', accent: 'blue' },
+                            { id: 5, label: 'ರಜೆ', emoji: '🎉', accent: 'pink' },
+                        ],
+                        correctOption: 3,
+                        solution: 'ಬೆಳಗ್ಗೆ',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: 'ಸ್ನೇಹಿತನಿಗೆ ಸರಿಯಾದ ಪದ ಯಾವುದು?',
+                        options: [
+                            { id: 1, label: 'ಸ್ನೇಹಿತ', emoji: '🧑‍🤝‍🧑', accent: 'green' },
+                            { id: 2, label: 'ಶಿಕ್ಷಕ', emoji: '🧑‍🏫', accent: 'blue' },
+                            { id: 3, label: 'ವೈದ್ಯ', emoji: '🧑‍⚕️', accent: 'red' },
+                            { id: 4, label: 'ಕಲಾವಿದ', emoji: '🧑‍🎨', accent: 'orange' },
+                            { id: 5, label: 'ಪೈಲಟ್', emoji: '🧑‍✈️', accent: 'purple' },
+                        ],
+                        correctOption: 1,
+                        solution: 'ಸ್ನೇಹಿತ',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: 'ಹೂವಿನ ಚಿತ್ರ ಯಾವುದು?',
+                        options: [
+                            { id: 1, label: 'ಎಲೆ', emoji: '🍃', accent: 'green' },
+                            { id: 2, label: 'ಹೂವು', emoji: '🌸', accent: 'pink' },
+                            { id: 3, label: 'ಕಲ್ಲು', emoji: '🪨', accent: 'gray' },
+                            { id: 4, label: 'ಚಿಪ್ಪು', emoji: '🐚', accent: 'amber' },
+                            { id: 5, label: 'ನಕ್ಷತ್ರ', emoji: '⭐', accent: 'yellow' },
+                        ],
+                        correctOption: 2,
+                        solution: 'ಹೂವು',
+                    },
+                ],
+                ta: [
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: '“ஜன்னல்” என்றால் என்ன?',
+                        options: [
+                            { id: 1, label: 'ஜன்னல்', emoji: '🪟', accent: 'blue' },
+                            { id: 2, label: 'கதவு', emoji: '🚪', accent: 'brown' },
+                            { id: 3, label: 'சுவர்', emoji: '🧱', accent: 'red' },
+                            { id: 4, label: 'கூரை', emoji: '🏠', accent: 'orange' },
+                            { id: 5, label: 'தரை', emoji: '🟫', accent: 'purple' },
+                        ],
+                        correctOption: 1,
+                        solution: 'ஜன்னல்',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: '“பால்” எந்த பானம்?',
+                        options: [
+                            { id: 1, label: 'தேநீர்', emoji: '🍵', accent: 'amber' },
+                            { id: 2, label: 'சாறு', emoji: '🧃', accent: 'orange' },
+                            { id: 3, label: 'பால்', emoji: '🥛', accent: 'blue' },
+                            { id: 4, label: 'காபி', emoji: '☕', accent: 'brown' },
+                            { id: 5, label: 'சூப்', emoji: '🍲', accent: 'green' },
+                        ],
+                        correctOption: 3,
+                        solution: 'பால்',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: '“காலை” என்ற சொல்லின் பொருள் எது?',
+                        options: [
+                            { id: 1, label: 'இரவு', emoji: '🌙', accent: 'purple' },
+                            { id: 2, label: 'மாலை', emoji: '🌆', accent: 'orange' },
+                            { id: 3, label: 'காலை', emoji: '🌅', accent: 'amber' },
+                            { id: 4, label: 'குளிர்காலம்', emoji: '❄️', accent: 'blue' },
+                            { id: 5, label: 'விடுமுறை', emoji: '🎉', accent: 'pink' },
+                        ],
+                        correctOption: 3,
+                        solution: 'காலை',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: 'நண்பருக்கான சரியான சொல் எது?',
+                        options: [
+                            { id: 1, label: 'நண்பர்', emoji: '🧑‍🤝‍🧑', accent: 'green' },
+                            { id: 2, label: 'ஆசிரியர்', emoji: '🧑‍🏫', accent: 'blue' },
+                            { id: 3, label: 'மருத்துவர்', emoji: '🧑‍⚕️', accent: 'red' },
+                            { id: 4, label: 'கலைஞர்', emoji: '🧑‍🎨', accent: 'orange' },
+                            { id: 5, label: 'விமானி', emoji: '🧑‍✈️', accent: 'purple' },
+                        ],
+                        correctOption: 1,
+                        solution: 'நண்பர்',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: 'பூவின் படம் எது?',
+                        options: [
+                            { id: 1, label: 'இலை', emoji: '🍃', accent: 'green' },
+                            { id: 2, label: 'பூ', emoji: '🌸', accent: 'pink' },
+                            { id: 3, label: 'கல்', emoji: '🪨', accent: 'gray' },
+                            { id: 4, label: 'சிப்பி', emoji: '🐚', accent: 'amber' },
+                            { id: 5, label: 'நட்சத்திரம்', emoji: '⭐', accent: 'yellow' },
+                        ],
+                        correctOption: 2,
+                        solution: 'பூ',
+                    },
+                ],
+                te: [
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: '“కిటికీ” అంటే ఏమిటి?',
+                        options: [
+                            { id: 1, label: 'కిటికీ', emoji: '🪟', accent: 'blue' },
+                            { id: 2, label: 'తలుపు', emoji: '🚪', accent: 'brown' },
+                            { id: 3, label: 'గోడ', emoji: '🧱', accent: 'red' },
+                            { id: 4, label: 'పైకప్పు', emoji: '🏠', accent: 'orange' },
+                            { id: 5, label: 'నేల', emoji: '🟫', accent: 'purple' },
+                        ],
+                        correctOption: 1,
+                        solution: 'కిటికీ',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: '“పాలు” ఏ పానీయం?',
+                        options: [
+                            { id: 1, label: 'టీ', emoji: '🍵', accent: 'amber' },
+                            { id: 2, label: 'రసం', emoji: '🧃', accent: 'orange' },
+                            { id: 3, label: 'పాలు', emoji: '🥛', accent: 'blue' },
+                            { id: 4, label: 'కాఫీ', emoji: '☕', accent: 'brown' },
+                            { id: 5, label: 'సూప్', emoji: '🍲', accent: 'green' },
+                        ],
+                        correctOption: 3,
+                        solution: 'పాలు',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: '“ఉదయం” అనే పదం అర్థం ఏమిటి?',
+                        options: [
+                            { id: 1, label: 'రాత్రి', emoji: '🌙', accent: 'purple' },
+                            { id: 2, label: 'సాయంత్రం', emoji: '🌆', accent: 'orange' },
+                            { id: 3, label: 'ఉదయం', emoji: '🌅', accent: 'amber' },
+                            { id: 4, label: 'చలికాలం', emoji: '❄️', accent: 'blue' },
+                            { id: 5, label: 'సెలవు', emoji: '🎉', accent: 'pink' },
+                        ],
+                        correctOption: 3,
+                        solution: 'ఉదయం',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: 'స్నేహితుడికి సరైన పదం ఏది?',
+                        options: [
+                            { id: 1, label: 'స్నేహితుడు', emoji: '🧑‍🤝‍🧑', accent: 'green' },
+                            { id: 2, label: 'ఉపాధ్యాయుడు', emoji: '🧑‍🏫', accent: 'blue' },
+                            { id: 3, label: 'వైద్యుడు', emoji: '🧑‍⚕️', accent: 'red' },
+                            { id: 4, label: 'కళాకారుడు', emoji: '🧑‍🎨', accent: 'orange' },
+                            { id: 5, label: 'పైలట్', emoji: '🧑‍✈️', accent: 'purple' },
+                        ],
+                        correctOption: 1,
+                        solution: 'స్నేహితుడు',
+                    },
+                    {
+                        type: 'choice',
+                        label: 'NEW WORD',
+                        prompt: 'పువ్వు చిత్రం ఏది?',
+                        options: [
+                            { id: 1, label: 'ఆకు', emoji: '🍃', accent: 'green' },
+                            { id: 2, label: 'పువ్వు', emoji: '🌸', accent: 'pink' },
+                            { id: 3, label: 'రాయి', emoji: '🪨', accent: 'gray' },
+                            { id: 4, label: 'గవ్వ', emoji: '🐚', accent: 'amber' },
+                            { id: 5, label: 'నక్షత్రం', emoji: '⭐', accent: 'yellow' },
+                        ],
+                        correctOption: 2,
+                        solution: 'పువ్వు',
+                    },
+                ],
+            },
             type: 'write',
             label: 'WRITE THIS IN ENGLISH',
             prompt: 'Write this in English',
@@ -637,6 +1000,29 @@ const languageTheme = {
     te: { flagBackground: '#8ac7ff', cardBorder: 'rgba(59, 130, 246, 0.8)', cardGlow: 'rgba(59, 130, 246, 0.2)' },
 }
 
+const extraChoiceQuestionsByLanguage = lessonBankByLanguage.hi.find((item) => item.extraChoiceQuestionsByLanguage)?.extraChoiceQuestionsByLanguage || {}
+
+const shuffleItems = (items) => [...items].sort(() => Math.random() - 0.5)
+
+const createDynamicLessonBank = (languageCode) => {
+    const languageQuestions = lessonBankByLanguage[languageCode] || lessonBankByLanguage.hi
+    const questions = [
+        ...languageQuestions,
+        ...(extraChoiceQuestionsByLanguage[languageCode] || []),
+    ].filter((item) => item.type === 'choice')
+    const uniqueQuestions = [...new Map(questions.map((question) => [question.prompt, question])).values()]
+
+    return shuffleItems(uniqueQuestions).map((question) => {
+        const options = shuffleItems(question.options).map((option, index) => ({
+            ...option,
+            id: index + 1,
+        }))
+        const correctOption = options.find((option) => option.label === question.solution)?.id
+
+        return { ...question, options, correctOption }
+    })
+}
+
 export default function LearningPathPage() {
     const [selectedLanguage, setSelectedLanguage] = useState(null)
     const [selectedKnowledge, setSelectedKnowledge] = useState(1)
@@ -652,7 +1038,7 @@ export default function LearningPathPage() {
     const [scoresByLanguage, setScoresByLanguage] = useState({ en: 5, hi: 5, kn: 5, ta: 5, te: 5 })
 
     const currentLanguage = selectedLanguage || languages[0]
-    const lessonBank = (lessonBankByLanguage[currentLanguage.code] || lessonBankByLanguage.hi).filter((item) => item.type === 'choice')
+    const lessonBank = useMemo(() => createDynamicLessonBank(currentLanguage.code), [currentLanguage.code])
     const knowledgeLevels = knowledgeLevelsByLanguage[currentLanguage.code] || knowledgeLevelsByLanguage.en
     const currentScore = scoresByLanguage[currentLanguage.code] ?? 5
     const currentLesson = lessonBank[lessonIndex % lessonBank.length]

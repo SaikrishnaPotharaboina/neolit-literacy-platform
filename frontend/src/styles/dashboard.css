@@ -2593,6 +2593,35 @@
     background: rgba(17, 42, 50, 0.82);
 }
 
+.leaderboard-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 16px 0 4px;
+}
+
+.leaderboard-pagination button {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid rgba(148, 205, 211, 0.18);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(223, 242, 244, 0.8);
+    font-weight: 800;
+}
+
+.leaderboard-pagination button.active {
+    background: #54c5f5;
+    color: #08202b;
+}
+
+.leaderboard-pagination button:disabled {
+    cursor: not-allowed;
+    opacity: 0.35;
+}
+
 .leaderboard-card-header,
 .leaderboard-row {
     display: grid;
@@ -3101,7 +3130,9 @@
 }
 
 .quests-page {
+    width: min(100%, 980px);
     max-width: 980px;
+    margin: 0 auto;
     padding: 28px 34px 42px;
 }
 

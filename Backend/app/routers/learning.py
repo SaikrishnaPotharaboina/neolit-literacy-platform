@@ -3,6 +3,7 @@ from io import BytesIO
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from fastapi.responses import StreamingResponse
+from sqlalchemy import func
 from gtts import gTTS
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, selectinload
@@ -20,6 +21,7 @@ from app.schemas.learning import (
     ProgressResponse,
     LearningStateResponse, LessonProgressRequest, DashboardBootstrapResponse, LanguageUpdate,
 )
+from app.utils.assessment_generator import ensure_generated_questions
 
 router = APIRouter()
 BENCHMARKS = ((0, "Beginner"), (40, "Elementary"), (60, "Intermediate"), (75, "Upper Intermediate"), (90, "Advanced"))
@@ -124,7 +126,10 @@ def list_assessments(assessment_type: str | None = None, language_id: int | None
         query = query.filter(Assessment.assessment_type == assessment_type)
     if language_id:
         query = query.filter(Assessment.language_id == language_id)
-    return query.order_by(Assessment.id).all()
+    assessments = query.order_by(Assessment.id).all()
+    if any(ensure_generated_questions(assessment) for assessment in assessments):
+        db.commit()
+    return assessments
 
 
 @router.get("/assessments/{assessment_id}", response_model=AssessmentResponse)
@@ -132,6 +137,8 @@ def get_assessment(assessment_id: int, db: Session = Depends(get_db)):
     assessment = db.query(Assessment).options(selectinload(Assessment.questions).selectinload(Question.options)).filter(Assessment.id == assessment_id).first()
     if not assessment:
         raise HTTPException(404, "Assessment not found")
+    if ensure_generated_questions(assessment):
+        db.commit()
     return assessment
 
 
@@ -164,11 +171,7 @@ def submit_assessment(assessment_id: int, payload: AssessmentSubmission, current
     stats.daily_xp += xp_earned
     stats.gems += 1 if stats.xp // 50 > (stats.xp - xp_earned) // 50 else 0
     if xp_earned:
-        if stats.last_activity_date is None or stats.last_activity_date != today - timedelta(days=1):
-            stats.streak_days = 1 if stats.last_activity_date != today else stats.streak_days
-        else:
-            stats.streak_days += 1
-        stats.last_activity_date = today
+        record_activity(stats, today)
     db.commit()
     db.refresh(attempt)
     return {"attempt_id": attempt.id, "score": score, "total_marks": assessment.total_marks, "percentage": percentage, "proficiency_level": benchmark(percentage), "xp_earned": xp_earned}
@@ -280,6 +283,16 @@ def reset_daily_stats(stats: LearnerStats, today: date) -> bool:
     return False
 
 
+def record_activity(stats: LearnerStats, today: date) -> None:
+    if stats.last_activity_date == today:
+        return
+    if stats.last_activity_date == today - timedelta(days=1):
+        stats.streak_days += 1
+    else:
+        stats.streak_days = 1
+    stats.last_activity_date = today
+
+
 @router.get("/learning-state/me", response_model=LearningStateResponse)
 def get_learning_state(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     today = date.today()
@@ -290,6 +303,9 @@ def get_learning_state(current_user: User = Depends(get_current_user), db: Sessi
         db.add(stats)
         db.flush()
     stats_changed = reset_daily_stats(stats, today)
+    if stats.last_activity_date and stats.last_activity_date < today - timedelta(days=1) and stats.streak_days:
+        stats.streak_days = 0
+        stats_changed = True
     if stats_created or stats_changed:
         db.commit()
     completions = db.query(LessonCompletion).filter(LessonCompletion.user_id == current_user.id).order_by(LessonCompletion.completed_at).all()
@@ -302,6 +318,33 @@ def get_learning_state(current_user: User = Depends(get_current_user), db: Sessi
         "daily_lessons": stats.daily_lessons,
         "completions": completions,
     }
+
+
+@router.get("/leaderboard")
+def get_leaderboard(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    learning_language = current_user.profile.learning_language if current_user.profile else "en"
+    rows = db.query(User, LearnerProfile, LearnerStats).outerjoin(
+        LearnerProfile, LearnerProfile.user_id == User.id,
+    ).outerjoin(
+        LearnerStats, LearnerStats.user_id == User.id,
+    ).filter(
+        LearnerProfile.learning_language == learning_language,
+    ).order_by(
+        func.coalesce(LearnerStats.xp, 0).desc(),
+        func.coalesce(LearnerStats.streak_days, 0).desc(),
+        User.first_name.asc(),
+    ).limit(20).all()
+
+    return [
+        {
+            "id": user.id,
+            "name": f"{user.first_name} {user.last_name}".strip(),
+            "xp": stats.xp if stats else 0,
+            "streak": stats.streak_days if stats else 0,
+            "current": user.id == current_user.id,
+        }
+        for user, _, stats in rows
+    ]
 
 
 @router.post("/lesson-progress", response_model=LearningStateResponse, status_code=status.HTTP_201_CREATED)
@@ -347,13 +390,7 @@ def complete_lesson(payload: LessonProgressRequest, current_user: User = Depends
         stats.gems += 1 if stats.xp // 50 > (stats.xp - xp_earned) // 50 else 0
         stats.daily_xp += xp_earned
         stats.daily_lessons += 1
-        if stats.last_activity_date is None:
-            stats.streak_days = 1
-        elif stats.last_activity_date == today - timedelta(days=1):
-            stats.streak_days += 1
-        elif stats.last_activity_date != today:
-            stats.streak_days = 1
-        stats.last_activity_date = today
+        record_activity(stats, today)
     else:
         completion.score = max(completion.score, payload.score)
     try:

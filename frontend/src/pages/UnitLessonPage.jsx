@@ -18,11 +18,48 @@ const lessonContent = {
 }
 
 const stageTitles = {
-    en: ['Learn words', 'Build sentences', 'Practice conversation'],
-    hi: ['शब्द सीखें', 'वाक्य बनाएं', 'बातचीत का अभ्यास करें'],
-    kn: ['ಪದಗಳನ್ನು ಕಲಿಯಿರಿ', 'ವಾಕ್ಯಗಳನ್ನು ರಚಿಸಿ', 'ಸಂಭಾಷಣೆ ಅಭ್ಯಾಸ ಮಾಡಿ'],
-    ta: ['சொற்களைக் கற்போம்', 'வாக்கியங்களை உருவாக்குவோம்', 'உரையாடலைப் பயிற்சி செய்வோம்'],
-    te: ['పదాలు నేర్చుకోండి', 'వాక్యాలు నిర్మించండి', 'సంభాషణ సాధన చేయండి'],
+    en: ['Reading practice', 'Word forms', 'Comprehension and conversation'],
+    hi: ['पठन अभ्यास', 'शब्द रूप', 'समझ और बातचीत'],
+    kn: ['ಓದುವ ಅಭ್ಯಾಸ', 'ಪದ ರೂಪಗಳು', 'ಅರ್ಥಗ್ರಹಣ ಮತ್ತು ಸಂಭಾಷಣೆ'],
+    ta: ['வாசிப்பு பயிற்சி', 'சொல் வடிவங்கள்', 'புரிதல் மற்றும் உரையாடல்'],
+    te: ['చదవడం సాధన', 'పద రూపాలు', 'అవగాహన మరియు సంభాషణ'],
+}
+
+const sectionNames = {
+    en: ['Reading', 'Word forms', 'Comprehension'],
+    hi: ['पठन', 'शब्द रूप', 'समझ'],
+    kn: ['ಓದುವಿಕೆ', 'ಪದ ರೂಪಗಳು', 'ಅರ್ಥಗ್ರಹಣ'],
+    ta: ['வாசிப்பு', 'சொல் வடிவங்கள்', 'புரிதல்'],
+    te: ['చదవడం', 'పద రూపాలు', 'అవగాహన'],
+}
+
+const getUnitDifficulty = (unitNumber) => {
+    if (unitNumber <= 2) return 'Beginner'
+    if (unitNumber <= 4) return 'Medium'
+    return 'Hard'
+}
+
+const challengeQuestionsByLanguage = {
+    en: [
+        { type: 'arrange', prompt: 'Arrange the words to describe a past activity.', options: ['yesterday', 'I', 'studied'], answer: 'I studied yesterday' },
+        { prompt: 'Which sentence gives a reason?', options: ['I stayed home because it rained.', 'I stayed home tomorrow.', 'I home stayed.'], answer: 'I stayed home because it rained.' },
+    ],
+    hi: [
+        { type: 'arrange', prompt: 'बीते हुए काम का वर्णन करने के लिए शब्दों को लगाएँ।', options: ['कल', 'मैंने', 'पढ़ाई', 'की'], answer: 'मैंने कल पढ़ाई की' },
+        { prompt: 'कारण बताने वाला वाक्य चुनें।', options: ['मैं घर पर रुका क्योंकि बारिश हुई।', 'मैं कल घर पर रुकूँगा।', 'मैं घर रुका।'], answer: 'मैं घर पर रुका क्योंकि बारिश हुई।' },
+    ],
+    kn: [
+        { type: 'arrange', prompt: 'ಹಿಂದಿನ ಕೆಲಸವನ್ನು ವಿವರಿಸಲು ಪದಗಳನ್ನು ಜೋಡಿಸಿ.', options: ['ನಿನ್ನೆ', 'ನಾನು', 'ಓದಿದೆ'], answer: 'ನಾನು ನಿನ್ನೆ ಓದಿದೆ' },
+        { prompt: 'ಕಾರಣವನ್ನು ಹೇಳುವ ವಾಕ್ಯವನ್ನು ಆರಿಸಿ.', options: ['ಮಳೆ ಬಂದದ್ದರಿಂದ ನಾನು ಮನೆಯಲ್ಲೇ ಇದ್ದೆ.', 'ನಾನು ನಾಳೆ ಮನೆಯಲ್ಲಿರುತ್ತೇನೆ.', 'ನಾನು ಮನೆ ಇದ್ದೆ.'], answer: 'ಮಳೆ ಬಂದದ್ದರಿಂದ ನಾನು ಮನೆಯಲ್ಲೇ ಇದ್ದೆ.' },
+    ],
+    ta: [
+        { type: 'arrange', prompt: 'கடந்த செயல்பாட்டை விவரிக்கும் சொற்களை அமைக்கவும்.', options: ['நேற்று', 'நான்', 'படித்தேன்'], answer: 'நான் நேற்று படித்தேன்' },
+        { prompt: 'காரணத்தைக் கூறும் வாக்கியம் எது?', options: ['மழை பெய்ததால் நான் வீட்டில் இருந்தேன்.', 'நான் நாளை வீட்டில் இருப்பேன்.', 'நான் வீடு இருந்தேன்.'], answer: 'மழை பெய்ததால் நான் வீட்டில் இருந்தேன்.' },
+    ],
+    te: [
+        { type: 'arrange', prompt: 'గత పనిని వివరించే పదాలను అమర్చండి.', options: ['నిన్న', 'నేను', 'చదివాను'], answer: 'నేను నిన్న చదివాను' },
+        { prompt: 'కారణాన్ని తెలిపే వాక్యాన్ని ఎంచుకోండి.', options: ['వర్షం పడింది కాబట్టి నేను ఇంట్లో ఉన్నాను.', 'నేను రేపు ఇంట్లో ఉంటాను.', 'నేను ఇల్లు ఉన్నాను.'], answer: 'వర్షం పడింది కాబట్టి నేను ఇంట్లో ఉన్నాను.' },
+    ],
 }
 
 const stageQuestions = [
@@ -241,24 +278,47 @@ const shuffleWithSeed = (items, seed) => {
     return result
 }
 
+const getSectionQuestions = (questions, lessonStep) => {
+    const sectionSize = Math.ceil(questions.length / 3)
+    return questions.slice(lessonStep * sectionSize, (lessonStep + 1) * sectionSize)
+}
+
+const languageQuestionOffsets = { en: 0, hi: 2, kn: 4, ta: 6, te: 8 }
+
+const rotateQuestions = (questions, languageCode) => {
+    const offset = (languageQuestionOffsets[languageCode] || 0) % questions.length
+    return [...questions.slice(offset), ...questions.slice(0, offset)]
+}
+
 const getUnitQuestions = (languageCode, lessonStep, unitNumber, learnerId) => {
-    const baseQuestions = [
+    const numericUnit = Number(unitNumber)
+    const difficulty = getUnitDifficulty(numericUnit)
+    const languageQuestions = [
         ...(localizedStageQuestions[languageCode]?.[lessonStep] || stageQuestions[lessonStep]),
         ...(additionalQuestionsByLanguage[languageCode] || additionalQuestionsByLanguage.en),
     ]
-    const englishQuestions = [
+    const baseQuestions = getSectionQuestions(rotateQuestions(languageQuestions, languageCode), lessonStep)
+    const questionsForUnit = difficulty === 'Beginner'
+        ? baseQuestions.slice(0, 3)
+        : difficulty === 'Hard'
+            ? [...baseQuestions, ...(challengeQuestionsByLanguage[languageCode] || challengeQuestionsByLanguage.en)]
+            : baseQuestions
+    const englishQuestions = getSectionQuestions(rotateQuestions([
         ...stageQuestions[lessonStep],
         ...additionalQuestionsByLanguage.en,
-    ]
-    const topic = (unitTopics[languageCode] || unitTopics.en)[(Number(unitNumber) - 1) % 8]
-    const englishTopic = englishTopicNames[(Number(unitNumber) - 1) % 8]
-    const uniqueQuestions = baseQuestions.map((question, index) => ({
+        ...(difficulty === 'Hard' ? challengeQuestionsByLanguage.en : []),
+    ], languageCode), lessonStep)
+    const topic = (unitTopics[languageCode] || unitTopics.en)[(numericUnit - 1) % 8]
+    const englishTopic = englishTopicNames[(numericUnit - 1) % 8]
+    const uniqueQuestions = questionsForUnit.map((question, index) => ({
         ...question,
         prompt: `${topic}: ${question.prompt}`,
         englishPrompt: `${englishTopic}: ${englishQuestions[index].prompt}`,
         englishOptions: englishQuestions[index].options || [],
+        difficulty,
+        section: lessonStep + 1,
     }))
-    const storageKey = `neolit_lesson_question_order_${learnerId || 'guest'}_${languageCode}_${unitNumber}_${lessonStep}`
+    const storageKey = `neolit_lesson_question_order_${learnerId || 'guest'}_${languageCode}_${numericUnit}_${lessonStep}_${difficulty}`
 
     try {
         const savedPrompts = JSON.parse(localStorage.getItem(storageKey) || 'null')
@@ -270,7 +330,7 @@ const getUnitQuestions = (languageCode, lessonStep, unitNumber, learnerId) => {
         // Use a deterministic order when saved lesson state is unavailable.
     }
 
-    const shuffledQuestions = shuffleWithSeed(uniqueQuestions, Number(unitNumber) * 31 + lessonStep * 17)
+    const shuffledQuestions = shuffleWithSeed(uniqueQuestions, numericUnit * 31 + lessonStep * 17)
     localStorage.setItem(storageKey, JSON.stringify(shuffledQuestions.map((question) => question.prompt)))
     return shuffledQuestions
 }
@@ -442,12 +502,12 @@ export default function UnitLessonPage() {
                         </section>
                     ) : !finished ? (
                         <>
-                            <div className="unit-lesson-meta">SECTION 1 • UNIT {unit} • {['LEARN WORDS', 'BUILD SENTENCES', 'PRACTICE CONVERSATION'][lessonStep]} • {languageName.toUpperCase()}</div>
+                            <div className="unit-lesson-meta">SECTION {lessonStep + 1} • {sectionNames[languageCode]?.[lessonStep] || sectionNames.en[lessonStep]} • UNIT {unit} • {question.difficulty.toUpperCase()} • {languageName.toUpperCase()}</div>
                             <h1>{content.title}</h1>
                             <p className="unit-lesson-question-count">Question {questionIndex + 1} of {content.questions.length}</p>
                             <section className="unit-question-card">
                                 <h2>{question.prompt}</h2>
-                                <p className="question-english-help">English: {question.englishPrompt}</p>
+                                {question.englishPrompt && languageCode !== 'en' && <p className="question-english-help">English: {question.englishPrompt}</p>}
                                 {question.type === 'listen' ? (
                                     <div className="unit-listen-question">
                                         <button type="button" className="unit-audio-button" onClick={playQuestionAudio} disabled={speaking || Boolean(selectedAnswer)}>
@@ -459,7 +519,7 @@ export default function UnitLessonPage() {
                                             {question.options.map((option, optionIndex) => (
                                                 <button key={option} type="button" className={selectedAnswer === option ? (option === question.answer ? 'correct' : 'wrong') : ''} onClick={() => chooseAnswer(option)}>
                                                     {option}
-                                                    {question.englishOptions[optionIndex] && <small className="option-english-help">{question.englishOptions[optionIndex]}</small>}
+                                                    {languageCode !== 'en' && question.englishOptions[optionIndex] && <small className="option-english-help">English: {question.englishOptions[optionIndex]}</small>}
                                                 </button>
                                             ))}
                                         </div>
@@ -477,7 +537,7 @@ export default function UnitLessonPage() {
                                             {question.options.map((option, optionIndex) => (
                                                 <button key={option} type="button" disabled={selectedTokens.includes(option) || Boolean(selectedAnswer)} onClick={() => setSelectedTokens((tokens) => [...tokens, option])}>
                                                     {option}
-                                                    {question.englishOptions[optionIndex] && <small className="option-english-help">{question.englishOptions[optionIndex]}</small>}
+                                                    {languageCode !== 'en' && question.englishOptions[optionIndex] && <small className="option-english-help">English: {question.englishOptions[optionIndex]}</small>}
                                                 </button>
                                             ))}
                                         </div>
@@ -488,7 +548,7 @@ export default function UnitLessonPage() {
                                         {question.options.map((option, optionIndex) => (
                                             <button key={option} type="button" className={selectedAnswer === option ? (option === question.answer ? 'correct' : 'wrong') : ''} onClick={() => chooseAnswer(option)}>
                                                 {option}
-                                                {question.englishOptions[optionIndex] && <small className="option-english-help">{question.englishOptions[optionIndex]}</small>}
+                                                {languageCode !== 'en' && question.englishOptions[optionIndex] && <small className="option-english-help">English: {question.englishOptions[optionIndex]}</small>}
                                             </button>
                                         ))}
                                     </div>
