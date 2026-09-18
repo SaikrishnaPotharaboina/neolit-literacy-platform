@@ -56,10 +56,12 @@ export default function ProfilePage() {
 
         try {
             const updated = await learningApi.updateProfile({
-                ...safeProfile,
                 first_name: safeProfile.first_name || user?.first_name || '',
                 last_name: safeProfile.last_name || user?.last_name || '',
+                age: safeProfile.age === '' ? null : safeProfile.age,
+                native_language: safeProfile.native_language || '',
                 learning_language: safeProfile.learning_language || 'en',
+                gender: safeProfile.gender || '',
                 current_level_id: safeProfile.current_level_id || 1,
             })
             setProfile(updated)
@@ -70,7 +72,9 @@ export default function ProfilePage() {
                 ? detail.map((item) => (typeof item === 'string' ? item : item?.msg || item?.error || JSON.stringify(item))).join(', ')
                 : typeof detail === 'object' && detail
                     ? detail.msg || detail.error || JSON.stringify(detail)
-                    : detail || 'Unable to update your profile'
+                    : detail || (requestError.response
+                        ? `Unable to update your profile (error ${requestError.response.status}).`
+                        : 'Unable to reach the server. Please check that the backend is running.')
             setError(message)
         }
     }
