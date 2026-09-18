@@ -1,3 +1,4 @@
+import logging
 from datetime import date, datetime, timedelta
 from io import BytesIO
 
@@ -5,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from fastapi.responses import StreamingResponse
 from sqlalchemy import func
 from gtts import gTTS
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session, selectinload
 
 from app.database import get_db
@@ -24,6 +25,7 @@ from app.schemas.learning import (
 from app.utils.assessment_generator import ensure_generated_questions
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 BENCHMARKS = ((0, "Beginner"), (40, "Elementary"), (60, "Intermediate"), (75, "Upper Intermediate"), (90, "Advanced"))
 
 
@@ -207,7 +209,16 @@ def update_profile(payload: ProfileUpdate, current_user: User = Depends(get_curr
         if field not in {"first_name", "last_name"}:
             setattr(profile, field, value)
     db.add(profile)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError as error:
+        db.rollback()
+        logger.exception("Profile update constraint failed for user %s", current_user.id)
+        raise HTTPException(status_code=400, detail="The selected profile values are not valid.") from error
+    except SQLAlchemyError as error:
+        db.rollback()
+        logger.exception("Profile update database error for user %s", current_user.id)
+        raise HTTPException(status_code=503, detail="Profile service is temporarily unavailable. Please try again.") from error
     db.refresh(profile)
     return {
         "id": profile.id,
