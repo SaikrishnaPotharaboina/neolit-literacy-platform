@@ -63,3 +63,11 @@ python -c "from app.database import SessionLocal; from app.seed import seed_lear
 ```
 
 For local development, use SQLite. For production, use a hosted database.
+
+If Render Shell is unavailable, add this temporary Render environment variable instead:
+
+```text
+RESET_DATABASE_ON_DEPLOY=YES
+```
+
+Deploy once, then remove `RESET_DATABASE_ON_DEPLOY` immediately and deploy again. This reset deletes all existing users, admins, progress, courses, and lessons. The normal seed then creates fresh data for English, Hindi, Kannada, Tamil, and Telugu.
