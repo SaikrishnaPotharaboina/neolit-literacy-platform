@@ -66,7 +66,7 @@ export default function RegisterPage() {
                     ? detail.msg || detail.error || JSON.stringify(detail)
                     : detail ||
                     (err.request
-                        ? 'Cannot connect to the server. Start the backend on port 8000 and try again.'
+                        ? 'Unable to reach the server. Please try again or contact support.'
                         : 'Registration failed')
             setError(message)
         } finally {
