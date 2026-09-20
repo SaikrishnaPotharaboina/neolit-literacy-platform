@@ -25,6 +25,13 @@ def ensure_languages(db: Session) -> list[Language]:
 
 
 def ensure_language_courses(db: Session, languages: list[Language]) -> None:
+    language_by_name = {language.name.lower(): language for language in languages}
+    for module in db.query(Module).all():
+        for language_name, language in language_by_name.items():
+            if module.title.lower().startswith(f"{language_name} ") and module.language_id != language.id:
+                module.language_id = language.id
+                break
+
     levels = db.query(Level).order_by(Level.minimum_score).all()
     if not levels:
         return
