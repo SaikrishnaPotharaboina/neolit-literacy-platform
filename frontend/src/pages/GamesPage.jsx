@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { learningApi } from '../services/learningApi'
 
 const GAME_LIBRARY_BY_LANGUAGE = {
     en: [
@@ -630,6 +631,7 @@ export default function GamesPage() {
     const [shooterAmmo, setShooterAmmo] = useState(6)
     const [shooterStreak, setShooterStreak] = useState(0)
     const [shooterMisses, setShooterMisses] = useState(0)
+    const gameStartedAt = useRef(Date.now())
     const difficultySettings = DEFAULT_GAME_SETTINGS
 
     useEffect(() => {
@@ -831,6 +833,11 @@ export default function GamesPage() {
 
         const isCorrect = choice === question.correct
         setAnswer(choice)
+        learningApi.recordGameActivity({
+            game_id: selectedGame.id,
+            score: isCorrect ? difficultySettings.points : 0,
+            duration_seconds: Math.round((Date.now() - gameStartedAt.current) / 1000),
+        }).catch(() => { })
         if (selectedGame.type === 'runner') {
             setShotFlash(true)
             window.setTimeout(() => setShotFlash(false), 180)
@@ -884,6 +891,11 @@ export default function GamesPage() {
 
         const isCorrect = choice === question.correct
         setAnswer(choice)
+        learningApi.recordGameActivity({
+            game_id: selectedGame.id,
+            score: isCorrect ? difficultySettings.points : 0,
+            duration_seconds: Math.round((Date.now() - gameStartedAt.current) / 1000),
+        }).catch(() => { })
         if (isCorrect) setScore((current) => current + 10)
     }
 
