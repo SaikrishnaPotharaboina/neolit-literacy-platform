@@ -30,6 +30,7 @@ from app.utils.security import get_password_hash
 router = APIRouter()
 logger = logging.getLogger(__name__)
 BENCHMARKS = ((0, "Beginner"), (40, "Elementary"), (60, "Intermediate"), (75, "Upper Intermediate"), (90, "Advanced"))
+SUPPORTED_LANGUAGE_CODES = ("en", "hi", "kn", "ta", "te")
 
 
 @router.get("/speech")
@@ -439,7 +440,10 @@ def dashboard_bootstrap(current_user: User = Depends(get_current_user), db: Sess
 
 @router.get("/curriculum", response_model=list[ModuleResponse])
 def list_curriculum(language_id: int | None = None, level_id: int | None = None, db: Session = Depends(get_db)):
-    query = full_module_query(db).join(Language, Module.language_id == Language.id).filter(Language.is_active.is_(True))
+    query = full_module_query(db).join(Language, Module.language_id == Language.id).filter(
+        Language.is_active.is_(True),
+        Language.code.in_(SUPPORTED_LANGUAGE_CODES),
+    )
     if language_id:
         query = query.filter(Module.language_id == language_id)
     if level_id:
@@ -451,6 +455,7 @@ def list_curriculum(language_id: int | None = None, level_id: int | None = None,
 def curriculum_by_level(language_id: int, level_id: int, db: Session = Depends(get_db)):
     return full_module_query(db).join(Language, Module.language_id == Language.id).filter(
         Language.is_active.is_(True),
+        Language.code.in_(SUPPORTED_LANGUAGE_CODES),
         Module.language_id == language_id,
         Module.level_id == level_id,
     ).order_by(Module.order_number).all()
