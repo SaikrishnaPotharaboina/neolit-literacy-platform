@@ -1942,6 +1942,7 @@
 }
 
 .site-language-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1953,6 +1954,10 @@
     border-radius: 999px;
     color: #f8fafc;
     background: rgba(255, 255, 255, 0.04);
+}
+
+.site-native-switcher {
+    position: relative;
 }
 
 .site-language-card small,
@@ -1969,6 +1974,21 @@
 .site-language-card strong {
     margin-top: 2px;
     font-size: 0.82rem;
+}
+
+.site-native-chevron {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    color: #93c5fd;
+    font-size: 0.8rem;
+    transform: translateY(-50%);
+}
+
+.site-native-menu {
+    right: auto;
+    left: 0;
+    width: 148px;
 }
 
 .site-course-switcher {
