@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { learningApi } from '../services/learningApi'
+import { wordBuilderQuestions } from '../data/wordBuilderSets'
 
 const GAME_LIBRARY_BY_LANGUAGE = {
     en: [
@@ -588,13 +589,87 @@ const VISUAL_GAMES_BY_LANGUAGE = {
     ],
 }
 
-const getGameLibraryWithListening = (languageCode) => [
-    ...(VISUAL_GAMES_BY_LANGUAGE[languageCode] || VISUAL_GAMES_BY_LANGUAGE.en),
-    CITY_GAME_BY_LANGUAGE[languageCode] || CITY_GAME_BY_LANGUAGE.en,
-    LISTENING_GAME_BY_LANGUAGE[languageCode] || LISTENING_GAME_BY_LANGUAGE.en,
-    DRAGON_GAME_BY_LANGUAGE[languageCode] || DRAGON_GAME_BY_LANGUAGE.en,
+const UNIVERSAL_GAMES = [
+    {
+        id: 'word-builder', icon: '🔤', title: 'Word Builder', description: 'Arrange scrambled letters into the target word.', type: 'word-builder',
+        questions: wordBuilderQuestions,
+    },
+    {
+        id: 'mystery-word', icon: '🕵️', title: 'Mystery Word', description: 'Reveal clues and solve the word.', type: 'mystery-word',
+        questions: [
+            { prompt: 'What am I?', clues: ['You can eat me.', 'I can be red or green.', 'I grow on a tree.'], answers: ['APPLE', 'BANANA', 'ORANGE'], correct: 'APPLE' },
+            { prompt: 'What am I?', clues: ['I can fly.', 'I have feathers.', 'I can sing.'], answers: ['BIRD', 'FISH', 'HORSE'], correct: 'BIRD' },
+            { prompt: 'What am I?', clues: ['I give light.', 'You see me in the sky.', 'I shine during the day.'], answers: ['SUN', 'MOON', 'CLOUD'], correct: 'SUN' },
+            { prompt: 'What am I?', clues: ['I have four legs.', 'People can ride me.', 'I can run fast.'], answers: ['HORSE', 'TIGER', 'SNAKE'], correct: 'HORSE' },
+            { prompt: 'What am I?', clues: ['I am cold.', 'I can melt.', 'People use me in drinks.'], answers: ['ICE', 'SAND', 'PAPER'], correct: 'ICE' },
+        ],
+    },
+    {
+        id: 'word-hunt', icon: '🎯', title: 'Word Hunt', description: 'Find all words that match the mission.', type: 'word-hunt',
+        questions: [
+            { prompt: 'Find 3 words related to food.', answers: ['BOOK', 'APPLE', 'HOUSE', 'WATER', 'BREAD', 'DOG'], correct: ['APPLE', 'WATER', 'BREAD'] },
+            { prompt: 'Find 3 words related to places.', answers: ['SCHOOL', 'CAT', 'MARKET', 'RIVER', 'HOUSE', 'GREEN'], correct: ['SCHOOL', 'MARKET', 'HOUSE'] },
+            { prompt: 'Find 3 words related to nature.', answers: ['TREE', 'BOOK', 'RIVER', 'SUN', 'CHAIR', 'DOG'], correct: ['TREE', 'RIVER', 'SUN'] },
+            { prompt: 'Find 3 words related to animals.', answers: ['DOG', 'TABLE', 'CAT', 'BIRD', 'HOUSE', 'BLUE'], correct: ['DOG', 'CAT', 'BIRD'] },
+            { prompt: 'Find 3 words related to school.', answers: ['PENCIL', 'RIVER', 'TEACHER', 'BOOK', 'APPLE', 'MOON'], correct: ['PENCIL', 'TEACHER', 'BOOK'] },
+        ],
+    },
+    {
+        id: 'learning-wheel', icon: '🎡', title: 'Learning Wheel', description: 'Spin the wheel for a surprise challenge.', type: 'learning-wheel',
+        questions: [
+            { prompt: 'Complete the vocabulary challenge.', category: 'Vocabulary', answers: ['APPLE', 'BOOK', 'WATER'], correct: 'APPLE' },
+            { prompt: 'Complete the spelling challenge.', category: 'Spelling', answers: ['SCHOOL', 'FRIEND', 'MORNING'], correct: 'SCHOOL' },
+            { prompt: 'Complete the grammar challenge.', category: 'Grammar', answers: ['LEARN', 'LEARNING', 'LEARNS'], correct: 'LEARN' },
+            { prompt: 'Complete the listening challenge.', category: 'Listening', answers: ['WELCOME', 'GOODBYE', 'THANKS'], correct: 'WELCOME' },
+            { prompt: 'Complete the speaking challenge.', category: 'Speaking', answers: ['HELLO', 'TABLE', 'WINDOW'], correct: 'HELLO' },
+        ],
+    },
 ]
+
+const shuffleGameOptions = (items) => [...items].sort(() => Math.random() - 0.5)
+
+const shuffleBuilderLetters = (letters, answer) => {
+    let shuffled = shuffleGameOptions(letters)
+    let attempts = 0
+    while (shuffled.join('') === answer && attempts < 5) {
+        shuffled = shuffleGameOptions(letters)
+        attempts += 1
+    }
+    return shuffled
+}
+
+const getGameLibraryWithListening = (languageCode) => [
+    ...UNIVERSAL_GAMES,
+    ...(VISUAL_GAMES_BY_LANGUAGE[languageCode] || VISUAL_GAMES_BY_LANGUAGE.en),
+    LISTENING_GAME_BY_LANGUAGE[languageCode] || LISTENING_GAME_BY_LANGUAGE.en,
+].map((game) => ({
+    ...game,
+    questions: game.questions.map((question) => ({
+        ...question,
+        answers: question.answers ? shuffleGameOptions(question.answers) : question.answers,
+        letters: question.letters ? shuffleBuilderLetters(question.letters, question.correct) : question.letters,
+    })),
+}))
 const shuffleQuestions = (items) => [...items].sort(() => Math.random() - 0.5)
+const createQuestionRound = (items) => shuffleQuestions(items).slice(0, Math.min(5, items.length))
+const PERSISTED_ROUND_GAME_IDS = new Set(['word-builder', 'mystery-word', 'word-hunt', 'learning-wheel'])
+
+const getRoundStorageKey = (gameId) => `neolit_${gameId}_current_round`
+
+const getSavedGameRound = (gameId, questions) => {
+    try {
+        const savedIds = JSON.parse(localStorage.getItem(getRoundStorageKey(gameId)) || 'null')
+        if (!Array.isArray(savedIds) || savedIds.length !== 5) return null
+        const savedQuestions = savedIds.map((id) => questions.find((question) => question.id === id)).filter(Boolean)
+        return savedQuestions.length === 5 ? savedQuestions : null
+    } catch {
+        return null
+    }
+}
+
+const saveGameRound = (gameId, questions) => {
+    localStorage.setItem(getRoundStorageKey(gameId), JSON.stringify(questions.map((question) => question.id)))
+}
 const DEFAULT_GAME_SETTINGS = { seconds: 12, points: 10 }
 const RUNNER_EXTRA_WORDS = {
     en: ['river', 'green', 'book', 'quiet', 'school', 'bright', 'small', 'friend', 'morning', 'street'],
@@ -606,17 +681,21 @@ const RUNNER_EXTRA_WORDS = {
 
 export default function GamesPage() {
     const [languageCode, setLanguageCode] = useState(() => localStorage.getItem('neolit_selected_language') || 'en')
-    const games = getGameLibraryWithListening(languageCode)
+    const games = useMemo(() => getGameLibraryWithListening(languageCode), [languageCode])
     const [selectedId, setSelectedId] = useState(games[0].id)
     const [answer, setAnswer] = useState('')
     const [score, setScore] = useState(0)
     const [questionIndex, setQuestionIndex] = useState(0)
     const [timeLeft, setTimeLeft] = useState(12)
-    const [questionOrder, setQuestionOrder] = useState(() => shuffleQuestions(games[0].questions))
+    const [questionOrder, setQuestionOrder] = useState(() => createQuestionRound(games[0].questions))
     const [fallingWords, setFallingWords] = useState([])
     const [runnerWords, setRunnerWords] = useState([])
     const [memorySelection, setMemorySelection] = useState([])
     const [sentenceWords, setSentenceWords] = useState([])
+    const [builderLetters, setBuilderLetters] = useState([])
+    const [mysteryClueIndex, setMysteryClueIndex] = useState(0)
+    const [huntFound, setHuntFound] = useState([])
+    const [wheelCategory, setWheelCategory] = useState('')
     const [dragonHealth, setDragonHealth] = useState(3)
     const [dragonCoins, setDragonCoins] = useState(0)
     const [dragonDistance, setDragonDistance] = useState(0)
@@ -658,16 +737,26 @@ export default function GamesPage() {
     }, [languageCode, difficultySettings.seconds])
 
     const selectedGame = games.find((game) => game.id === selectedId) || games[0]
-    const question = questionOrder[questionIndex % questionOrder.length] || selectedGame.questions[0]
+    const gameTimeLimit = selectedGame.type === 'listening' ? 30 : difficultySettings.seconds
+    const questionOrderMatchesGame = questionOrder.some((item) => selectedGame.questions.includes(item))
+    const activeQuestionOrder = questionOrderMatchesGame ? questionOrder : selectedGame.questions
+    const question = activeQuestionOrder[questionIndex % activeQuestionOrder.length] || selectedGame.questions[0]
 
     useEffect(() => {
-        const nextOrder = shuffleQuestions(selectedGame.questions)
+        const savesRound = PERSISTED_ROUND_GAME_IDS.has(selectedGame.id)
+        const savedRound = savesRound ? getSavedGameRound(selectedGame.id, selectedGame.questions) : null
+        const nextOrder = savedRound || createQuestionRound(selectedGame.questions)
+        if (savesRound && !savedRound) saveGameRound(selectedGame.id, nextOrder)
         setQuestionOrder(nextOrder)
         setQuestionIndex(0)
         setAnswer('')
         setMemorySelection([])
         setSentenceWords([])
-        setTimeLeft(difficultySettings.seconds)
+        setBuilderLetters([])
+        setMysteryClueIndex(0)
+        setHuntFound([])
+        setWheelCategory('')
+        setTimeLeft(gameTimeLimit)
         setDragonHealth(3)
         setDragonCoins(0)
         setDragonDistance(0)
@@ -679,7 +768,7 @@ export default function GamesPage() {
         setShooterAimY(55)
         setShotFlash(false)
         setShotTarget(null)
-    }, [selectedGame, difficultySettings.seconds])
+    }, [selectedGame, gameTimeLimit])
 
     useEffect(() => {
         if (selectedGame.type !== 'cards') {
@@ -798,14 +887,14 @@ export default function GamesPage() {
         }, 1000)
 
         return () => window.clearInterval(timer)
-    }, [answer, questionIndex, selectedGame.id, difficultySettings.seconds])
+    }, [answer, questionIndex, selectedGame.id, gameTimeLimit])
 
     const chooseGame = (gameId) => {
         const nextGame = games.find((game) => game.id === gameId) || games[0]
         setSelectedId(nextGame.id)
         setAnswer('')
         setQuestionIndex(0)
-        setTimeLeft(difficultySettings.seconds)
+        setTimeLeft(gameTimeLimit)
         setRunnerFallen(false)
         setShooterAim(50)
         setShooterAimY(55)
@@ -813,6 +902,10 @@ export default function GamesPage() {
         setShooterAmmo(6)
         setShooterStreak(0)
         setShooterMisses(0)
+        setBuilderLetters([])
+        setMysteryClueIndex(0)
+        setHuntFound([])
+        setWheelCategory('')
         setShooterAmmo(6)
         setShooterStreak(0)
         setShooterMisses(0)
@@ -824,8 +917,8 @@ export default function GamesPage() {
         setDragonHealth(3)
         setDragonCoins(0)
         setDragonDistance(0)
-        setTimeLeft(difficultySettings.seconds)
-        setQuestionOrder(shuffleQuestions(selectedGame.questions))
+        setTimeLeft(gameTimeLimit)
+        setQuestionOrder(createQuestionRound(selectedGame.questions))
     }
 
     const chooseAnswer = (choice) => {
@@ -912,15 +1005,56 @@ export default function GamesPage() {
         chooseAnswer(choice)
     }
 
+    const chooseBuilderLetter = (letter, index) => {
+        if (answer) return
+        const nextLetters = [...builderLetters, { letter, index }]
+        setBuilderLetters(nextLetters)
+        if (nextLetters.length === question.correct.length) {
+            chooseAnswer(nextLetters.map((item) => item.letter).join(''))
+        }
+    }
+
+    const removeBuilderLetter = (index) => {
+        if (!answer) setBuilderLetters((current) => current.filter((item) => item.index !== index))
+    }
+
+    const revealMysteryClue = () => {
+        if (!answer) setMysteryClueIndex((current) => Math.min(current + 1, question.clues.length - 1))
+    }
+
+    const chooseHuntWord = (word) => {
+        if (answer || huntFound.includes(word)) return
+        const nextFound = [...huntFound, word]
+        setHuntFound(nextFound)
+        if (nextFound.length === question.correct.length) {
+            const isCorrect = nextFound.every((item) => question.correct.includes(item))
+            setAnswer(isCorrect ? 'correct' : 'wrong')
+            if (isCorrect) setScore((current) => current + difficultySettings.points)
+        }
+    }
+
+    const spinLearningWheel = () => {
+        if (!answer) setWheelCategory(question.category)
+    }
+
     const nextQuestion = () => {
         if (selectedGame.type === 'runner' && questionIndex + 1 >= questionOrder.length) {
-            setQuestionOrder(shuffleQuestions(selectedGame.questions))
+            setQuestionOrder(createQuestionRound(selectedGame.questions))
+        }
+        if (PERSISTED_ROUND_GAME_IDS.has(selectedGame.id) && questionIndex + 1 >= questionOrder.length) {
+            const nextRound = createQuestionRound(selectedGame.questions)
+            saveGameRound(selectedGame.id, nextRound)
+            setQuestionOrder(nextRound)
         }
         setQuestionIndex((current) => (current + 1) % questionOrder.length)
         setAnswer('')
         setMemorySelection([])
         setSentenceWords([])
-        setTimeLeft(difficultySettings.seconds)
+        setBuilderLetters([])
+        setMysteryClueIndex(0)
+        setHuntFound([])
+        setWheelCategory('')
+        setTimeLeft(gameTimeLimit)
         setRunnerFallen(false)
         setShooterAmmo(6)
     }
@@ -995,7 +1129,7 @@ export default function GamesPage() {
                 </div>
                 <p className="game-board-description">{selectedGame.description}</p>
                 <div className="game-meta-row">
-                    <span className="game-question-count">{selectedGame.type === 'dragon' || selectedGame.type === 'runner' ? 'Endless run · new obstacle' : `Question ${Math.min(questionIndex + 1, selectedGame.questions.length)}/${selectedGame.questions.length}`}</span>
+                    <span className="game-question-count">{selectedGame.type === 'dragon' || selectedGame.type === 'runner' ? 'Endless run · new obstacle' : `Question ${Math.min(questionIndex + 1, activeQuestionOrder.length)}/${activeQuestionOrder.length}`}</span>
                     <span className={`game-timer ${timeLeft <= 4 ? 'warning' : ''}`}>{timeLeft}s</span>
                 </div>
                 {selectedGame.type !== 'memory' && <h2>{question.prompt}</h2>}
@@ -1168,6 +1302,30 @@ export default function GamesPage() {
                             ))}
                         </div>
                     </div>
+                ) : selectedGame.type === 'word-builder' ? (
+                    <div className="special-game-panel word-builder-panel">
+                        <p className="special-game-label">Tap the letters in order</p>
+                        <div className="builder-answer">{builderLetters.map((item) => <button key={item.index} type="button" onClick={() => removeBuilderLetter(item.index)}>{item.letter}</button>)}</div>
+                        <div className="builder-letters">{question.letters.map((letter, index) => <button key={`${letter}-${index}`} type="button" disabled={builderLetters.some((item) => item.index === index)} onClick={() => chooseBuilderLetter(letter, index)}>{letter}</button>)}</div>
+                    </div>
+                ) : selectedGame.type === 'mystery-word' ? (
+                    <div className="special-game-panel mystery-panel">
+                        <p className="special-game-label">Clue {mysteryClueIndex + 1} of {question.clues.length}</p>
+                        <strong>{question.clues[mysteryClueIndex]}</strong>
+                        <div className="game-answer-grid">{question.answers.map((choice) => <button key={choice} type="button" onClick={() => chooseAnswer(choice)}>{choice}</button>)}</div>
+                        <button type="button" className="game-secondary-button" onClick={revealMysteryClue} disabled={mysteryClueIndex === question.clues.length - 1}>Reveal next clue</button>
+                    </div>
+                ) : selectedGame.type === 'word-hunt' ? (
+                    <div className="special-game-panel word-hunt-panel">
+                        <p className="special-game-label">{huntFound.length}/{question.correct.length} found</p>
+                        <div className="game-answer-grid">{question.answers.map((choice) => <button key={choice} type="button" className={huntFound.includes(choice) ? 'selected' : ''} onClick={() => chooseHuntWord(choice)}>{choice}</button>)}</div>
+                    </div>
+                ) : selectedGame.type === 'learning-wheel' ? (
+                    <div className="special-game-panel learning-wheel-panel">
+                        <div className={`learning-wheel ${wheelCategory ? 'spun' : ''}`}>{wheelCategory || 'SPIN'}</div>
+                        <button type="button" className="game-primary-button" onClick={spinLearningWheel} disabled={Boolean(wheelCategory)}>Spin the wheel</button>
+                        {wheelCategory && <div className="game-answer-grid">{question.answers.map((choice) => <button key={choice} type="button" onClick={() => chooseAnswer(choice)}>{choice}</button>)}</div>}
+                    </div>
                 ) : selectedGame.type === 'cards' ? (
                     <div className="catch-word-stage" aria-label="Catch the correct word">
                         <div className="catch-word-zone">
@@ -1249,7 +1407,7 @@ export default function GamesPage() {
                     </div>
                 ) : (
                     <>
-                        {answer && <p className={answer === question.correct ? 'game-feedback correct' : 'game-feedback wrong'}>{answer === 'timeout' ? (selectedGame.type === 'dragon' ? 'Time is up! One heart lost.' : 'Time is up! Move to the next challenge.') : answer === question.correct ? 'Correct! Great work.' : selectedGame.type === 'dragon' ? 'Wrong word. One heart lost.' : 'Try another answer.'}</p>}
+                        {answer && <p className={`game-feedback ${answer === question.correct || (selectedGame.type === 'word-hunt' && answer === 'correct') ? 'correct' : 'wrong'}`}>{answer === 'timeout' ? (selectedGame.type === 'dragon' ? 'Time is up! One heart lost.' : 'Time is up! Move to the next challenge.') : answer === question.correct || (selectedGame.type === 'word-hunt' && answer === 'correct') ? 'Correct! Great work.' : selectedGame.type === 'dragon' ? 'Wrong word. One heart lost.' : 'Try another answer.'}</p>}
                         {answer && <button type="button" className="game-next-button" onClick={nextQuestion}>Next question</button>}
                     </>
                 )}
