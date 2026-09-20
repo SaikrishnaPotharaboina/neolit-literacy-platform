@@ -53,4 +53,13 @@ VITE_API_BASE_URL=https://your-backend-domain.onrender.com
 
 To create the first admin from the register-style page, open `/register/admin` and enter the same value configured as `ADMIN_SETUP_KEY` on Render. This setup route closes automatically after the first admin account is created. Additional admins can be created from the admin dashboard.
 
+To replace the entire production database with fresh five-language data, open the Render shell and run these commands from the `Backend` directory. This deletes all users, profiles, progress, courses, and lessons:
+
+```bash
+export RESET_DATABASE=YES
+python reset_database.py
+alembic upgrade head
+python -c "from app.database import SessionLocal; from app.seed import seed_learning_content; db = SessionLocal(); seed_learning_content(db); db.close()"
+```
+
 For local development, use SQLite. For production, use a hosted database.
