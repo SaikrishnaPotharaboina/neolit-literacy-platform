@@ -69,19 +69,21 @@ def ensure_schema():
                     """)
                 )
 
-    if "learner_profiles" not in table_names:
-        return
+    if "learner_profiles" in table_names:
+        columns = {
+            column["name"]
+            for column in inspector.get_columns("learner_profiles")
+        }
 
-    columns = {
-        column["name"]
-        for column in inspector.get_columns("learner_profiles")
-    }
+        if "gender" not in columns:
+            with engine.begin() as connection:
+                connection.execute(
+                    text("""
+                        ALTER TABLE learner_profiles
+                        ADD COLUMN gender VARCHAR(40) NOT NULL DEFAULT ''
+                    """)
+                )
 
-    if "gender" not in columns:
-        with engine.begin() as connection:
-            connection.execute(
-                text("""
-                    ALTER TABLE learner_profiles
-                    ADD COLUMN gender VARCHAR(40) NOT NULL DEFAULT ''
-                """)
-            )
+    # Recover gracefully when a deployment starts before all Alembic
+    # migrations have been applied.
+    Base.metadata.create_all(bind=engine)
