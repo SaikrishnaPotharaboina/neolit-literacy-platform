@@ -26,12 +26,12 @@ export function AuthProvider({ children }) {
         return merged
     }
 
-    const refreshProfile = async (currentToken = token) => {
+    const refreshProfile = async (currentToken = token, currentUser = user) => {
         if (!currentToken) return null
 
         try {
             const profile = await learningApi.getProfile()
-            const nextUser = mergeProfileIntoUser(profile, user)
+            const nextUser = mergeProfileIntoUser(profile, currentUser)
             setUser(nextUser)
             return profile
         } catch (error) {
@@ -71,11 +71,13 @@ export function AuthProvider({ children }) {
     }, [token])
 
     const login = async (payload) => {
-        const data = await authApi.login(payload)
+        const data = payload.login_mode === 'admin'
+            ? await authApi.adminLogin(payload)
+            : await authApi.login(payload)
         localStorage.setItem('neolit_token', data.access_token)
         setToken(data.access_token)
         setUser(mergeProfileIntoUser(data.user, data.user))
-        await refreshProfile(data.access_token)
+        await refreshProfile(data.access_token, data.user)
         return data
     }
 
