@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.config import settings
-from app.dependencies import get_current_user
+from app.dependencies import get_current_user, require_admin
 from app.models.user import User
 from app.models.learning import LearnerProfile
 from app.schemas.user import PasswordReset, Token, UserCreate, UserLogin, UserResponse
@@ -28,6 +28,7 @@ def register_user(payload: UserCreate, db: Session = Depends(get_db)):
         last_name=last_name,
         email=payload.email.lower(),
         password_hash=get_password_hash(payload.password),
+        role="user",
     )
     profile = LearnerProfile(
         age=payload.age,
@@ -50,6 +51,48 @@ def register_user(payload: UserCreate, db: Session = Depends(get_db)):
 
     return {
         "message": "User registered successfully",
+        "user": UserResponse.model_validate(user),
+    }
+
+
+@router.post("/admin/users", response_model=dict, status_code=status.HTTP_201_CREATED)
+def create_admin_user(
+    payload: UserCreate,
+    current_user: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    existing_user = db.query(User).filter(User.email == payload.email.lower()).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+
+    first_name, last_name = payload.names()
+    user = User(
+        first_name=first_name,
+        last_name=last_name,
+        email=payload.email.lower(),
+        password_hash=get_password_hash(payload.password),
+        role=payload.role,
+    )
+    profile = LearnerProfile(
+        age=payload.age,
+        native_language=payload.native_language.strip(),
+        learning_language=payload.learning_language,
+        gender=payload.gender.strip(),
+        current_level_id=payload.current_level_id,
+    )
+    db.add(user)
+    try:
+        db.commit()
+        db.refresh(user)
+        profile.user_id = user.id
+        db.add(profile)
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=400, detail="Could not create user")
+
+    return {
+        "message": "Account created successfully",
         "user": UserResponse.model_validate(user),
     }
 
@@ -77,6 +120,15 @@ def login_user(payload: UserLogin, response: Response, db: Session = Depends(get
         raise HTTPException(
             status_code=401,
             detail="Invalid email or password"
+        )
+
+    if not user.is_active:
+        raise HTTPException(status_code=403, detail="This account is disabled.")
+
+    if payload.login_mode != "auto" and user.role != payload.login_mode:
+        raise HTTPException(
+            status_code=400,
+            detail=f"These credentials are not valid for {payload.login_mode} login.",
         )
 
     # 3. JWT creation
@@ -110,6 +162,12 @@ def login_user(payload: UserLogin, response: Response, db: Session = Depends(get
         "token_type": "bearer",
         "user": UserResponse.model_validate(user),
     }
+
+
+@router.post("/login/admin", response_model=dict)
+def admin_login(payload: UserLogin, response: Response, db: Session = Depends(get_db)):
+    admin_payload = payload.model_copy(update={"login_mode": "admin"})
+    return login_user(admin_payload, response, db)
 
 @router.post("/forgot-password")
 def reset_password(payload: PasswordReset, db: Session = Depends(get_db)):

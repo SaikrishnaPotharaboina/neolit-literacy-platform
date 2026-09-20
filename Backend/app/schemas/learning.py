@@ -160,6 +160,12 @@ class LessonProgressRequest(BaseModel):
     score: int = Field(ge=0, le=3)
 
 
+class GameActivityRequest(BaseModel):
+    game_id: str = Field(min_length=1, max_length=50)
+    score: int = Field(default=0, ge=0)
+    duration_seconds: int = Field(default=0, ge=0, le=86400)
+
+
 class LessonCompletionResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     language_code: str

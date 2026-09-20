@@ -4,25 +4,27 @@ from io import BytesIO
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from fastapi.responses import StreamingResponse
-from sqlalchemy import func
+from sqlalchemy import case, func
 from gtts import gTTS
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session, selectinload
 
 from app.database import get_db
-from app.dependencies import get_current_user
+from app.dependencies import get_current_user, require_admin
 from app.models.learning import (
     Assessment, AssessmentAnswer, AssessmentAttempt, Language, LearnerProfile,
-    LearnerProgress, LearnerStats, Lesson, LessonCompletion, Level, Module, Question,
+    LearnerProgress, LearnerStats, Lesson, LessonCompletion, GameActivity, Level, Module, Question,
 )
 from app.models.user import User
+from app.schemas.user import AdminPasswordReset, AdminUserUpdate, UserResponse
 from app.schemas.learning import (
     AssessmentResponse, AssessmentResult, AssessmentSubmission, LanguageResponse,
     LevelResponse, LessonResponse, ModuleResponse, ProfileResponse, ProfileUpdate,
-    ProgressResponse,
+    ProgressResponse, GameActivityRequest,
     LearningStateResponse, LessonProgressRequest, DashboardBootstrapResponse, LanguageUpdate,
 )
 from app.utils.assessment_generator import ensure_generated_questions
+from app.utils.security import get_password_hash
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -63,6 +65,244 @@ def list_languages(db: Session = Depends(get_db)):
 @router.get("/levels", response_model=list[LevelResponse])
 def list_levels(db: Session = Depends(get_db)):
     return db.query(Level).order_by(Level.minimum_score).all()
+
+
+@router.get("/admin/overview")
+def admin_overview(current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
+    today = date.today()
+    activity_start = today - timedelta(days=6)
+    activity_rows = db.query(
+        func.date(LessonCompletion.completed_at).label("activity_date"),
+        func.count(LessonCompletion.id).label("lesson_count"),
+    ).join(User, User.id == LessonCompletion.user_id).filter(
+        User.role == "user",
+        LessonCompletion.completed_at >= datetime.combine(activity_start, datetime.min.time()),
+    ).group_by(func.date(LessonCompletion.completed_at)).all()
+    activity_by_date = {str(activity_date): lesson_count for activity_date, lesson_count in activity_rows}
+    completion_scores = db.query(func.avg(LessonCompletion.score)).join(User, User.id == LessonCompletion.user_id).filter(User.role == "user").scalar()
+    study_attempts = db.query(AssessmentAttempt.started_at, AssessmentAttempt.completed_at).join(User, User.id == AssessmentAttempt.user_id).filter(
+        User.role == "user",
+        AssessmentAttempt.completed_at.is_not(None),
+    ).all()
+    study_time_seconds = 0
+    for started_at, completed_at in study_attempts:
+        if not started_at or not completed_at:
+            continue
+        duration_seconds = int((completed_at - started_at).total_seconds())
+        if 0 <= duration_seconds <= 60 * 60:
+            study_time_seconds += duration_seconds
+
+    return {
+        "platform_name": "NeoLit",
+        "user_count": db.query(User).filter(User.role == "user").count(),
+        "new_users_today": db.query(User).filter(
+            User.role == "user",
+            User.created_at >= datetime.combine(today, datetime.min.time()),
+        ).count(),
+        "active_users": db.query(User).join(LearnerStats, LearnerStats.user_id == User.id).filter(
+            User.role == "user",
+            LearnerStats.last_activity_date == today,
+        ).count(),
+        "admin_count": db.query(User).filter(User.role == "admin").count(),
+        "study_time_seconds": study_time_seconds,
+        "lessons_completed": db.query(LessonCompletion).join(User, User.id == LessonCompletion.user_id).filter(User.role == "user").count(),
+        "xp_earned": int(db.query(func.coalesce(func.sum(LessonCompletion.xp_earned), 0)).join(User, User.id == LessonCompletion.user_id).filter(User.role == "user").scalar() or 0),
+        "game_activity": db.query(GameActivity).join(User, User.id == GameActivity.user_id).filter(User.role == "user").count(),
+        "game_activity_today": db.query(GameActivity).join(User, User.id == GameActivity.user_id).filter(
+            User.role == "user",
+            GameActivity.played_at >= datetime.combine(today, datetime.min.time()),
+        ).count(),
+        "average_completion": round(float(completion_scores or 0), 1),
+        "activity": [
+            {
+                "date": (activity_start + timedelta(days=offset)).isoformat(),
+                "lessons": activity_by_date.get((activity_start + timedelta(days=offset)).isoformat(), 0),
+            }
+            for offset in range(7)
+        ],
+        "current_user": current_user.email,
+    }
+
+
+@router.post("/game-activity", status_code=status.HTTP_201_CREATED)
+def record_game_activity(
+    payload: GameActivityRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    activity = GameActivity(user_id=current_user.id, **payload.model_dump())
+    db.add(activity)
+    stats = get_or_create_stats(current_user, db)
+    stats.last_activity_date = date.today()
+    db.commit()
+    return {"id": activity.id, "recorded": True}
+
+
+@router.get("/admin/users")
+def admin_users(current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
+    rows = db.query(
+        User.id,
+        User.first_name,
+        User.last_name,
+        User.email,
+        User.role,
+        User.is_active,
+        LearnerStats.xp,
+        LearnerStats.streak_days,
+        LearnerStats.last_activity_date,
+    ).outerjoin(LearnerStats, LearnerStats.user_id == User.id).filter(User.role == "user").all()
+
+    study_rows = db.query(
+        AssessmentAttempt.user_id,
+        AssessmentAttempt.started_at,
+        AssessmentAttempt.completed_at,
+    ).filter(AssessmentAttempt.completed_at.is_not(None)).all()
+    study_time_by_user = {}
+    for user_id, started_at, completed_at in study_rows:
+        if not started_at or not completed_at:
+            continue
+        duration_seconds = int((completed_at - started_at).total_seconds())
+        if 0 <= duration_seconds <= 60 * 60:
+            study_time_by_user[user_id] = study_time_by_user.get(user_id, 0) + duration_seconds
+
+    today = date.today()
+    users = [
+        {
+            "id": user_id,
+            "name": f"{first_name} {last_name}".strip() or email.split('@')[0],
+            "email": email,
+            "role": role,
+            "is_active": bool(is_active),
+            "xp": xp or 0,
+            "streak_days": streak_days or 0,
+            "last_activity_date": last_activity_date.isoformat() if last_activity_date else None,
+            "status": "Active" if is_active and last_activity_date == today else "Inactive",
+            "study_time_seconds": study_time_by_user.get(user_id, 0),
+        }
+        for user_id, first_name, last_name, email, role, is_active, xp, streak_days, last_activity_date in rows
+    ]
+    users.sort(key=lambda user: (
+        user["status"] != "Active",
+        -user["xp"],
+        -user["study_time_seconds"],
+        -user["id"],
+    ))
+
+    return users
+
+@router.get("/admin/users/{user_id}")
+def get_admin_user(
+    user_id: int,
+    current_user: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found.")
+
+    stats = user.stats
+    profile = user.profile
+    return {
+        "id": user.id,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "name": user.name,
+        "email": user.email,
+        "role": user.role,
+        "created_at": user.created_at,
+        "age": profile.age if profile else None,
+        "native_language": profile.native_language if profile else "",
+        "learning_language": profile.learning_language if profile else "en",
+        "xp": stats.xp if stats else 0,
+        "streak_days": stats.streak_days if stats else 0,
+        "last_activity_date": stats.last_activity_date.isoformat() if stats and stats.last_activity_date else None,
+        "progress": [
+            {"skill": item.skill, "score": item.score, "level": item.proficiency_level, "updated_at": item.updated_at}
+            for item in user.progress
+        ],
+        "study_history": [
+            {"id": item.id, "assessment_id": item.assessment_id, "score": item.score, "percentage": item.percentage, "completed_at": item.completed_at}
+            for item in user.attempts if item.completed_at
+        ],
+        "game_history": [
+            {"id": item.id, "game_id": item.game_id, "score": item.score, "duration_seconds": item.duration_seconds, "played_at": item.played_at}
+            for item in user.game_activity
+        ],
+        "is_active": bool(user.is_active),
+    }
+
+@router.patch("/admin/users/{user_id}")
+def update_admin_user(
+    user_id: int,
+    payload: AdminUserUpdate,
+    current_user: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found.")
+    if user_id == current_user.id and payload.role != "admin":
+        raise HTTPException(status_code=400, detail="You cannot remove your own admin role.")
+    duplicate = db.query(User).filter(User.email == payload.email.lower(), User.id != user_id).first()
+    if duplicate:
+        raise HTTPException(status_code=400, detail="Email already belongs to another account.")
+
+    user.first_name = payload.first_name
+    user.last_name = payload.last_name
+    user.email = payload.email.lower()
+    user.role = payload.role
+    db.commit()
+    db.refresh(user)
+    return UserResponse.model_validate(user)
+
+
+@router.patch("/admin/users/{user_id}/status")
+def update_admin_user_status(
+    user_id: int,
+    current_user: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    if user_id == current_user.id:
+        raise HTTPException(status_code=400, detail="You cannot disable your own admin account.")
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found.")
+    user.is_active = 0 if user.is_active else 1
+    db.commit()
+    return {"id": user.id, "is_active": bool(user.is_active)}
+
+
+@router.post("/admin/users/{user_id}/reset-password")
+def reset_admin_user_password(
+    user_id: int,
+    payload: AdminPasswordReset,
+    current_user: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found.")
+    user.password_hash = get_password_hash(payload.password)
+    db.commit()
+    return {"id": user.id, "message": "Password reset successfully"}
+
+
+@router.delete("/admin/users/{user_id}")
+def delete_admin_user(
+    user_id: int,
+    current_user: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    if user_id == current_user.id:
+        raise HTTPException(status_code=400, detail="You cannot delete your own admin account.")
+
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found.")
+
+    db.delete(user)
+    db.commit()
+    return {"message": "User deleted successfully", "id": user_id}
 
 
 @router.get("/dashboard/bootstrap", response_model=DashboardBootstrapResponse)

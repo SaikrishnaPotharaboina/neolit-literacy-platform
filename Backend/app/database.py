@@ -48,8 +48,20 @@ def get_db():
 
 def ensure_schema():
     inspector = inspect(engine)
+    table_names = set(inspector.get_table_names())
 
-    if "learner_profiles" not in inspector.get_table_names():
+    if "users" in table_names:
+        user_columns = {column["name"] for column in inspector.get_columns("users")}
+        if "role" not in user_columns:
+            with engine.begin() as connection:
+                connection.execute(
+                    text("""
+                        ALTER TABLE users
+                        ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'user'
+                    """)
+                )
+
+    if "learner_profiles" not in table_names:
         return
 
     columns = {

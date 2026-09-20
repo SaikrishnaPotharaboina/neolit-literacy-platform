@@ -6,8 +6,18 @@ export const authApi = {
         return response.data
     },
 
+    createAdminUser: async (payload) => {
+        const response = await api.post('/api/auth/admin/users', payload)
+        return response.data
+    },
+
     login: async (payload) => {
         const response = await api.post('/api/auth/login', payload)
+        return response.data
+    },
+
+    adminLogin: async (payload) => {
+        const response = await api.post('/api/auth/login/admin', payload)
         return response.data
     },
 

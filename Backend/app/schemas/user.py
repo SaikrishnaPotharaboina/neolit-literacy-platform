@@ -13,11 +13,20 @@ class UserCreate(BaseModel):
     learning_language: str = Field(default="en", min_length=2, max_length=12)
     gender: str = Field(default="", max_length=40)
     current_level_id: int | None = None
+    role: str = Field(default="user", max_length=20)
 
-    @field_validator("first_name", "last_name", "name", "native_language", "learning_language", "gender", mode="before")
+    @field_validator("first_name", "last_name", "name", "native_language", "learning_language", "gender", "role", mode="before")
     @classmethod
     def strip_text(cls, value):
         return value.strip() if isinstance(value, str) else value
+
+    @field_validator("role")
+    @classmethod
+    def validate_role(cls, value):
+        normalized = (value or "user").lower()
+        if normalized not in {"user", "admin"}:
+            raise ValueError("Role must be either 'user' or 'admin'")
+        return normalized
 
     @model_validator(mode="after")
     def require_name(self):
@@ -34,6 +43,38 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+    login_mode: str = Field(default="auto", max_length=10)
+
+    @field_validator("login_mode", mode="before")
+    @classmethod
+    def validate_login_mode(cls, value):
+        normalized = (value or "auto").lower()
+        if normalized not in {"auto", "user", "admin"}:
+            raise ValueError("Login mode must be user or admin")
+        return normalized
+
+class AdminUserUpdate(BaseModel):
+    first_name: str = Field(min_length=1, max_length=80)
+    last_name: str = Field(default="", max_length=80)
+    email: EmailStr
+    role: str = Field(default="user", max_length=20)
+
+    @field_validator("first_name", "last_name", "role", mode="before")
+    @classmethod
+    def strip_update_text(cls, value):
+        return value.strip() if isinstance(value, str) else value
+
+    @field_validator("role")
+    @classmethod
+    def validate_update_role(cls, value):
+        normalized = value.lower()
+        if normalized not in {"user", "admin"}:
+            raise ValueError("Role must be either 'user' or 'admin'")
+        return normalized
+
+
+class AdminPasswordReset(BaseModel):
+    password: str = Field(min_length=8, max_length=255)
 
 
 class PasswordReset(BaseModel):
@@ -47,6 +88,7 @@ class UserResponse(BaseModel):
     first_name: str
     last_name: str
     email: EmailStr
+    role: str = "user"
     created_at: datetime
     updated_at: datetime | None = None
 

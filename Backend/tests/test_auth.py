@@ -2,8 +2,11 @@ from uuid import uuid4
 
 from fastapi.testclient import TestClient
 
+from app.database import SessionLocal
+from app.models.user import User
 from app.main import app
 from app.utils.security import create_access_token
+from app.utils.security import get_password_hash
 
 client = TestClient(app)
 
@@ -76,6 +79,77 @@ def test_register_and_login_flow():
         json={"email": email, "password": "NewStrongPass456!"},
     )
     assert new_login_response.status_code == 200, new_login_response.text
+
+
+def test_admin_role_registration_and_protection():
+    public_email = f"public-role+{uuid4().hex}@example.com"
+    admin_email = f"admin+{uuid4().hex}@example.com"
+    register_response = client.post(
+        "/api/auth/register",
+        json={
+            "name": "Admin User",
+            "email": public_email,
+            "password": "StrongPass123!",
+            "role": "admin",
+        },
+    )
+    assert register_response.status_code == 201, register_response.text
+    assert register_response.json()["user"]["email"] == public_email
+    assert register_response.json()["user"]["role"] == "user"
+
+    db = SessionLocal()
+    db_admin = User(
+        first_name="Admin",
+        last_name="User",
+        email=admin_email,
+        password_hash=get_password_hash("StrongPass123!"),
+        role="admin",
+    )
+    db.add(db_admin)
+    db.commit()
+    db.close()
+
+    token = client.post(
+        "/api/auth/login",
+        json={"email": admin_email, "password": "StrongPass123!", "login_mode": "admin"},
+    ).json()["access_token"]
+
+    admin_ok = client.get(
+        "/api/admin/overview",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert admin_ok.status_code == 200, admin_ok.text
+
+    user_email = f"learner+{uuid4().hex}@example.com"
+    user_register = client.post(
+        "/api/auth/register",
+        json={
+            "name": "Normal User",
+            "email": user_email,
+            "password": "StrongPass123!",
+        },
+    )
+    assert user_register.status_code == 201, user_register.text
+    user_token = client.post(
+        "/api/auth/login",
+        json={"email": user_email, "password": "StrongPass123!", "login_mode": "user"},
+    ).json()["access_token"]
+
+    admin_denied = client.get(
+        "/api/admin/overview",
+        headers={"Authorization": f"Bearer {user_token}"},
+    )
+    assert admin_denied.status_code == 403, admin_denied.text
+
+    users_response = client.get(
+        "/api/admin/users",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert users_response.status_code == 200, users_response.text
+    payload = users_response.json()
+    assert isinstance(payload, list)
+    assert any(item["email"] == admin_email for item in payload)
+    assert any(item["email"] == user_email for item in payload)
 
 
 def test_registration_validation_and_duplicate_email():

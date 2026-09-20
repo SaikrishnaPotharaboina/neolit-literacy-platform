@@ -217,3 +217,14 @@ class LessonCompletion(Base):
         UniqueConstraint("user_id", "language_code", "unit_number", "lesson_step", name="uq_lesson_completion"),
         Index("ix_lesson_completions_user_date", "user_id", "completed_at"),
     )
+
+
+class GameActivity(Base):
+    __tablename__ = "game_activity"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    game_id = Column(String(50), nullable=False)
+    score = Column(Integer, default=0, nullable=False)
+    duration_seconds = Column(Integer, default=0, nullable=False)
+    played_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    user = relationship("User", back_populates="game_activity")
