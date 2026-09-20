@@ -33,13 +33,17 @@ export const authApi = {
         return response.data
     },
 
-    logout: async () => {
-        const response = await api.post('/api/auth/logout')
+    logout: async (token) => {
+        const response = await api.post('/api/auth/logout', {}, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {}
+        })
         return response.data
     },
 
-    getCurrentUser: async () => {
-        const response = await api.get('/api/auth/me')
+    getCurrentUser: async (token) => {
+        const response = await api.get('/api/auth/me', {
+            headers: token ? { Authorization: `Bearer ${token}` } : {}
+        })
         return response.data
     }
 }
