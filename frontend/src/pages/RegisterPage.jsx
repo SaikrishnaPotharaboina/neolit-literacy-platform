@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/useAuth'
 import { languages } from '../data/languages'
+import { authApi } from '../services/authApi'
 
 const levels = [
     { id: 1, name: 'Beginner' },
@@ -11,12 +12,13 @@ const levels = [
     { id: 5, name: 'Advanced' },
 ]
 
-export default function RegisterPage() {
+export default function RegisterPage({ adminMode = false }) {
     const [form, setForm] = useState({
         first_name: '',
         last_name: '',
         email: '',
         password: '',
+        setup_key: '',
         age: '',
         native_language: '',
         learning_language: 'en',
@@ -51,7 +53,11 @@ export default function RegisterPage() {
         }
 
         try {
-            await register(payload)
+            if (adminMode) {
+                await authApi.bootstrapAdmin(payload, form.setup_key)
+            } else {
+                await register(payload)
+            }
             navigate('/login')
         } catch (err) {
             const detail = err.response?.data?.detail
@@ -94,8 +100,8 @@ export default function RegisterPage() {
             <div className="neo-auth-shell register-shell">
                 <div className="neo-auth-card neo-register-card single-register-card">
                     <div className="neo-card-icon orange">📖</div>
-                    <h2>Create your account</h2>
-                    <p>Join NeoLit and start your English journey.</p>
+                    <h2>{adminMode ? 'Create admin account' : 'Create your account'}</h2>
+                    <p>{adminMode ? 'Set up the first NeoLit administrator.' : 'Join NeoLit and start your English journey.'}</p>
 
                     <form onSubmit={handleSubmit} className="neo-auth-form">
                         <div className="neo-two-col">
@@ -163,6 +169,20 @@ export default function RegisterPage() {
                             <small>Password strength: {passwordStrength.label}</small>
                         </div>
 
+                        {adminMode && (
+                            <label>
+                                <span>Admin setup key</span>
+                                <input
+                                    name="setup_key"
+                                    type="password"
+                                    value={form.setup_key}
+                                    onChange={handleChange}
+                                    placeholder="Enter the Render setup key"
+                                    required
+                                />
+                            </label>
+                        )}
+
                         <div className="neo-two-col">
                             <label>
                                 <span>Age</span>
@@ -188,65 +208,69 @@ export default function RegisterPage() {
                             </label>
                         </div>
 
-                        <div className="neo-two-col">
-                            <label>
-                                <span>Native language</span>
-                                <select
-                                    name="native_language"
-                                    value={form.native_language}
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    <option value="">Select your mother tongue</option>
-                                    {languages.map((language) => (
-                                        <option key={language.code} value={language.name}>{language.name}</option>
-                                    ))}
-                                </select>
-                            </label>
-                            <label>
-                                <span>Learning course language</span>
-                                <select
-                                    name="learning_language"
-                                    value={form.learning_language}
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    {languages.map((language) => (
-                                        <option key={language.code} value={language.code}>
-                                            {language.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </label>
-                        </div>
+                        {!adminMode && (
+                            <>
+                                <div className="neo-two-col">
+                                    <label>
+                                        <span>Native language</span>
+                                        <select
+                                            name="native_language"
+                                            value={form.native_language}
+                                            onChange={handleChange}
+                                            required
+                                        >
+                                            <option value="">Select your mother tongue</option>
+                                            {languages.map((language) => (
+                                                <option key={language.code} value={language.name}>{language.name}</option>
+                                            ))}
+                                        </select>
+                                    </label>
+                                    <label>
+                                        <span>Learning course language</span>
+                                        <select
+                                            name="learning_language"
+                                            value={form.learning_language}
+                                            onChange={handleChange}
+                                            required
+                                        >
+                                            {languages.map((language) => (
+                                                <option key={language.code} value={language.code}>
+                                                    {language.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </label>
+                                </div>
 
-                        <div className="neo-two-col">
-                            <label>
-                                <span>Current proficiency level</span>
-                                <select
-                                    name="current_level_id"
-                                    value={form.current_level_id}
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    {levels.map((level) => (
-                                        <option key={level.id} value={level.id}>
-                                            {level.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </label>
-                        </div>
+                                <div className="neo-two-col">
+                                    <label>
+                                        <span>Current proficiency level</span>
+                                        <select
+                                            name="current_level_id"
+                                            value={form.current_level_id}
+                                            onChange={handleChange}
+                                            required
+                                        >
+                                            {levels.map((level) => (
+                                                <option key={level.id} value={level.id}>
+                                                    {level.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </label>
+                                </div>
 
-                        <label className="neo-check-row">
-                            <input type="checkbox" required />
-                            <span>I agree to the Terms of Service and Privacy Policy</span>
-                        </label>
+                                <label className="neo-check-row">
+                                    <input type="checkbox" required />
+                                    <span>I agree to the Terms of Service and Privacy Policy</span>
+                                </label>
+                            </>
+                        )}
 
                         {error && <p className="neo-error-msg">{error}</p>}
 
                         <button type="submit" className="neo-login-button" disabled={loading}>
-                            {loading ? 'Creating account...' : 'Create Account'}
+                            {loading ? 'Creating account...' : adminMode ? 'Create Admin Account' : 'Create Account'}
                         </button>
                     </form>
 
@@ -254,7 +278,9 @@ export default function RegisterPage() {
                         Already have an account? <Link to="/login">Log in</Link>
                     </p>
                     <p className="neo-switch-text neo-admin-access-link">
-                        Admin account? <Link to="/login/admin">Admin login</Link>
+                        {adminMode
+                            ? <>Already have an admin account? <Link to="/login/admin">Admin login</Link></>
+                            : <>Admin account? <Link to="/register/admin">Create admin account</Link></>}
                     </p>
                 </div>
             </div>

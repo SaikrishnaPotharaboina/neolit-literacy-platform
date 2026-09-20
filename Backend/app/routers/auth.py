@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, Header, HTTPException, Response, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -11,6 +11,47 @@ from app.schemas.user import PasswordReset, Token, UserCreate, UserLogin, UserRe
 from app.utils.security import create_access_token, get_password_hash, verify_password
 
 router = APIRouter()
+
+
+@router.post("/admin/register", response_model=dict, status_code=status.HTTP_201_CREATED)
+def bootstrap_admin_user(
+    payload: UserCreate,
+    admin_setup_key: str = Header(default="", alias="X-Admin-Setup-Key"),
+    db: Session = Depends(get_db),
+):
+    if not settings.ADMIN_SETUP_KEY or admin_setup_key != settings.ADMIN_SETUP_KEY:
+        raise HTTPException(status_code=403, detail="Admin setup is not available")
+
+    if db.query(User).filter(User.role == "admin").first():
+        raise HTTPException(status_code=409, detail="An admin account already exists")
+
+    first_name, last_name = payload.names()
+    user = User(
+        first_name=first_name,
+        last_name=last_name,
+        email=payload.email.lower(),
+        password_hash=get_password_hash(payload.password),
+        role="admin",
+    )
+    profile = LearnerProfile(
+        native_language=payload.native_language.strip(),
+        learning_language=payload.learning_language,
+        gender=payload.gender.strip(),
+        user=user,
+    )
+    db.add(user)
+    db.add(profile)
+    try:
+        db.commit()
+        db.refresh(user)
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=400, detail="Could not create admin account")
+
+    return {
+        "message": "Admin account created successfully",
+        "user": UserResponse.model_validate(user),
+    }
 
 
 @router.post("/register", response_model=dict, status_code=status.HTTP_201_CREATED)

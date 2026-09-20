@@ -200,6 +200,19 @@ Solution: Install the backend requirements again:
 
     python -m pip install -r requirements.txt
 
+FIRST ADMIN ACCOUNT
+-------------------
+
+For local development, create the first admin from the Backend folder:
+
+    python create_admin.py
+
+For the deployed application, set ADMIN_SETUP_KEY in Render and open:
+
+    https://your-frontend-domain.vercel.app/register/admin
+
+The setup key can create only the first admin account. After that, use the admin dashboard to create more accounts.
+
 
 @router.post("/logout")
 def logout_user():

@@ -21,6 +21,13 @@ export const authApi = {
         return response.data
     },
 
+    bootstrapAdmin: async (payload, setupKey) => {
+        const response = await api.post('/api/auth/admin/register', payload, {
+            headers: { 'X-Admin-Setup-Key': setupKey },
+        })
+        return response.data
+    },
+
     resetPassword: async (payload) => {
         const response = await api.post('/api/auth/forgot-password', payload)
         return response.data

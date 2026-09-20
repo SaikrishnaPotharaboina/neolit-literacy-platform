@@ -100,6 +100,7 @@ function AppRoutes() {
                 <Route path="/login/admin" element={<LoginPage />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+                <Route path="/register/admin" element={<RegisterPage adminMode />} />
                 <Route
                     path="/dashboard"
                     element={

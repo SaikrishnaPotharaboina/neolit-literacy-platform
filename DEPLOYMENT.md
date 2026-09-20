@@ -22,6 +22,7 @@ ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 CORS_ORIGINS=https://neolit-literacy-platform.vercel.app,https://neolit-literacy-platform-niylk93x0.vercel.app
 CORS_ORIGIN_REGEX=^https://neolit-literacy-platform(?:-[a-z0-9-]+)*\.vercel\.app$
+ADMIN_SETUP_KEY=replace-with-a-long-random-one-time-key
 ```
 
 ## 2. Deploy the Frontend to Vercel
@@ -49,5 +50,7 @@ VITE_API_BASE_URL=https://your-backend-domain.onrender.com
 ```
 
 3. Open the public Vercel URL and test registration and login.
+
+To create the first admin from the register-style page, open `/register/admin` and enter the same value configured as `ADMIN_SETUP_KEY` on Render. This setup route closes automatically after the first admin account is created. Additional admins can be created from the admin dashboard.
 
 For local development, use SQLite. For production, use a hosted database.

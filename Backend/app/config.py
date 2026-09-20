@@ -21,6 +21,7 @@ class Settings(BaseSettings):
         "CORS_ORIGIN_REGEX",
         r"^https://neolit-literacy-platform(?:-[a-z0-9-]+)*\.vercel\.app$",
     )
+    ADMIN_SETUP_KEY: str = os.getenv("ADMIN_SETUP_KEY", "")
 
     model_config = SettingsConfigDict(
         env_file=Path(__file__).resolve().parent.parent / ".env",
