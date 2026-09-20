@@ -5524,6 +5524,129 @@
     background: rgba(239, 99, 99, 0.06);
 }
 
+.special-game-panel {
+    display: grid;
+    gap: 18px;
+    padding: 22px;
+    border: 1px solid rgba(127, 238, 192, 0.18);
+    border-radius: 18px;
+    background: rgba(13, 27, 31, 0.58);
+}
+
+.special-game-label {
+    margin: 0;
+    color: #9cecc9;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.builder-answer,
+.builder-letters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    min-height: 58px;
+}
+
+.builder-answer {
+    align-items: center;
+    padding: 12px;
+    border: 1px dashed rgba(127, 238, 192, 0.28);
+    border-radius: 14px;
+}
+
+.builder-letters button,
+.builder-answer button {
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgba(127, 238, 192, 0.25);
+    border-radius: 12px;
+    background: rgba(95, 117, 120, 0.18);
+    color: #f2fbf6;
+    font-size: 1.15rem;
+    font-weight: 900;
+}
+
+.builder-letters button:hover,
+.builder-answer button:hover {
+    background: rgba(127, 238, 192, 0.18);
+    transform: translateY(-2px);
+}
+
+.builder-letters button:disabled {
+    opacity: 0.25;
+}
+
+.mystery-panel>strong {
+    color: #f2fbf6;
+    font-size: 1.35rem;
+    text-align: center;
+}
+
+.game-secondary-button,
+.game-primary-button {
+    min-height: 48px;
+    padding: 10px 18px;
+    border: 1px solid rgba(127, 238, 192, 0.3);
+    border-radius: 12px;
+    background: rgba(127, 238, 192, 0.12);
+    color: #b8f7d9;
+    font-weight: 800;
+}
+
+.game-primary-button {
+    background: #27c59b;
+    color: #062822;
+}
+
+.game-secondary-button:disabled,
+.game-primary-button:disabled {
+    cursor: default;
+    opacity: 0.55;
+}
+
+.word-hunt-panel .game-answer-grid button.selected {
+    border-color: #7feec0;
+    background: rgba(127, 238, 192, 0.24);
+    color: #d9ffeb;
+}
+
+.learning-wheel-panel {
+    justify-items: center;
+}
+
+.learning-wheel {
+    display: grid;
+    place-items: center;
+    width: 170px;
+    height: 170px;
+    border: 10px solid #f5b94c;
+    border-radius: 50%;
+    background: conic-gradient(#39c5a0 0 25%, #f5b94c 25% 50%, #e97679 50% 75%, #6cb9ee 75% 100%);
+    color: #082824;
+    font-size: 1rem;
+    font-weight: 900;
+    text-align: center;
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.24);
+}
+
+.learning-wheel.spun {
+    animation: wheel-spin 0.7s ease-out;
+}
+
+@keyframes wheel-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 @media (max-width: 720px) {
     .memory-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
