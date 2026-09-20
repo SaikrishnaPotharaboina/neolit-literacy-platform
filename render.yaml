@@ -17,4 +17,6 @@ services:
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: "60"
       - key: CORS_ORIGINS
-        value: https://neolit-literacy-platform.vercel.app
+        value: https://neolit-literacy-platform.vercel.app,https://neolit-literacy-platform-niylk93x0.vercel.app
+      - key: CORS_ORIGIN_REGEX
+        value: ^https://neolit-literacy-platform(?:-[a-z0-9-]+)*\.vercel\.app$

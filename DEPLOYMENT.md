@@ -25,6 +25,8 @@ DATABASE_URL=mysql+pymysql://username:password@host:3306/database_name
 SECRET_KEY=replace-with-a-long-random-secret
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
+CORS_ORIGINS=https://neolit-literacy-platform.vercel.app
+CORS_ORIGIN_REGEX=^https://neolit-literacy-platform(?:-[a-z0-9-]+)*\.vercel\.app$
 ```
 
 ## 2. Frontend on Vercel
@@ -47,6 +49,7 @@ The file [frontend/vercel.json](frontend/vercel.json) helps Vercel serve the Rea
 - For public hosting, switch to a managed database.
 - The frontend is configured to use `VITE_API_BASE_URL`, so it can point to your hosted backend URL.
 - The backend already allows CORS in [Backend/app/main.py](Backend/app/main.py), which is required for browser-based API access.
+- Keep `CORS_ORIGINS` set to the deployed frontend origin. `CORS_ORIGIN_REGEX` also permits this app's Vercel preview URLs.
 
 ## 4. Test after deployment
 

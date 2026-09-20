@@ -37,7 +37,12 @@ export default function LoginPage() {
 
             navigate(nextRole === 'admin' ? '/admin' : '/learning-path')
         } catch (err) {
-            setError(err.response?.data?.detail || err.message || 'Login failed')
+            setError(
+                err.response?.data?.detail
+                || (err.response
+                    ? 'Login failed. Please check your email and password.'
+                    : 'Unable to reach the login server. Please try again or contact support.')
+            )
         } finally {
             setLoading(false)
         }

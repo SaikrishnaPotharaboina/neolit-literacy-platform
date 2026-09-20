@@ -21,6 +21,7 @@ def prepare_database():
 configured_origins = [origin.strip() for origin in settings.CORS_ORIGINS.split(",") if origin.strip()]
 required_frontend_origins = [
     "https://neolit-literacy-platform.vercel.app",
+    "https://neolit-literacy-platform-niylk93x0.vercel.app",
     "http://localhost:5173",
     "http://localhost:4173",
     "http://127.0.0.1:5173",
@@ -45,6 +46,7 @@ async def handle_unexpected_error(request, exc):
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,
+    allow_origin_regex=settings.CORS_ORIGIN_REGEX,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
