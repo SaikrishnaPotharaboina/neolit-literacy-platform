@@ -1,17 +1,24 @@
 ﻿import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/useAuth'
 
 export default function LoginPage() {
+    const location = useLocation()
     const [form, setForm] = useState({ email: '', password: '' })
+    const [loginMode, setLoginMode] = useState(location.pathname === '/login/admin' ? 'admin' : 'user')
     const [error, setError] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)
-    const { login } = useAuth()
+    const { login, logout } = useAuth()
     const navigate = useNavigate()
 
     const handleChange = (event) => {
         setForm((prev) => ({ ...prev, [event.target.name]: event.target.value }))
+    }
+
+    const selectLoginMode = (mode) => {
+        setLoginMode(mode)
+        navigate(mode === 'admin' ? '/login/admin' : '/login')
     }
 
     const handleSubmit = async (event) => {
@@ -20,10 +27,17 @@ export default function LoginPage() {
         setLoading(true)
 
         try {
-            await login(form)
-            navigate('/learning-path')
+            const data = await login({ ...form, login_mode: loginMode })
+            const nextRole = data?.user?.role || 'user'
+
+            if (nextRole !== loginMode) {
+                await logout()
+                throw new Error(`This account is not an ${loginMode} account.`)
+            }
+
+            navigate(nextRole === 'admin' ? '/admin' : '/learning-path')
         } catch (err) {
-            setError(err.response?.data?.detail || 'Login failed')
+            setError(err.response?.data?.detail || err.message || 'Login failed')
         } finally {
             setLoading(false)
         }
@@ -36,6 +50,24 @@ export default function LoginPage() {
                     <div className="neo-card-icon orange">📖</div>
                     <h2>Welcome back!</h2>
                     <p className="neo-subtitle">Log in to continue your learning journey.</p>
+
+                    <div className="neo-login-mode" role="group" aria-label="Choose login type">
+                        <span className={`neo-login-mode-indicator ${loginMode === 'admin' ? 'admin' : ''}`} aria-hidden="true" />
+                        <button
+                            type="button"
+                            className={loginMode === 'user' ? 'active' : ''}
+                            onClick={() => selectLoginMode('user')}
+                        >
+                            User login
+                        </button>
+                        <button
+                            type="button"
+                            className={loginMode === 'admin' ? 'active' : ''}
+                            onClick={() => selectLoginMode('admin')}
+                        >
+                            Admin login
+                        </button>
+                    </div>
 
                     <form onSubmit={handleSubmit} className="neo-auth-form">
                         <label>
