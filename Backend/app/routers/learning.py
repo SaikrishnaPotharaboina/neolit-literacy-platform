@@ -61,7 +61,10 @@ def full_module_query(db: Session):
 
 @router.get("/languages", response_model=list[LanguageResponse])
 def list_languages(db: Session = Depends(get_db)):
-    return db.query(Language).filter(Language.is_active.is_(True)).order_by(Language.name).all()
+    return db.query(Language).filter(
+        Language.is_active.is_(True),
+        Language.code.in_(SUPPORTED_LANGUAGE_CODES),
+    ).order_by(Language.name).all()
 
 
 @router.get("/levels", response_model=list[LevelResponse])
@@ -148,8 +151,12 @@ def create_admin_course(
     current_user: User = Depends(require_admin),
     db: Session = Depends(get_db),
 ):
-    if not db.query(Language.id).filter(Language.id == payload.language_id).first():
-        raise HTTPException(status_code=400, detail="Language not found.")
+    if not db.query(Language.id).filter(
+        Language.id == payload.language_id,
+        Language.is_active.is_(True),
+        Language.code.in_(SUPPORTED_LANGUAGE_CODES),
+    ).first():
+        raise HTTPException(status_code=400, detail="Select one of the five supported active languages.")
     if not db.query(Level.id).filter(Level.id == payload.level_id).first():
         raise HTTPException(status_code=400, detail="Level not found.")
     last_order = db.query(func.max(Module.order_number)).scalar() or 0
@@ -172,6 +179,13 @@ def update_admin_course(
         raise HTTPException(status_code=404, detail="Course not found.")
     course.title = payload.title
     course.description = payload.description
+    language_is_supported = db.query(Language.id).filter(
+        Language.id == payload.language_id,
+        Language.is_active.is_(True),
+        Language.code.in_(SUPPORTED_LANGUAGE_CODES),
+    ).first()
+    if not language_is_supported:
+        raise HTTPException(status_code=400, detail="Select one of the five supported active languages.")
     course.language_id = payload.language_id
     course.level_id = payload.level_id
     db.commit()
