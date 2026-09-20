@@ -439,7 +439,7 @@ def dashboard_bootstrap(current_user: User = Depends(get_current_user), db: Sess
 
 @router.get("/curriculum", response_model=list[ModuleResponse])
 def list_curriculum(language_id: int | None = None, level_id: int | None = None, db: Session = Depends(get_db)):
-    query = full_module_query(db)
+    query = full_module_query(db).join(Language, Module.language_id == Language.id).filter(Language.is_active.is_(True))
     if language_id:
         query = query.filter(Module.language_id == language_id)
     if level_id:
@@ -449,7 +449,11 @@ def list_curriculum(language_id: int | None = None, level_id: int | None = None,
 
 @router.get("/curriculum/{language_id}/{level_id}", response_model=list[ModuleResponse])
 def curriculum_by_level(language_id: int, level_id: int, db: Session = Depends(get_db)):
-    return full_module_query(db).filter(Module.language_id == language_id, Module.level_id == level_id).order_by(Module.order_number).all()
+    return full_module_query(db).join(Language, Module.language_id == Language.id).filter(
+        Language.is_active.is_(True),
+        Module.language_id == language_id,
+        Module.level_id == level_id,
+    ).order_by(Module.order_number).all()
 
 
 @router.get("/modules/{module_id}", response_model=ModuleResponse)
