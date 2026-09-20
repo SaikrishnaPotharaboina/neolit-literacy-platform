@@ -60,6 +60,14 @@ def ensure_schema():
                         ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'user'
                     """)
                 )
+        if "is_active" not in user_columns:
+            with engine.begin() as connection:
+                connection.execute(
+                    text("""
+                        ALTER TABLE users
+                        ADD COLUMN is_active INTEGER NOT NULL DEFAULT 1
+                    """)
+                )
 
     if "learner_profiles" not in table_names:
         return
