@@ -31,6 +31,7 @@ export default function AdminDashboardPage() {
     const [currentPage, setCurrentPage] = useState(1)
     const [users, setUsers] = useState(defaultUsers)
     const [overview, setOverview] = useState(null)
+    const [overviewError, setOverviewError] = useState('')
     const [activeSection, setActiveSection] = useState('Dashboard')
     const [showCreateAccount, setShowCreateAccount] = useState(false)
     const [deletingUserId, setDeletingUserId] = useState(null)
@@ -169,9 +170,11 @@ export default function AdminDashboardPage() {
     useEffect(() => {
         const loadOverview = async () => {
             try {
+                setOverviewError('')
                 setOverview(await learningApi.getAdminOverview())
             } catch (error) {
                 setOverview(null)
+                setOverviewError(error.response?.data?.detail || 'Could not load platform overview.')
             } finally {
                 setLoadingOverview(false)
             }
@@ -418,6 +421,7 @@ export default function AdminDashboardPage() {
 
                 {activeSection === 'Dashboard' && <>
                     <section id="admin-overview" className="admin-summary-grid">
+                        {overviewError && <p className="admin-section-empty admin-overview-error">{overviewError}</p>}
                         {statCards.map((card) => (
                             <article key={card.label} className={`admin-summary-card ${card.tone}`}>
                                 <strong>{loadingOverview ? '...' : card.raw ? card.value : Number(card.value || 0).toLocaleString()}</strong>
