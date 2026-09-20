@@ -292,6 +292,11 @@ const getUnitQuestionSet = (questions, lessonStep) => {
     return Array.from({ length: QUESTIONS_PER_UNIT }, (_, index) => questions[(start + index) % questions.length])
 }
 
+const shuffleQuestionOptions = (questions, seed) => questions.map((question, questionIndex) => ({
+    ...question,
+    options: question.options ? shuffleWithSeed(question.options, seed + questionIndex * 19) : question.options,
+}))
+
 const getUnitQuestions = (languageCode, lessonStep, unitNumber, learnerId) => {
     const numericUnit = Number(unitNumber)
     const difficulty = getUnitDifficulty(numericUnit)
@@ -305,14 +310,14 @@ const getUnitQuestions = (languageCode, lessonStep, unitNumber, learnerId) => {
             : languageQuestions,
         languageCode,
     ), lessonStep)
-    const englishQuestions = getUnitQuestionSet(rotateQuestions([
+    const englishQuestions = shuffleQuestionOptions(getUnitQuestionSet(rotateQuestions([
         ...stageQuestions[lessonStep],
         ...additionalQuestionsByLanguage.en,
         ...(difficulty === 'Hard' ? challengeQuestionsByLanguage.en : []),
-    ], languageCode), lessonStep)
+    ], languageCode), lessonStep), numericUnit * 97 + lessonStep * 31)
     const topic = (unitTopics[languageCode] || unitTopics.en)[(numericUnit - 1) % 8]
     const englishTopic = englishTopicNames[(numericUnit - 1) % 8]
-    const uniqueQuestions = questionsForUnit.map((question, index) => ({
+    const uniqueQuestions = shuffleQuestionOptions(questionsForUnit, numericUnit * 97 + lessonStep * 31).map((question, index) => ({
         ...question,
         prompt: `${topic}: ${question.prompt}`,
         englishPrompt: `${englishTopic}: ${englishQuestions[index].prompt}`,
