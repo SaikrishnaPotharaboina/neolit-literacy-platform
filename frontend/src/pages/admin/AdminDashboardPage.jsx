@@ -274,6 +274,16 @@ export default function AdminDashboardPage() {
                         <article><span>Top language</span><strong>{topLearningLanguage?.name || 'No data'}</strong><small>{topLearningLanguage ? `${topLearningLanguage.learners} learners` : 'No learners yet'}</small></article>
                         <article><span>Largest course</span><strong>{topCourse?.title || 'No data'}</strong><small>{topCourse ? `${topCourse.lessons.length} lessons` : 'No courses yet'}</small></article>
                     </div>
+                    <section className="admin-language-panel">
+                        <div className="admin-panel-header"><div><p className="admin-kicker">Learner distribution</p><h2>Learning languages</h2></div><span className="admin-section-badge">Live data</span></div>
+                        <div className="admin-language-featured">
+                            {featuredLanguages.map((language) => <article key={language.code} className="admin-language-card"><span>{language.code.toUpperCase()}</span><strong>{language.learners}</strong><small>{language.name} learners</small></article>)}
+                        </div>
+                        <div className="admin-language-list">
+                            {otherLanguages.map((language) => <div key={language.code}><span>{language.name}</span><strong>{language.learners}</strong></div>)}
+                            {!languageStats.length && <p className="admin-section-empty">No learner language data available.</p>}
+                        </div>
+                    </section>
                     <div className="admin-section-toolbar"><div><strong>Curriculum library</strong><span>Manage courses and their lessons.</span></div><div className="admin-section-toolbar-actions"><button type="button" className="admin-create-cancel" onClick={() => setActiveSection('Dashboard')}>Dashboard</button><button type="button" className="admin-create-submit" onClick={handleCreateCourse}>+ Add course</button></div></div>
                     {loadingCurriculum ? <p className="admin-section-empty">Loading courses...</p> : visibleCourses.map((course, index) => (
                         <article key={course.id} className="admin-curriculum-card">
@@ -462,16 +472,6 @@ export default function AdminDashboardPage() {
                         </div>
                     </section>
 
-                    <section className="admin-language-panel">
-                        <div className="admin-panel-header"><div><p className="admin-kicker">Learner distribution</p><h2>Learning languages</h2></div><span className="admin-section-badge">Live data</span></div>
-                        <div className="admin-language-featured">
-                            {featuredLanguages.map((language) => <article key={language.code} className="admin-language-card"><span>{language.code.toUpperCase()}</span><strong>{language.learners}</strong><small>{language.name} learners</small></article>)}
-                        </div>
-                        <div className="admin-language-list">
-                            {otherLanguages.map((language) => <div key={language.code}><span>{language.name}</span><strong>{language.learners}</strong></div>)}
-                            {!languageStats.length && <p className="admin-section-empty">No learner language data available.</p>}
-                        </div>
-                    </section>
                 </>}
 
                 {activeSection === 'Users' && <section id="admin-users" className="admin-user-table-panel">
