@@ -17,6 +17,7 @@ const sidebarItems = [
 
 const defaultUsers = []
 const USERS_PER_PAGE = 6
+const CURRICULUM_PER_PAGE = 7
 
 function statusStyle(status) {
     if (status === 'Active') return 'admin-status active'
@@ -37,6 +38,9 @@ export default function AdminDashboardPage() {
     const [loadingUsers, setLoadingUsers] = useState(true)
     const [loadingOverview, setLoadingOverview] = useState(true)
     const [curriculum, setCurriculum] = useState([])
+    const [selectedCourseId, setSelectedCourseId] = useState(null)
+    const [coursePage, setCoursePage] = useState(1)
+    const [lessonPage, setLessonPage] = useState(1)
     const [loadingCurriculum, setLoadingCurriculum] = useState(true)
     const userName = user?.first_name || user?.name || 'Admin'
 
@@ -54,6 +58,99 @@ export default function AdminDashboardPage() {
 
         loadUsers()
     }, [])
+
+    const reloadCurriculum = async () => {
+        try {
+            setCurriculum(await learningApi.getCurriculum())
+        } catch (error) {
+            setCurriculum([])
+        }
+    }
+
+    const promptCoursePayload = async (course = null) => {
+        const title = window.prompt('Course title:', course?.title || '')
+        if (!title?.trim()) return null
+        const description = window.prompt('Course description:', course?.description || '') ?? ''
+        const languages = await learningApi.getLanguages()
+        const levels = await learningApi.getLevels()
+        return {
+            title: title.trim(),
+            description,
+            language_id: course?.language_id || languages[0]?.id,
+            level_id: course?.level_id || levels[0]?.id,
+        }
+    }
+
+    const handleCreateCourse = async () => {
+        try {
+            const payload = await promptCoursePayload()
+            if (payload) {
+                await learningApi.createAdminCourse(payload)
+                await reloadCurriculum()
+            }
+        } catch (error) {
+            window.alert(error.response?.data?.detail || 'Could not create course.')
+        }
+    }
+
+    const handleEditCourse = async (course) => {
+        try {
+            const payload = await promptCoursePayload(course)
+            if (payload) {
+                await learningApi.updateAdminCourse(course.id, payload)
+                await reloadCurriculum()
+            }
+        } catch (error) {
+            window.alert(error.response?.data?.detail || 'Could not update course.')
+        }
+    }
+
+    const handleDeleteCourse = async (course) => {
+        if (!window.confirm(`Delete ${course.title} and all its lessons?`)) return
+        try {
+            await learningApi.deleteAdminCourse(course.id)
+            setSelectedCourseId(null)
+            await reloadCurriculum()
+        } catch (error) {
+            window.alert(error.response?.data?.detail || 'Could not delete course.')
+        }
+    }
+
+    const handleCreateLesson = async (course) => {
+        const title = window.prompt('Lesson title:')
+        if (!title?.trim()) return
+        const description = window.prompt('Lesson description:') ?? ''
+        const lesson_type = window.prompt('Lesson type:', 'mixed') || 'mixed'
+        try {
+            await learningApi.createAdminLesson(course.id, { title: title.trim(), description, lesson_type })
+            await reloadCurriculum()
+        } catch (error) {
+            window.alert(error.response?.data?.detail || 'Could not create lesson.')
+        }
+    }
+
+    const handleEditLesson = async (lesson) => {
+        const title = window.prompt('Lesson title:', lesson.title)
+        if (!title?.trim()) return
+        const description = window.prompt('Lesson description:', lesson.description || '') ?? ''
+        const lesson_type = window.prompt('Lesson type:', lesson.lesson_type || 'mixed') || 'mixed'
+        try {
+            await learningApi.updateAdminLesson(lesson.id, { title: title.trim(), description, lesson_type })
+            await reloadCurriculum()
+        } catch (error) {
+            window.alert(error.response?.data?.detail || 'Could not update lesson.')
+        }
+    }
+
+    const handleDeleteLesson = async (lesson) => {
+        if (!window.confirm(`Delete ${lesson.title}?`)) return
+        try {
+            await learningApi.deleteAdminLesson(lesson.id)
+            await reloadCurriculum()
+        } catch (error) {
+            window.alert(error.response?.data?.detail || 'Could not delete lesson.')
+        }
+    }
 
     useEffect(() => {
         const loadCurriculum = async () => {
@@ -114,6 +211,16 @@ export default function AdminDashboardPage() {
 
     const activeLearners = users.filter((person) => person.status === 'Active').slice(0, 10)
     const topXpLearners = [...users].sort((first, second) => second.xp - first.xp).slice(0, 10)
+    const languageStats = overview?.language_stats || []
+    const featuredLanguages = ['en', 'te'].map((code) => languageStats.find((item) => item.code === code) || {
+        code,
+        name: code === 'en' ? 'English' : 'Telugu',
+        learners: 0,
+    })
+    const otherLanguages = languageStats.filter((item) => !['en', 'te'].includes(item.code))
+    const totalLessons = curriculum.reduce((total, course) => total + course.lessons.length, 0)
+    const topCourse = [...curriculum].sort((first, second) => second.lessons.length - first.lessons.length)[0]
+    const topLearningLanguage = languageStats[0]
 
     const handleDeleteUser = async (name, id) => {
         const confirmed = window.confirm(`Delete ${name}? This action cannot be undone.`)
@@ -140,33 +247,62 @@ export default function AdminDashboardPage() {
         courseTitle: course.title,
     })))
 
+    const selectedCourse = curriculum.find((course) => course.id === selectedCourseId)
+    const lessonsToManage = selectedCourse ? selectedCourse.lessons : allLessons
+    const coursePageCount = Math.max(1, Math.ceil(curriculum.length / CURRICULUM_PER_PAGE))
+    const lessonPageCount = Math.max(1, Math.ceil(lessonsToManage.length / CURRICULUM_PER_PAGE))
+    const visibleCourses = curriculum.slice((coursePage - 1) * CURRICULUM_PER_PAGE, coursePage * CURRICULUM_PER_PAGE)
+    const visibleLessons = lessonsToManage.slice((lessonPage - 1) * CURRICULUM_PER_PAGE, lessonPage * CURRICULUM_PER_PAGE)
+
+    useEffect(() => {
+        setCoursePage(1)
+        setLessonPage(1)
+    }, [activeSection, selectedCourseId])
+
     const renderAdminSection = () => {
         if (activeSection === 'Dashboard' || activeSection === 'Users') return null
 
         if (activeSection === 'Courses') {
             return (
                 <div className="admin-section-list">
-                    {loadingCurriculum ? <p className="admin-section-empty">Loading courses...</p> : curriculum.map((course) => (
-                        <article key={course.id} className="admin-section-item">
-                            <div><strong>{course.title}</strong><small>{course.description || 'No description provided'}</small></div>
-                            <span>{course.lessons.length} lessons</span>
+                    <div className="admin-course-overview-grid">
+                        <article><span>Courses</span><strong>{curriculum.length}</strong><small>Total courses in curriculum</small></article>
+                        <article><span>Lessons</span><strong>{totalLessons}</strong><small>Lessons across all courses</small></article>
+                        <article><span>Top language</span><strong>{topLearningLanguage?.name || 'No data'}</strong><small>{topLearningLanguage ? `${topLearningLanguage.learners} learners` : 'No learners yet'}</small></article>
+                        <article><span>Largest course</span><strong>{topCourse?.title || 'No data'}</strong><small>{topCourse ? `${topCourse.lessons.length} lessons` : 'No courses yet'}</small></article>
+                    </div>
+                    <div className="admin-section-toolbar"><div><strong>Curriculum library</strong><span>Manage courses and their lessons.</span></div><div className="admin-section-toolbar-actions"><button type="button" className="admin-create-cancel" onClick={() => setActiveSection('Dashboard')}>Dashboard</button><button type="button" className="admin-create-submit" onClick={handleCreateCourse}>+ Add course</button></div></div>
+                    {loadingCurriculum ? <p className="admin-section-empty">Loading courses...</p> : visibleCourses.map((course, index) => (
+                        <article key={course.id} className="admin-curriculum-card">
+                            <div className="admin-curriculum-card-head">
+                                <span className="admin-course-mark">{String((coursePage - 1) * CURRICULUM_PER_PAGE + index + 1).padStart(2, '0')}</span>
+                                <div className="admin-curriculum-card-copy"><strong>{course.title}</strong><small>{course.description || 'No description provided'}</small></div>
+                                <span className="admin-course-count">{course.lessons.length} lessons</span>
+                            </div>
+                            <div className="admin-curriculum-card-footer">
+                                <span>Course #{course.id}</span>
+                                <div className="admin-section-actions"><button type="button" className="admin-action-link" onClick={() => { setSelectedCourseId(course.id); setActiveSection('Lessons') }}>Manage lessons</button><button type="button" className="admin-action-link" onClick={() => handleEditCourse(course)}>Edit</button><button type="button" className="admin-action-danger" onClick={() => handleDeleteCourse(course)}>Delete</button></div>
+                            </div>
                         </article>
                     ))}
                     {!loadingCurriculum && curriculum.length === 0 && <p className="admin-section-empty">No courses found in the database.</p>}
+                    {!loadingCurriculum && curriculum.length > 0 && <div className="admin-curriculum-pagination"><span>{(coursePage - 1) * CURRICULUM_PER_PAGE + 1}-{Math.min(coursePage * CURRICULUM_PER_PAGE, curriculum.length)} of {curriculum.length}</span><button type="button" disabled={coursePage === 1} onClick={() => setCoursePage((page) => page - 1)}>Previous</button>{Array.from({ length: coursePageCount }, (_, index) => index + 1).map((page) => <button type="button" key={page} className={coursePage === page ? 'active' : ''} onClick={() => setCoursePage(page)}>{page}</button>)}<button type="button" disabled={coursePage === coursePageCount} onClick={() => setCoursePage((page) => page + 1)}>Next</button></div>}
                 </div>
             )
         }
 
         if (activeSection === 'Lessons') {
+            const lessonsToShow = lessonsToManage
             return (
                 <div className="admin-section-list">
-                    {loadingCurriculum ? <p className="admin-section-empty">Loading lessons...</p> : allLessons.slice(0, 30).map((lesson) => (
-                        <article key={lesson.id} className="admin-section-item">
-                            <div><strong>{lesson.title}</strong><small>{lesson.courseTitle}</small></div>
-                            <span>{lesson.lesson_type}</span>
+                    <div className="admin-section-toolbar"><div><strong>{selectedCourse ? selectedCourse.title : 'All lessons'}</strong><span>{selectedCourse ? 'Lesson sequence for this course.' : 'Select a course to manage its lesson sequence.'}</span></div><div className="admin-section-toolbar-actions"><button type="button" className="admin-create-cancel" onClick={() => setActiveSection('Dashboard')}>Dashboard</button>{selectedCourse && <button type="button" className="admin-create-submit" onClick={() => handleCreateLesson(selectedCourse)}>+ Add lesson</button>}</div></div>
+                    {loadingCurriculum ? <p className="admin-section-empty">Loading lessons...</p> : visibleLessons.map((lesson) => (
+                        <article key={lesson.id} className="admin-lesson-row">
+                            <span className="admin-lesson-number">{lesson.order_number}</span><div className="admin-lesson-copy"><strong>{lesson.title}</strong><small>{lesson.courseTitle || selectedCourse?.title}</small></div><span className="admin-lesson-type">{lesson.lesson_type}</span><div className="admin-section-actions"><button type="button" className="admin-action-link" onClick={() => handleEditLesson(lesson)}>Edit</button><button type="button" className="admin-action-danger" onClick={() => handleDeleteLesson(lesson)}>Delete</button></div>
                         </article>
                     ))}
-                    {!loadingCurriculum && allLessons.length === 0 && <p className="admin-section-empty">No lessons found in the database.</p>}
+                    {!loadingCurriculum && lessonsToShow.length === 0 && <p className="admin-section-empty">No lessons found in the database.</p>}
+                    {!loadingCurriculum && lessonsToShow.length > 0 && <div className="admin-curriculum-pagination"><span>{(lessonPage - 1) * CURRICULUM_PER_PAGE + 1}-{Math.min(lessonPage * CURRICULUM_PER_PAGE, lessonsToShow.length)} of {lessonsToShow.length}</span><button type="button" disabled={lessonPage === 1} onClick={() => setLessonPage((page) => page - 1)}>Previous</button>{Array.from({ length: lessonPageCount }, (_, index) => index + 1).map((page) => <button type="button" key={page} className={lessonPage === page ? 'active' : ''} onClick={() => setLessonPage(page)}>{page}</button>)}<button type="button" disabled={lessonPage === lessonPageCount} onClick={() => setLessonPage((page) => page + 1)}>Next</button></div>}
                 </div>
             )
         }
@@ -263,7 +399,7 @@ export default function AdminDashboardPage() {
                 <header className="admin-top-header">
                     <div>
                         <p className="admin-kicker">Admin</p>
-                        <h1>Platform Overview</h1>
+                        <h1>{activeSection === 'Dashboard' ? 'Platform Overview' : activeSection}</h1>
                     </div>
                     <div className="admin-header-user">
                         <span className="admin-header-pill">Admin ▼</span>
@@ -280,48 +416,61 @@ export default function AdminDashboardPage() {
                     </section>
                 )}
 
-                <section id="admin-overview" className="admin-summary-grid">
-                    {statCards.map((card) => (
-                        <article key={card.label} className={`admin-summary-card ${card.tone}`}>
-                            <strong>{loadingOverview ? '...' : card.raw ? card.value : Number(card.value || 0).toLocaleString()}</strong>
-                            <span>{card.label}</span>
-                        </article>
-                    ))}
-                </section>
+                {activeSection === 'Dashboard' && <>
+                    <section id="admin-overview" className="admin-summary-grid">
+                        {statCards.map((card) => (
+                            <article key={card.label} className={`admin-summary-card ${card.tone}`}>
+                                <strong>{loadingOverview ? '...' : card.raw ? card.value : Number(card.value || 0).toLocaleString()}</strong>
+                                <span>{card.label}</span>
+                            </article>
+                        ))}
+                    </section>
 
-                <section className="admin-activity-panel admin-activity-leaderboard">
-                    <div className="admin-panel-header">
-                        <div><p className="admin-kicker">Live learner data</p><h2>User Activity</h2></div>
-                        <span className="admin-section-badge">Top 10</span>
-                    </div>
-
-                    <div className="admin-activity-columns">
-                        <div className="admin-activity-column">
-                            <h3>Active learners</h3>
-                            {activeLearners.length ? activeLearners.map((person, index) => (
-                                <div key={person.id} className="admin-activity-learner">
-                                    <strong className="admin-rank-number">{index + 1}</strong>
-                                    <span className="admin-learner-avatar">{person.name.charAt(0).toUpperCase()}</span>
-                                    <span className="admin-activity-learner-name">{person.name}</span>
-                                    <span className="admin-activity-learner-score">🔥 {person.streak_days || 0}</span>
-                                </div>
-                            )) : <p className="admin-section-empty">No learners active today.</p>}
+                    <section className="admin-activity-panel admin-activity-leaderboard">
+                        <div className="admin-panel-header">
+                            <div><p className="admin-kicker">Live learner data</p><h2>User Activity</h2></div>
+                            <span className="admin-section-badge">Top 10</span>
                         </div>
-                        <div className="admin-activity-column">
-                            <h3>Top XP learners</h3>
-                            {topXpLearners.length ? topXpLearners.map((person, index) => (
-                                <div key={person.id} className="admin-activity-learner">
-                                    <strong className="admin-rank-number">{index + 1}</strong>
-                                    <span className="admin-learner-avatar">{person.name.charAt(0).toUpperCase()}</span>
-                                    <span className="admin-activity-learner-name">{person.name}</span>
-                                    <span className="admin-activity-learner-score">{person.xp} XP</span>
-                                </div>
-                            )) : <p className="admin-section-empty">No learner data available.</p>}
-                        </div>
-                    </div>
-                </section>
 
-                <section id="admin-users" className="admin-user-table-panel">
+                        <div className="admin-activity-columns">
+                            <div className="admin-activity-column">
+                                <h3>Active learners</h3>
+                                {activeLearners.length ? activeLearners.map((person, index) => (
+                                    <div key={person.id} className="admin-activity-learner">
+                                        <strong className="admin-rank-number">{index + 1}</strong>
+                                        <span className="admin-learner-avatar">{person.name.charAt(0).toUpperCase()}</span>
+                                        <span className="admin-activity-learner-name">{person.name}</span>
+                                        <span className="admin-activity-learner-score">🔥 {person.streak_days || 0}</span>
+                                    </div>
+                                )) : <p className="admin-section-empty">No learners active today.</p>}
+                            </div>
+                            <div className="admin-activity-column">
+                                <h3>Top XP learners</h3>
+                                {topXpLearners.length ? topXpLearners.map((person, index) => (
+                                    <div key={person.id} className="admin-activity-learner">
+                                        <strong className="admin-rank-number">{index + 1}</strong>
+                                        <span className="admin-learner-avatar">{person.name.charAt(0).toUpperCase()}</span>
+                                        <span className="admin-activity-learner-name">{person.name}</span>
+                                        <span className="admin-activity-learner-score">{person.xp} XP</span>
+                                    </div>
+                                )) : <p className="admin-section-empty">No learner data available.</p>}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className="admin-language-panel">
+                        <div className="admin-panel-header"><div><p className="admin-kicker">Learner distribution</p><h2>Learning languages</h2></div><span className="admin-section-badge">Live data</span></div>
+                        <div className="admin-language-featured">
+                            {featuredLanguages.map((language) => <article key={language.code} className="admin-language-card"><span>{language.code.toUpperCase()}</span><strong>{language.learners}</strong><small>{language.name} learners</small></article>)}
+                        </div>
+                        <div className="admin-language-list">
+                            {otherLanguages.map((language) => <div key={language.code}><span>{language.name}</span><strong>{language.learners}</strong></div>)}
+                            {!languageStats.length && <p className="admin-section-empty">No learner language data available.</p>}
+                        </div>
+                    </section>
+                </>}
+
+                {activeSection === 'Users' && <section id="admin-users" className="admin-user-table-panel">
                     <div className="admin-table-head">
                         <h2>Recent Users</h2>
                         <div className="admin-search-box">
@@ -428,7 +577,7 @@ export default function AdminDashboardPage() {
                             </button>
                         </div>
                     )}
-                </section>
+                </section>}
             </main>
             {showCreateAccount && (
                 <AdminCreateAccount

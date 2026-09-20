@@ -160,6 +160,19 @@ class LessonProgressRequest(BaseModel):
     score: int = Field(ge=0, le=3)
 
 
+class AdminCourseRequest(BaseModel):
+    title: str = Field(min_length=1, max_length=150)
+    description: str = Field(default="", max_length=2000)
+    language_id: int = Field(gt=0)
+    level_id: int = Field(gt=0)
+
+
+class AdminLessonRequest(BaseModel):
+    title: str = Field(min_length=1, max_length=150)
+    description: str = Field(default="", max_length=2000)
+    lesson_type: str = Field(default="mixed", min_length=1, max_length=40)
+
+
 class GameActivityRequest(BaseModel):
     game_id: str = Field(min_length=1, max_length=50)
     score: int = Field(default=0, ge=0)

@@ -22,6 +22,7 @@ from app.schemas.learning import (
     LevelResponse, LessonResponse, ModuleResponse, ProfileResponse, ProfileUpdate,
     ProgressResponse, GameActivityRequest,
     LearningStateResponse, LessonProgressRequest, DashboardBootstrapResponse, LanguageUpdate,
+    AdminCourseRequest, AdminLessonRequest,
 )
 from app.utils.assessment_generator import ensure_generated_questions
 from app.utils.security import get_password_hash
@@ -92,6 +93,14 @@ def admin_overview(current_user: User = Depends(require_admin), db: Session = De
         if 0 <= duration_seconds <= 60 * 60:
             study_time_seconds += duration_seconds
 
+    language_names = {code: name for code, name in db.query(Language.code, Language.name).all()}
+    language_counts = db.query(
+        LearnerProfile.learning_language,
+        func.count(LearnerProfile.user_id),
+    ).join(User, User.id == LearnerProfile.user_id).filter(
+        User.role == "user",
+    ).group_by(LearnerProfile.learning_language).all()
+
     return {
         "platform_name": "NeoLit",
         "user_count": db.query(User).filter(User.role == "user").count(),
@@ -113,6 +122,14 @@ def admin_overview(current_user: User = Depends(require_admin), db: Session = De
             GameActivity.played_at >= datetime.combine(today, datetime.min.time()),
         ).count(),
         "average_completion": round(float(completion_scores or 0), 1),
+        "language_stats": [
+            {
+                "code": code,
+                "name": language_names.get(code, code.upper()),
+                "learners": count,
+            }
+            for code, count in sorted(language_counts, key=lambda item: item[1], reverse=True)
+        ],
         "activity": [
             {
                 "date": (activity_start + timedelta(days=offset)).isoformat(),
@@ -122,6 +139,107 @@ def admin_overview(current_user: User = Depends(require_admin), db: Session = De
         ],
         "current_user": current_user.email,
     }
+
+
+@router.post("/admin/courses", status_code=status.HTTP_201_CREATED)
+def create_admin_course(
+    payload: AdminCourseRequest,
+    current_user: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    if not db.query(Language.id).filter(Language.id == payload.language_id).first():
+        raise HTTPException(status_code=400, detail="Language not found.")
+    if not db.query(Level.id).filter(Level.id == payload.level_id).first():
+        raise HTTPException(status_code=400, detail="Level not found.")
+    last_order = db.query(func.max(Module.order_number)).scalar() or 0
+    course = Module(order_number=last_order + 1, **payload.model_dump())
+    db.add(course)
+    db.commit()
+    db.refresh(course)
+    return course
+
+
+@router.patch("/admin/courses/{course_id}")
+def update_admin_course(
+    course_id: int,
+    payload: AdminCourseRequest,
+    current_user: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    course = db.query(Module).filter(Module.id == course_id).first()
+    if not course:
+        raise HTTPException(status_code=404, detail="Course not found.")
+    course.title = payload.title
+    course.description = payload.description
+    course.language_id = payload.language_id
+    course.level_id = payload.level_id
+    db.commit()
+    db.refresh(course)
+    return course
+
+
+@router.delete("/admin/courses/{course_id}")
+def delete_admin_course(
+    course_id: int,
+    current_user: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    course = db.query(Module).filter(Module.id == course_id).first()
+    if not course:
+        raise HTTPException(status_code=404, detail="Course not found.")
+    db.delete(course)
+    db.commit()
+    return {"message": "Course deleted successfully", "id": course_id}
+
+
+@router.post("/admin/courses/{course_id}/lessons", status_code=status.HTTP_201_CREATED)
+def create_admin_lesson(
+    course_id: int,
+    payload: AdminLessonRequest,
+    current_user: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    course = db.query(Module).filter(Module.id == course_id).first()
+    if not course:
+        raise HTTPException(status_code=404, detail="Course not found.")
+    last_order = db.query(func.max(Lesson.order_number)).filter(Lesson.module_id == course_id).scalar() or 0
+    lesson = Lesson(module_id=course_id, order_number=last_order + 1, **payload.model_dump())
+    db.add(lesson)
+    db.commit()
+    db.refresh(lesson)
+    return lesson
+
+
+@router.patch("/admin/lessons/{lesson_id}")
+def update_admin_lesson(
+    lesson_id: int,
+    payload: AdminLessonRequest,
+    current_user: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found.")
+    lesson.title = payload.title
+    lesson.description = payload.description
+    lesson.lesson_type = payload.lesson_type
+    db.commit()
+    db.refresh(lesson)
+    return lesson
+
+
+@router.delete("/admin/lessons/{lesson_id}")
+def delete_admin_lesson(
+    lesson_id: int,
+    current_user: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found.")
+    db.delete(lesson)
+    db.commit()
+    return {"message": "Lesson deleted successfully", "id": lesson_id}
 
 
 @router.post("/game-activity", status_code=status.HTTP_201_CREATED)
