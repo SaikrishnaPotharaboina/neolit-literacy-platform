@@ -13,6 +13,7 @@ const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 const LearningPathPage = lazy(() => import('./pages/LearningPathPage'))
 const UnitLessonPage = lazy(() => import('./pages/UnitLessonPage'))
 const GamesPage = lazy(() => import('./pages/GamesPage'))
+const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage'))
 
 function PageLoading() {
     return (
@@ -45,6 +46,10 @@ function ProtectedRoute({ children }) {
         return <Navigate to="/login" replace />
     }
 
+    if (user.role === 'admin') {
+        return <Navigate to="/admin" replace />
+    }
+
     return (
         <>
             <SiteNavbar />
@@ -54,6 +59,24 @@ function ProtectedRoute({ children }) {
     )
 }
 
+function AdminRoute({ children }) {
+    const { user, loading } = useAuth()
+
+    if (loading) {
+        return <PageLoading />
+    }
+
+    if (!user) {
+        return <Navigate to="/login" replace />
+    }
+
+    if (user.role !== 'admin') {
+        return <Navigate to="/learning-path" replace />
+    }
+
+    return <>{children}</>
+}
+
 function RootRedirect() {
     const { user, loading } = useAuth()
 
@@ -61,7 +84,11 @@ function RootRedirect() {
         return <PageLoading />
     }
 
-    return <Navigate to={user ? '/learning-path' : '/login'} replace />
+    if (!user) {
+        return <Navigate to="/login" replace />
+    }
+
+    return <Navigate to={user.role === 'admin' ? '/admin' : '/learning-path'} replace />
 }
 
 function AppRoutes() {
@@ -70,6 +97,7 @@ function AppRoutes() {
             <Routes>
                 <Route path="/" element={<RootRedirect />} />
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/login/admin" element={<LoginPage />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route
@@ -110,6 +138,14 @@ function AppRoutes() {
                         <ProtectedRoute>
                             <GamesPage />
                         </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin"
+                    element={
+                        <AdminRoute>
+                            <AdminDashboardPage />
+                        </AdminRoute>
                     }
                 />
                 <Route path="*" element={<Navigate to="/learning-path" replace />} />
