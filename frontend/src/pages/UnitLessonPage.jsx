@@ -278,16 +278,18 @@ const shuffleWithSeed = (items, seed) => {
     return result
 }
 
-const getSectionQuestions = (questions, lessonStep) => {
-    const sectionSize = Math.ceil(questions.length / 3)
-    return questions.slice(lessonStep * sectionSize, (lessonStep + 1) * sectionSize)
-}
-
 const languageQuestionOffsets = { en: 0, hi: 2, kn: 4, ta: 6, te: 8 }
+const QUESTIONS_PER_UNIT = 5
 
 const rotateQuestions = (questions, languageCode) => {
     const offset = (languageQuestionOffsets[languageCode] || 0) % questions.length
     return [...questions.slice(offset), ...questions.slice(0, offset)]
+}
+
+const getUnitQuestionSet = (questions, lessonStep) => {
+    if (!questions.length) return []
+    const start = (lessonStep * 3) % questions.length
+    return Array.from({ length: QUESTIONS_PER_UNIT }, (_, index) => questions[(start + index) % questions.length])
 }
 
 const getUnitQuestions = (languageCode, lessonStep, unitNumber, learnerId) => {
@@ -297,13 +299,13 @@ const getUnitQuestions = (languageCode, lessonStep, unitNumber, learnerId) => {
         ...(localizedStageQuestions[languageCode]?.[lessonStep] || stageQuestions[lessonStep]),
         ...(additionalQuestionsByLanguage[languageCode] || additionalQuestionsByLanguage.en),
     ]
-    const baseQuestions = getSectionQuestions(rotateQuestions(languageQuestions, languageCode), lessonStep)
-    const questionsForUnit = difficulty === 'Beginner'
-        ? baseQuestions.slice(0, 3)
-        : difficulty === 'Hard'
-            ? [...baseQuestions, ...(challengeQuestionsByLanguage[languageCode] || challengeQuestionsByLanguage.en)]
-            : baseQuestions
-    const englishQuestions = getSectionQuestions(rotateQuestions([
+    const questionsForUnit = getUnitQuestionSet(rotateQuestions(
+        difficulty === 'Hard'
+            ? [...languageQuestions, ...(challengeQuestionsByLanguage[languageCode] || challengeQuestionsByLanguage.en)]
+            : languageQuestions,
+        languageCode,
+    ), lessonStep)
+    const englishQuestions = getUnitQuestionSet(rotateQuestions([
         ...stageQuestions[lessonStep],
         ...additionalQuestionsByLanguage.en,
         ...(difficulty === 'Hard' ? challengeQuestionsByLanguage.en : []),
