@@ -5,38 +5,68 @@ from app.models.learning import Activity, Assessment, Content, Language, Lesson,
 
 LANGUAGES = [
     ("English", "en"),
-    ("Assamese", "as"),
-    ("Bengali", "bn"),
-    ("Bodo", "brx"),
-    ("Dogri", "doi"),
-    ("Gujarati", "gu"),
     ("Hindi", "hi"),
     ("Kannada", "kn"),
-    ("Kashmiri", "ks"),
-    ("Konkani", "kok"),
-    ("Maithili", "mai"),
-    ("Malayalam", "ml"),
-    ("Manipuri (Meitei)", "mni"),
-    ("Marathi", "mr"),
-    ("Nepali", "ne"),
-    ("Odia", "or"),
-    ("Punjabi", "pa"),
-    ("Sanskrit", "sa"),
-    ("Santali", "sat"),
-    ("Sindhi", "sd"),
     ("Tamil", "ta"),
     ("Telugu", "te"),
-    ("Urdu", "ur"),
 ]
 
 
 def ensure_languages(db: Session) -> list[Language]:
+    supported_codes = {code for _, code in LANGUAGES}
     existing_codes = {language.code for language in db.query(Language).all()}
     missing_languages = [Language(name=name, code=code) for name, code in LANGUAGES if code not in existing_codes]
     if missing_languages:
         db.add_all(missing_languages)
         db.flush()
-    return db.query(Language).order_by(Language.id).all()
+    for language in db.query(Language).all():
+        language.is_active = language.code in supported_codes
+    return db.query(Language).filter(Language.code.in_(supported_codes)).order_by(Language.id).all()
+
+
+def ensure_language_courses(db: Session, languages: list[Language]) -> None:
+    levels = db.query(Level).order_by(Level.minimum_score).all()
+    if not levels:
+        return
+
+    beginner = levels[0]
+    for language in languages:
+        existing_modules = db.query(Module).filter(
+            Module.language_id == language.id,
+            Module.level_id == beginner.id,
+        ).count()
+        if existing_modules:
+            continue
+
+        for module_number in range(1, 3):
+            module = Module(
+                language=language,
+                level=beginner,
+                title=f"{language.name} Foundations {module_number}",
+                description="Practical language for daily reading and conversation.",
+                order_number=module_number,
+            )
+            for lesson_number in range(1, 4):
+                lesson = Lesson(
+                    module=module,
+                    title=f"Lesson {lesson_number}: Everyday communication",
+                    description="Read, notice, and use useful phrases.",
+                    order_number=lesson_number,
+                    lesson_type="mixed",
+                )
+                lesson.activities = [
+                    Activity(title="Read the phrase", activity_type="reading", content="Read the example aloud twice.", order_number=1),
+                    Activity(title="Notice the words", activity_type="vocabulary", content="Underline one new word and explain it.", order_number=2),
+                    Activity(title="Write your answer", activity_type="writing", content="Write one sentence about your day.", order_number=3),
+                ]
+                lesson.contents = [Content(
+                    title="A useful greeting",
+                    content_type="lesson",
+                    content={"en": "Hello, how are you?", "hi": "आप कैसे हैं?", "te": "మీరు ఎలా ఉన్నారు?"}.get(language.code, "Hello, how are you?"),
+                    language=language,
+                )]
+                module.lessons.append(lesson)
+            db.add(module)
 
 
 def add_extra_questions(db: Session) -> None:
@@ -140,12 +170,14 @@ def add_extra_questions(db: Session) -> None:
 
 def seed_learning_content(db: Session) -> None:
     if db.query(Language).first() and db.query(Assessment).count() >= 6:
-        ensure_languages(db)
+        languages = ensure_languages(db)
+        ensure_language_courses(db, languages)
         add_extra_questions(db)
         db.commit()
         return
     if db.query(Language).first():
         languages = ensure_languages(db)
+        ensure_language_courses(db, languages)
         levels = db.query(Level).order_by(Level.minimum_score).all()
         advanced_level = levels[2]
         existing_types = {item.assessment_type for item in db.query(Assessment).filter(Assessment.level_id == advanced_level.id).all()}
