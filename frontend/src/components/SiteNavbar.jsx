@@ -99,7 +99,7 @@ export default function SiteNavbar() {
                 last_name: user?.last_name || '',
                 age: profile.age,
                 native_language: languageName,
-                learning_language: profile.learning_language || selectedLanguageCode,
+                learning_language: selectedLanguageCode,
                 gender: profile.gender || '',
                 current_level_id: profile.current_level_id,
             })
