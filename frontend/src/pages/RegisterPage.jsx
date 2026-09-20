@@ -220,21 +220,23 @@ export default function RegisterPage() {
                             </label>
                         </div>
 
-                        <label>
-                            <span>Current proficiency level</span>
-                            <select
-                                name="current_level_id"
-                                value={form.current_level_id}
-                                onChange={handleChange}
-                                required
-                            >
-                                {levels.map((level) => (
-                                    <option key={level.id} value={level.id}>
-                                        {level.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
+                        <div className="neo-two-col">
+                            <label>
+                                <span>Current proficiency level</span>
+                                <select
+                                    name="current_level_id"
+                                    value={form.current_level_id}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    {levels.map((level) => (
+                                        <option key={level.id} value={level.id}>
+                                            {level.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+                        </div>
 
                         <label className="neo-check-row">
                             <input type="checkbox" required />
@@ -250,6 +252,9 @@ export default function RegisterPage() {
 
                     <p className="neo-switch-text">
                         Already have an account? <Link to="/login">Log in</Link>
+                    </p>
+                    <p className="neo-switch-text neo-admin-access-link">
+                        Admin account? <Link to="/login/admin">Admin login</Link>
                     </p>
                 </div>
             </div>
