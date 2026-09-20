@@ -1,4 +1,5 @@
 import logging
+import re
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -37,10 +38,17 @@ async def handle_unexpected_error(request, exc):
         request.method,
         request.url.path,
     )
-    return JSONResponse(
+    response = JSONResponse(
         status_code=500,
         content={"detail": "Internal server error"},
     )
+    origin = request.headers.get("origin")
+    if origin in cors_origins or (
+        origin and settings.CORS_ORIGIN_REGEX and re.fullmatch(settings.CORS_ORIGIN_REGEX, origin)
+    ):
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
 
 
 app.add_middleware(
