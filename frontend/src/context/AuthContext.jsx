@@ -5,7 +5,7 @@ import { AuthContext } from './authContextValue'
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
-    const [token, setToken] = useState(null)
+    const [token, setToken] = useState(localStorage.getItem('neolit_token'))
     const [loading, setLoading] = useState(true)
 
     const mergeProfileIntoUser = (profile, currentUser = user) => {
@@ -26,7 +26,9 @@ export function AuthProvider({ children }) {
         return merged
     }
 
-    const refreshProfile = async (currentUser = user) => {
+    const refreshProfile = async (currentToken = token, currentUser = user) => {
+        if (!currentToken) return null
+
         try {
             const profile = await learningApi.getProfile()
             const nextUser = mergeProfileIntoUser(profile, currentUser)
@@ -39,10 +41,14 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         const bootstrapAuth = async () => {
+            if (!token) {
+                setLoading(false)
+                return
+            }
+
             try {
-                const response = await authApi.getCurrentUser()
+                const response = await authApi.getCurrentUser(token)
                 const mergedUser = mergeProfileIntoUser(response, response)
-                setToken('authenticated')
                 setUser(mergedUser)
 
                 try {
@@ -53,10 +59,9 @@ export function AuthProvider({ children }) {
                     setUser(mergedUser)
                 }
             } catch (error) {
+                localStorage.removeItem('neolit_token')
                 setToken(null)
                 setUser(null)
-                localStorage.removeItem('neolit_selected_language')
-                localStorage.removeItem('neolit_native_language')
             } finally {
                 setLoading(false)
             }
@@ -65,36 +70,14 @@ export function AuthProvider({ children }) {
         bootstrapAuth()
     }, [])
 
-    useEffect(() => {
-        if (!user) return undefined
-
-        const checkSession = async () => {
-            try {
-                const currentUser = await authApi.getCurrentUser()
-                setUser((previousUser) => mergeProfileIntoUser(currentUser, previousUser))
-            } catch {
-                setToken(null)
-                setUser(null)
-                localStorage.removeItem('neolit_selected_language')
-                localStorage.removeItem('neolit_native_language')
-            }
-        }
-
-        window.addEventListener('focus', checkSession)
-        const interval = window.setInterval(checkSession, 30000)
-        return () => {
-            window.removeEventListener('focus', checkSession)
-            window.clearInterval(interval)
-        }
-    }, [user])
-
     const login = async (payload) => {
         const data = payload.login_mode === 'admin'
             ? await authApi.adminLogin(payload)
             : await authApi.login(payload)
-        setToken('authenticated')
+        localStorage.setItem('neolit_token', data.access_token)
+        setToken(data.access_token)
         setUser(mergeProfileIntoUser(data.user, data.user))
-        await refreshProfile(data.user)
+        await refreshProfile(data.access_token, data.user)
         return data
     }
 
@@ -103,14 +86,17 @@ export function AuthProvider({ children }) {
     }
 
     const logout = async () => {
+        const logoutToken = token
+
         document.cookie = 'neolit_access_token=; Max-Age=0; path=/; SameSite=None; Secure'
+        localStorage.removeItem('neolit_token')
         localStorage.removeItem('neolit_selected_language')
         localStorage.removeItem('neolit_native_language')
         setToken(null)
         setUser(null)
 
         try {
-            await authApi.logout()
+            await authApi.logout(logoutToken)
         } catch {
             // Local logout is complete even if the server is temporarily unavailable.
         }
