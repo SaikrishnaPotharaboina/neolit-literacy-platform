@@ -30,7 +30,9 @@ export default function SiteNavbar() {
     const [profile, setProfile] = useState(null)
     const [selectedLanguageCode, setSelectedLanguageCode] = useState(localStorage.getItem('neolit_selected_language') || user?.learning_language || 'en')
     const [courseMenuOpen, setCourseMenuOpen] = useState(false)
+    const [nativeMenuOpen, setNativeMenuOpen] = useState(false)
     const [changingCourse, setChangingCourse] = useState(false)
+    const [changingNative, setChangingNative] = useState(false)
 
     useEffect(() => {
         learningApi.getLanguages()
@@ -84,6 +86,32 @@ export default function SiteNavbar() {
         }
     }
 
+    const changeNativeLanguage = async (languageName) => {
+        if (languageName === nativeLanguage || !profile) {
+            setNativeMenuOpen(false)
+            return
+        }
+
+        setChangingNative(true)
+        try {
+            const updatedProfile = await learningApi.updateProfile({
+                first_name: user?.first_name || '',
+                last_name: user?.last_name || '',
+                age: profile.age,
+                native_language: languageName,
+                learning_language: profile.learning_language || selectedLanguageCode,
+                gender: profile.gender || '',
+                current_level_id: profile.current_level_id,
+            })
+            setProfile(updatedProfile)
+            setUser((currentUser) => ({ ...(currentUser || {}), ...updatedProfile }))
+            localStorage.setItem('neolit_native_language', languageName)
+            setNativeMenuOpen(false)
+        } finally {
+            setChangingNative(false)
+        }
+    }
+
     const localizedNavigation = navigation.map((item) => ({ ...item, label: uiCopy[item.to.includes('learning-path') ? 'home' : item.to.includes('section=learn') ? 'learn' : item.to.includes('section=letters') ? 'letters' : item.to.includes('section=leaderboard') ? 'leaderboard' : item.to.includes('section=quests') ? 'quests' : item.to.includes('/games') ? 'games' : 'profile'] }))
 
     return (
@@ -102,9 +130,22 @@ export default function SiteNavbar() {
             </nav>
             <div className="site-navbar-actions">
                 <div className="site-language-pair">
-                    <div className="site-language-card">
-                        <small>{uiCopy.native}</small>
-                        <strong>{nativeLanguage}</strong>
+                    <div className="site-native-switcher">
+                        <button type="button" className="site-language-card" onClick={() => setNativeMenuOpen((open) => !open)} aria-expanded={nativeMenuOpen}>
+                            <small>{uiCopy.native}</small>
+                            <strong>{nativeLanguage}</strong>
+                            <span className="site-native-chevron">⌄</span>
+                        </button>
+                        {nativeMenuOpen && (
+                            <div className="site-course-menu site-native-menu">
+                                <strong>{uiCopy.native}</strong>
+                                {languages.map((language) => (
+                                    <button key={language.code} type="button" disabled={changingNative} className={language.name === nativeLanguage ? 'selected' : ''} onClick={() => changeNativeLanguage(language.name)}>
+                                        {language.name}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </div>
                     <div className="site-course-switcher">
                         <button type="button" className="site-course-button" onClick={() => setCourseMenuOpen((open) => !open)} aria-expanded={courseMenuOpen}>
