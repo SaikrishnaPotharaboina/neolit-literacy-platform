@@ -59,7 +59,6 @@ export default function SiteNavbar() {
     const nativeLanguage = localStorage.getItem('neolit_native_language') || profile?.native_language || user?.native_language || 'English'
     const uiCopy = navbarUiCopy[nativeLanguageCodes[nativeLanguage] || 'en'] || navbarUiCopy.en
     const selectedLanguageName = languages.find((language) => language.code === selectedLanguageCode)?.name || (selectedLanguageCode === 'en' ? 'English' : selectedLanguageCode.toUpperCase())
-
     const changeCourse = async (languageCode) => {
         if (languageCode === selectedLanguageCode) {
             setCourseMenuOpen(false)
