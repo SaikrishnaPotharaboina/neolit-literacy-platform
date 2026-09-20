@@ -1,22 +1,17 @@
-# Public hosting setup
+# Public Deployment
 
-This project is ready for a simple public deployment using:
+Use Render for the backend and Vercel for the frontend.
 
-- Frontend: Vercel
-- Backend: Render
-- Database: MySQL or Postgres service
-
-## 1. Backend on Render
+## 1. Deploy the Backend to Render
 
 1. Push the project to GitHub.
-2. Create a new Render Web Service.
-3. Connect the repository.
-4. Set the root directory to `Backend`.
-5. Use the `render.yaml` file in the project root as the service configuration, or configure manually with:
+2. Create a new Render Web Service and connect the repository.
+3. Set the root directory to `Backend`.
+4. Use `render.yaml`, or configure these commands manually:
    - Build command: `python -m pip install --upgrade pip && pip install -r requirements.txt`
    - Start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-6. Add environment variables from `Backend/.env.production.example`.
-7. Use a hosted database, such as MySQL or PostgreSQL.
+5. Add the environment variables from `Backend/.env.production.example`.
+6. Use a hosted MySQL or PostgreSQL database.
 
 Example production variables:
 
@@ -25,40 +20,34 @@ DATABASE_URL=mysql+pymysql://username:password@host:3306/database_name
 SECRET_KEY=replace-with-a-long-random-secret
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
-CORS_ORIGINS=https://neolit-literacy-platform.vercel.app
+CORS_ORIGINS=https://neolit-literacy-platform.vercel.app,https://neolit-literacy-platform-niylk93x0.vercel.app
 CORS_ORIGIN_REGEX=^https://neolit-literacy-platform(?:-[a-z0-9-]+)*\.vercel\.app$
 ```
 
-## 2. Frontend on Vercel
+## 2. Deploy the Frontend to Vercel
 
 1. Import the repository into Vercel.
 2. Set the project root to `frontend`.
-3. Add the environment variable:
+3. Add this environment variable:
 
 ```env
 VITE_API_BASE_URL=https://your-backend-domain.onrender.com
 ```
 
-4. Deploy.
+4. Deploy the frontend.
 
-The file [frontend/vercel.json](frontend/vercel.json) helps Vercel serve the React app correctly.
+## 3. Verify the Deployment
 
-## 3. Runtime notes
+1. Open the backend health URL:
 
-- SQLite is fine for local dev only.
-- For public hosting, switch to a managed database.
-- The frontend is configured to use `VITE_API_BASE_URL`, so it can point to your hosted backend URL.
-- The backend already allows CORS in [Backend/app/main.py](Backend/app/main.py), which is required for browser-based API access.
-- Keep `CORS_ORIGINS` set to the deployed frontend origin. `CORS_ORIGIN_REGEX` also permits this app's Vercel preview URLs.
+   `https://your-backend-domain.onrender.com/health`
 
-## 4. Test after deployment
-
-- Frontend: open the public Vercel URL
-- Backend: open the Render URL plus `/health`
-- Example: `https://your-backend-domain.onrender.com/health`
-
-It should return:
+2. Confirm it returns:
 
 ```json
 {"status": "ok"}
 ```
+
+3. Open the public Vercel URL and test registration and login.
+
+For local development, use SQLite. For production, use a hosted database.
