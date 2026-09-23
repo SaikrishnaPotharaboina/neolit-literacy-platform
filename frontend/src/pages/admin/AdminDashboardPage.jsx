@@ -384,21 +384,18 @@ export default function AdminDashboardPage() {
 
     return (
         <div className="admin-dashboard-page">
-            <aside className="admin-sidebar-shell">
-                <div className="admin-sidebar-brand">
+            <header className="admin-top-nav-header">
+                <div className="admin-header-brand">
                     <div className="admin-logo-box">N</div>
-                    <div>
-                        <strong>NeoLit</strong>
-                        <small>Admin panel</small>
-                    </div>
+                    <strong>NeoLit</strong>
                 </div>
 
-                <nav className="admin-sidebar-nav" aria-label="Admin navigation">
+                <nav className="admin-top-nav" aria-label="Admin navigation">
                     {sidebarItems.map((item) => (
                         <button
                             key={item.label}
                             type="button"
-                            className={`admin-side-item ${activeSection === item.label ? 'selected' : ''}`}
+                            className={`admin-top-nav-item ${activeSection === item.label ? 'selected' : ''}`}
                             aria-current={activeSection === item.label ? 'page' : undefined}
                             onClick={() => handleSidebarNavigation(item)}
                         >
@@ -406,19 +403,20 @@ export default function AdminDashboardPage() {
                         </button>
                     ))}
                 </nav>
-            </aside>
+
+                <div className="admin-header-user">
+                    <span className="admin-header-pill">Admin ▼</span>
+                    <span className="admin-user-name">{userName}</span>
+                    <button type="button" className="admin-create-account-button" onClick={() => setShowCreateAccount(true)}>+ Create account</button>
+                    <button type="button" className="admin-logout-button" onClick={logout}>Log out</button>
+                </div>
+            </header>
 
             <main className="admin-main-shell">
                 <header className="admin-top-header">
                     <div>
                         <p className="admin-kicker">Admin</p>
                         <h1>{activeSection === 'Dashboard' ? 'Platform Overview' : activeSection}</h1>
-                    </div>
-                    <div className="admin-header-user">
-                        <span className="admin-header-pill">Admin ▼</span>
-                        <span className="admin-user-name">{userName}</span>
-                        <button type="button" className="admin-create-account-button" onClick={() => setShowCreateAccount(true)}>+ Create account</button>
-                        <button type="button" className="admin-logout-button" onClick={logout}>Log out</button>
                     </div>
                 </header>
 
