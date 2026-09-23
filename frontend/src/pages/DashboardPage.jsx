@@ -14,11 +14,11 @@ const nativeLanguageCodes = {
 }
 
 const dashboardUiCopy = {
-    en: { learn: 'Learn', letters: 'Letters', leaderboard: 'Leaderboard', quests: 'Quests', shop: 'Shop', profile: 'Profile', more: 'More', logout: 'Logout', myCourse: 'MY COURSE', myCourses: 'MY COURSES', native: 'NATIVE', learning: 'LEARNING' },
-    hi: { learn: 'सीखें', letters: 'अक्षर', leaderboard: 'लीडरबोर्ड', quests: 'अभियान', shop: 'दुकान', profile: 'प्रोफ़ाइल', more: 'और', logout: 'लॉग आउट', myCourse: 'मेरा कोर्स', myCourses: 'मेरे कोर्स', native: 'मातृभाषा', learning: 'सीखने की भाषा' },
-    kn: { learn: 'ಕಲಿಯಿರಿ', letters: 'ಅಕ್ಷರಗಳು', leaderboard: 'ಮುನ್ನಡೆ ಪಟ್ಟಿ', quests: 'ಗುರಿಗಳು', shop: 'ಅಂಗಡಿ', profile: 'ಪ್ರೊಫೈಲ್', more: 'ಇನ್ನಷ್ಟು', logout: 'ಲಾಗ್ ಔಟ್', myCourse: 'ನನ್ನ ಕೋರ್ಸ್', myCourses: 'ನನ್ನ ಕೋರ್ಸ್‌ಗಳು', native: 'ಮಾತೃಭಾಷೆ', learning: 'ಕಲಿಯುವ ಭಾಷೆ' },
-    ta: { learn: 'கற்க', letters: 'எழுத்துகள்', leaderboard: 'முன்னணி பட்டியல்', quests: 'சவால்கள்', shop: 'கடை', profile: 'சுயவிவரம்', more: 'மேலும்', logout: 'வெளியேறு', myCourse: 'என் பாடநெறி', myCourses: 'என் பாடநெறிகள்', native: 'தாய்மொழி', learning: 'கற்கும் மொழி' },
-    te: { learn: 'నేర్చుకోండి', letters: 'అక్షరాలు', leaderboard: 'లీడర్‌బోర్డ్', quests: 'లక్ష్యాలు', shop: 'దుకాణం', profile: 'ప్రొఫైల్', more: 'మరిన్ని', logout: 'లాగ్ అవుట్', myCourse: 'నా కోర్సు', myCourses: 'నా కోర్సులు', native: 'మాతృభాష', learning: 'నేర్చుకునే భాష' },
+    en: { learn: 'Learn', letters: 'Letters', leaderboard: 'Leaderboard', quests: 'Quests', shop: 'Shop', profile: 'Profile', more: 'More', logout: 'Logout', myCourse: 'MY COURSE', myCourses: 'MY COURSES', native: 'NATIVE', learning: 'LEARNING', section: 'SECTION', unit: 'UNIT', complete: 'COMPLETE', completed: 'Completed', startHere: 'Start here', previousLesson: 'Complete the previous lesson', viewAll: 'VIEW ALL', unlockLeaderboards: 'Unlock Leaderboards!', readyToCompete: 'You are ready to compete!', competePrompt: 'Complete {count} more lessons to start competing', dailyQuests: 'Daily Quests', earnXp: 'Earn 10 XP', reviewUnit: 'REVIEW UNIT', goToUnit: 'GO TO UNIT', unitSummary: 'Unit {unit} • 3 lessons • +10 XP each' },
+    hi: { learn: 'सीखें', letters: 'अक्षर', leaderboard: 'लीडरबोर्ड', quests: 'अभियान', shop: 'दुकान', profile: 'प्रोफ़ाइल', more: 'और', logout: 'लॉग आउट', myCourse: 'मेरा कोर्स', myCourses: 'मेरे कोर्स', native: 'मातृभाषा', learning: 'सीखने की भाषा', section: 'खंड', unit: 'यूनिट', complete: 'पूर्ण', completed: 'पूरा हुआ', startHere: 'यहाँ शुरू करें', previousLesson: 'पिछला पाठ पूरा करें', viewAll: 'सभी देखें', unlockLeaderboards: 'लीडरबोर्ड अनलॉक करें!', readyToCompete: 'आप प्रतिस्पर्धा के लिए तैयार हैं!', competePrompt: 'प्रतिस्पर्धा शुरू करने के लिए {count} और पाठ पूरे करें', dailyQuests: 'दैनिक मिशन', earnXp: '10 XP कमाएँ', reviewUnit: 'यूनिट रिव्यू', goToUnit: 'यूनिट पर जाएँ', unitSummary: 'यूनिट {unit} • 3 पाठ • प्रत्येक +10 XP' },
+    kn: { learn: 'ಕಲಿಯಿರಿ', letters: 'ಅಕ್ಷರಗಳು', leaderboard: 'ಮುನ್ನಡೆ ಪಟ್ಟಿ', quests: 'ಗುರಿಗಳು', shop: 'ಅಂಗಡಿ', profile: 'ಪ್ರೊಫೈಲ್', more: 'ಇನ್ನಷ್ಟು', logout: 'ಲಾಗ್ ಔಟ್', myCourse: 'ನನ್ನ ಕೋರ್ಸ್', myCourses: 'ನನ್ನ ಕೋರ್ಸ್‌ಗಳು', native: 'ಮಾತೃಭಾಷೆ', learning: 'ಕಲಿಯುವ ಭಾಷೆ', section: 'ವಿಭಾಗ', unit: 'ಯುನಿಟ್', complete: 'ಪೂರ್ಣ', completed: 'ಪೂರ್ಣವಾಗಿದೆ', startHere: 'ಇಲ್ಲಿ ಪ್ರಾರಂಭಿಸಿ', previousLesson: 'ಮುನ್ಸೂಚನೆ ಪಾಠವನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ', viewAll: 'ಎಲ್ಲವನ್ನೂ ನೋಡಿ', unlockLeaderboards: 'ಲೀಡರ್‌ಬೋರ್ಡ್ ಅನ್ಲಾಕ್ ಮಾಡಿ!', readyToCompete: 'ನೀವು ಸ್ಪರ್ಧೆಗೆ ಸಿದ್ಧರಾಗಿದ್ದೀರಿ!', competePrompt: 'ಸ್ಪರ್ಧೆಯನ್ನು शुरू ಮಾಡಲು {count} ಇನ್ನಷ್ಟು ಪಾಠಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ', dailyQuests: 'ದೈನಂದಿನ ಗುರಿಗಳು', earnXp: '10 XP ಗಳಿಸಿ', reviewUnit: 'ಯುನಿಟ್ ಅನ್ನು ರಿವ್ಯೂ ಮಾಡಿ', goToUnit: 'ಯುನಿಟ್‌ಗೆ ಹೋಗಿ', unitSummary: 'ಯುನಿಟ್ {unit} • 3 ಪಾಠಗಳು • ಪ್ರತಿ +10 XP' },
+    ta: { learn: 'கற்க', letters: 'எழுத்துகள்', leaderboard: 'முன்னணி பட்டியல்', quests: 'சவால்கள்', shop: 'கடை', profile: 'சுயவிவரம்', more: 'மேலும்', logout: 'வெளியேறு', myCourse: 'என் பாடநெறி', myCourses: 'என் பாடநெறிகள்', native: 'தாய்மொழி', learning: 'கற்கும் மொழி', section: 'பிரிவு', unit: 'அலகு', complete: 'முடிந்தது', completed: 'முடிந்தது', startHere: 'இங்கே தொடங்குங்கள்', previousLesson: 'முந்தைய பாடத்தை முடிக்கவும்', viewAll: 'அனைத்தையும் காண்க', unlockLeaderboards: 'முன்னணி பட்டியலைத் திறக்கவும்!', readyToCompete: 'நீங்கள் போட்டிக்கு தயார்!', competePrompt: 'போட்டியைத் தொடங்க {count} மேலும் பாடங்களை முடிக்கவும்', dailyQuests: 'அன்றாட சவால்கள்', earnXp: '10 XP பெறுங்கள்', reviewUnit: 'அலகை மறுஆய்வு செய்யுங்கள்', goToUnit: 'அலகுக்குச் செல்லுங்கள்', unitSummary: 'அலகு {unit} • 3 பாடங்கள் • ஒவ்வொன்றும் +10 XP' },
+    te: { learn: 'నేర్చుకోండి', letters: 'అక్షరాలు', leaderboard: 'లీడర్‌బోర్డ్', quests: 'లక్ష్యాలు', shop: 'దుకాణం', profile: 'ప్రొఫైల్', more: 'మరిన్ని', logout: 'లాగ్ అవుట్', myCourse: 'నా కోర్సు', myCourses: 'నా కోర్సులు', native: 'మాతృభాష', learning: 'నేర్చుకునే భాష', section: 'విభాగం', unit: 'యూనిట్', complete: 'పూర్తి', completed: 'పూర్తయింది', startHere: 'ఇక్కడ ప్రారంభించండి', previousLesson: 'మునుపటి పాఠాన్ని పూర్తి చేయండి', viewAll: 'అన్ని చూడండి', unlockLeaderboards: 'లీడర్‌బోర్డ్ Unlock చేయండి!', readyToCompete: 'మీరు పోటీకి సిద్ధంగా ఉన్నారు!', competePrompt: 'పోటీ ప్రారంభించడానికి {count} మరిన్ని పాఠాలు పూర్తి చేయండి', dailyQuests: 'రోజువారీ లక్ష్యాలు', earnXp: '10 XP సంపాదించండి', reviewUnit: 'యూనిట్‌ను రివ్యూ చేయండి', goToUnit: 'యూనిట్‌కి వెళ్లండి', unitSummary: 'యూనిట్ {unit} • 3 పాఠాలు • ప్రతి +10 XP' },
 }
 const lessonStages = [
     { id: 'reading', icon: '🧠', label: 'Reading' },
@@ -131,7 +131,14 @@ const courseUnits = {
     te: [['ప్రాథమిక వాక్యాలను రూపొందించండి', 'శుభాకాంక్షలు మరియు రోజువారీ పదాలు'], ['మీ రోజు గురించి మాట్లాడండి', 'సులభమైన దినచర్యలు మరియు క్రియలు'], ['ఆహారం మరియు అభిరుచులు', 'ఆహారం ఆర్డర్ చేయడం నేర్చుకోండి'], ['నిజమైన సంభాషణలు చేయండి', 'మీ నైపుణ్యాలను కలపండి'], ['ప్రయాణం మరియు దిశలు', 'సహాయం అడిగి, సూచనలను అనుసరించండి'], ['పరివారము మరియు సంబంధాలు', 'మీ చిన్నచిన్నవారిని గురించి మాట్లాడండి'], ['ప్లాన్లు మరియు లక్ష్యాలు', 'తదుపరి పనిని పంచుకోండి'], ['రోజువారీ నైపుణ్యం', 'మీ భాషను సహజంగా ఉపయోగించండి']],
 }
 
-const unitLessonLabels = ['Reading', 'Word forms', 'Comprehension']
+const unitLessonLabelsByLanguage = {
+    en: ['Reading', 'Word forms', 'Comprehension'],
+    hi: ['पठन', 'शब्द रूप', 'बोध'],
+    kn: ['ಓದುವುದು', 'ಪದ ರೂಪಗಳು', 'ಗ್ರಹಣ'],
+    ta: ['வாசிப்பு', 'சொல் வடிவம்', 'புரிந்துகொள்ளல்'],
+    te: ['చదవడం', 'పద రూపాలు', 'అర్థం'],
+}
+const unitLessonLabels = unitLessonLabelsByLanguage.en
 
 const letterLessons = {
     en: {
@@ -297,9 +304,9 @@ export default function DashboardPage() {
     const nativeLanguageName = localStorage.getItem('neolit_native_language') || profile?.native_language || user?.native_language || 'English'
     const nativeLanguageCode = nativeLanguageCodes[nativeLanguageName] || 'en'
     const uiCopy = dashboardUiCopy[nativeLanguageCode] || dashboardUiCopy.en
-    const activeStageCopy = lessonStageCopy[selectedLanguageCode]?.[selectedLesson] || lessonStageCopy.en[selectedLesson] || 'Talk about food'
-    const selectedLessonTitle = lessonTitles[selectedLanguageCode] || lessonTitles.en
-    const selectedUnits = courseUnits[selectedLanguageCode] || courseUnits.en
+    const activeStageCopy = lessonStageCopy[nativeLanguageCode]?.[selectedLesson] || lessonStageCopy.en[selectedLesson] || 'Talk about food'
+    const selectedLessonTitle = lessonTitles[nativeLanguageCode] || lessonTitles.en
+    const selectedUnits = courseUnits[nativeLanguageCode] || courseUnits.en
     const totalUnitsPerSection = 4
     const sectionNumber = Math.ceil(activeUnit / totalUnitsPerSection)
     const sectionStartIndex = (sectionNumber - 1) * totalUnitsPerSection
@@ -319,7 +326,8 @@ export default function DashboardPage() {
     const dailyGoalProgress = Math.min(100, (dailyLessons / dailyGoalTarget) * 100)
     const areAllLessonsCompleted = (unitNumber) => (completedPathLessons[`${selectedLanguageCode}-${unitNumber}`] || []).length === unitLessonLabels.length
     const isUnitUnlocked = (unitNumber) => unitNumber === 1 || areAllLessonsCompleted(unitNumber - 1)
-    const selectedLetters = letterLessons[selectedLanguageCode] || letterLessons.en
+    const selectedLetters = letterLessons[nativeLanguageCode] || letterLessons.en
+    const unitLessonLabels = unitLessonLabelsByLanguage[nativeLanguageCode] || unitLessonLabelsByLanguage.en
     const letterItems = useMemo(
         () => [...selectedLetters.vowels, ...selectedLetters.consonants],
         [selectedLetters]
@@ -329,6 +337,14 @@ export default function DashboardPage() {
     const quizOptions = [quizItem, letterItems[(quizIndex + 3) % letterItems.length], letterItems[(quizIndex + 7) % letterItems.length]]
 
     const levelName = (levelId) => levels.find((level) => level.id === levelId)?.name || 'Beginner'
+    const mockupCopy = {
+        en: { section: 'SECTION', unit: 'UNIT', guidebook: 'GUIDEBOOK', start: 'START' },
+        hi: { section: 'खंड', unit: 'यूनिट', guidebook: 'गाइडबुक', start: 'शुरू' },
+        kn: { section: 'ವಿಭಾಗ', unit: 'ಯುನಿಟ್', guidebook: 'ಗೈಡ್‌ಬುಕ್', start: 'ಪ್ರಾರಂಭ' },
+        ta: { section: 'பிரிவு', unit: 'அலகு', guidebook: 'கையேடு', start: 'தொடங்கு' },
+        te: { section: 'విభాగం', unit: 'యూనిట్', guidebook: 'గైడ్‌బుక్', start: 'ప్రారంభం' },
+    }
+    const exactMockupText = mockupCopy[nativeLanguageCode] || mockupCopy.en
 
     useEffect(() => {
         if (!selectedUnits.length) return
@@ -558,63 +574,97 @@ export default function DashboardPage() {
         recognition.start()
     }
 
-    const renderLetters = () => (
-        <section className="letters-page">
-            <div className="letters-heading">
-                <h1>{selectedLetters.title}</h1>
-                <p>{selectedLetters.subtitle}</p>
-                <button type="button" className="letters-start-button" onClick={() => setLettersStarted(true)}>
-                    {lettersStarted ? 'PRACTICE STARTED' : 'START +10 XP'}
-                </button>
-                <div className="letters-progress-summary">
-                    <span>{practicedLetters} / {letterItems.length} sounds practiced</span>
-                    <div><i style={{ width: `${(practicedLetters / letterItems.length) * 100}%` }} /></div>
-                </div>
-                <button type="button" className="letters-quiz-button" onClick={() => { setLettersStarted(true); setQuizOpen(true); setQuizAnswer(null); setQuizIndex(0); setQuizScore(0) }}>
-                    {quizOpen ? 'PRONUNCIATION QUIZ' : 'PRACTICE QUIZ'}
-                </button>
-            </div>
+    const renderLetters = () => {
+        const lettersCopy = {
+            en: {
+                start: 'START +10 XP',
+                started: 'PRACTICE STARTED',
+                practiceQuiz: 'PRACTICE QUIZ',
+                pronunciationQuiz: 'PRONUNCIATION QUIZ',
+                soundPrompt: 'Which sound is this?',
+                hear: 'Hear',
+                next: 'NEXT SOUND',
+                correct: 'Correct! +10 XP',
+                answer: 'The answer is',
+                vowels: 'Vowels',
+                consonants: 'Consonants',
+                practiced: 'sounds practiced',
+            },
+            hi: {
+                start: 'शुरू +10 XP',
+                started: 'अभ्यास शुरू',
+                practiceQuiz: 'अभ्यास क्विज़',
+                pronunciationQuiz: 'उच्चारण क्विज़',
+                soundPrompt: 'यह कौन-सा ध्वनि है?',
+                hear: 'सुनें',
+                next: 'अगला ध्वनि',
+                correct: 'सही! +10 XP',
+                answer: 'सही उत्तर है',
+                vowels: 'स्वर',
+                consonants: 'व्यंजन',
+                practiced: 'ध्वनियाँ अभ्यास की गईं',
+            },
+        }
+        const copy = lettersCopy[nativeLanguageCode] || lettersCopy.en
 
-            {quizOpen && (
-                <div className="letters-quiz-card">
-                    <div>
-                        <span className="section-kicker">Pronunciation quiz</span>
-                        <h2>Which sound is this?</h2>
-                        <button type="button" className="quiz-sound-button" onClick={() => speakLetter(quizItem[0], quizItem[1])}>
-                            ▶ Hear “{quizItem[1]}”
-                        </button>
+        return (
+            <section className="letters-page">
+                <div className="letters-heading">
+                    <h1>{selectedLetters.title}</h1>
+                    <p>{selectedLetters.subtitle}</p>
+                    <button type="button" className="letters-start-button" onClick={() => setLettersStarted(true)}>
+                        {lettersStarted ? copy.started : copy.start}
+                    </button>
+                    <div className="letters-progress-summary">
+                        <span>{practicedLetters} / {letterItems.length} {copy.practiced}</span>
+                        <div><i style={{ width: `${(practicedLetters / letterItems.length) * 100}%` }} /></div>
                     </div>
-                    <div className="quiz-options">
-                        {quizOptions.map(([letter, word]) => (
-                            <button key={`${letter}-${word}`} type="button" className={quizAnswer === letter ? (letter === quizItem[0] ? 'correct' : 'wrong') : ''} onClick={() => { setQuizAnswer(letter); if (letter === quizItem[0]) setQuizScore((score) => score + 1) }}>
-                                {letter}
-                            </button>
-                        ))}
-                    </div>
-                    {quizAnswer && (
-                        <>
-                            <p className={quizAnswer === quizItem[0] ? 'quiz-feedback correct' : 'quiz-feedback wrong'}>{quizAnswer === quizItem[0] ? 'Correct! +10 XP' : `The answer is ${quizItem[0]}`}</p>
-                            <button type="button" className="quiz-next-button" onClick={() => { setQuizIndex((index) => index + 1); setQuizAnswer(null) }}>NEXT SOUND</button>
-                        </>
-                    )}
+                    <button type="button" className="letters-quiz-button" onClick={() => { setLettersStarted(true); setQuizOpen(true); setQuizAnswer(null); setQuizIndex(0); setQuizScore(0) }}>
+                        {quizOpen ? copy.pronunciationQuiz : copy.practiceQuiz}
+                    </button>
                 </div>
-            )}
 
-            {['vowels', 'consonants'].map((group) => (
-                <section key={group} className="letters-group">
-                    <h2><span />{group === 'vowels' ? 'Vowels' : 'Consonants'}<span /></h2>
-                    <div className="letters-grid">
-                        {selectedLetters[group].map(([letter, word]) => (
-                            <button key={`${letter}-${word}`} type="button" className={`letter-card ${speakingLetter === letter ? 'speaking' : ''}`} onClick={() => speakLetter(letter, word)} title={`Hear ${letter} in ${selectedLanguageName}`} aria-label={`Hear ${letter} and ${word} in ${selectedLanguageName}`}>
-                                <strong>{letter}</strong>
-                                <small>{word}</small>
+                {quizOpen && (
+                    <div className="letters-quiz-card">
+                        <div>
+                            <span className="section-kicker">{copy.pronunciationQuiz}</span>
+                            <h2>{copy.soundPrompt}</h2>
+                            <button type="button" className="quiz-sound-button" onClick={() => speakLetter(quizItem[0], quizItem[1])}>
+                                ▶ {copy.hear} “{quizItem[1]}”
                             </button>
-                        ))}
+                        </div>
+                        <div className="quiz-options">
+                            {quizOptions.map(([letter, word]) => (
+                                <button key={`${letter}-${word}`} type="button" className={quizAnswer === letter ? (letter === quizItem[0] ? 'correct' : 'wrong') : ''} onClick={() => { setQuizAnswer(letter); if (letter === quizItem[0]) setQuizScore((score) => score + 1) }}>
+                                    {letter}
+                                </button>
+                            ))}
+                        </div>
+                        {quizAnswer && (
+                            <>
+                                <p className={quizAnswer === quizItem[0] ? 'quiz-feedback correct' : 'quiz-feedback wrong'}>{quizAnswer === quizItem[0] ? copy.correct : `${copy.answer} ${quizItem[0]}`}</p>
+                                <button type="button" className="quiz-next-button" onClick={() => { setQuizIndex((index) => index + 1); setQuizAnswer(null) }}>{copy.next}</button>
+                            </>
+                        )}
                     </div>
-                </section>
-            ))}
-        </section>
-    )
+                )}
+
+                {['vowels', 'consonants'].map((group) => (
+                    <section key={group} className="letters-group">
+                        <h2><span />{group === 'vowels' ? copy.vowels : copy.consonants}<span /></h2>
+                        <div className="letters-grid">
+                            {selectedLetters[group].map(([letter, word]) => (
+                                <button key={`${letter}-${word}`} type="button" className={`letter-card ${speakingLetter === letter ? 'speaking' : ''}`} onClick={() => speakLetter(letter, word)} title={`Hear ${letter} in ${selectedLanguageName}`} aria-label={`Hear ${letter} and ${word} in ${selectedLanguageName}`}>
+                                    <strong>{letter}</strong>
+                                    <small>{word}</small>
+                                </button>
+                            ))}
+                        </div>
+                    </section>
+                ))}
+            </section>
+        )
+    }
 
     const renderLeaderboard = () => (
         (() => {
@@ -743,9 +793,14 @@ export default function DashboardPage() {
                         <div className="duolingo-reference-banner">
                             <div className="banner-left">
                                 <span className="banner-arrow">←</span>
-                                <span className="banner-text">SECTION {sectionNumber}, UNIT {activeUnit}</span>
+                                <span className="banner-text">{uiCopy.section} {sectionNumber}, {uiCopy.unit} {activeUnit}</span>
                             </div>
-                            <div className="banner-chip">{Math.round((completedLessons.length / unitLessonLabels.length) * 100)}% COMPLETE</div>
+                            <div className="banner-chip">{Math.round((completedLessons.length / unitLessonLabels.length) * 100)}% {uiCopy.complete}</div>
+                        </div>
+
+                        <div className="unit-hero-copy">
+                            <h1>{activeUnitDetails?.[0] || selectedLessonTitle}</h1>
+                            <p>{activeUnitDetails?.[1] || 'Greetings and everyday words'}</p>
                         </div>
 
                         <div className="unit-selector" aria-label="Course units">
@@ -753,7 +808,7 @@ export default function DashboardPage() {
                                 const unitNumber = sectionStartIndex + index + 1
                                 return (
                                     <button key={`${selectedLanguageCode}-${unitNumber}`} type="button" disabled={!isUnitUnlocked(unitNumber)} className={`unit-selector-card ${activeUnit === unitNumber ? 'active' : ''} ${!isUnitUnlocked(unitNumber) ? 'locked' : ''}`} onClick={() => setActiveUnit(unitNumber)}>
-                                        <span className="unit-number">UNIT {unitNumber}</span>
+                                        <span className="unit-number">{uiCopy.unit} {unitNumber}</span>
                                         <strong>{title}</strong>
                                         <small>{description}</small>
                                         <span className="unit-progress"><i style={{ width: `${unitNumber === activeUnit ? (completedLessons.length / unitLessonLabels.length) * 100 : unitNumber < activeUnit ? 100 : 0}%` }} /></span>
@@ -761,8 +816,6 @@ export default function DashboardPage() {
                                 )
                             })}
                         </div>
-
-                        <h1>{activeUnitDetails?.[0] || selectedLessonTitle}</h1>
 
                         <div className="course-path" aria-label={`Lessons in Unit ${activeUnit}`}>
                             <div className="course-path-line" />
@@ -774,7 +827,7 @@ export default function DashboardPage() {
                                     <Link key={label} to={unlocked ? `/lesson/${activeUnit}?step=${index}` : '#'} className={`course-path-node path-node-${index + 1} ${completed ? 'completed' : ''} ${current ? 'current' : ''} ${!unlocked ? 'locked' : ''}`}>
                                         <span>{completed ? '✓' : current ? '▶' : '🔒'}</span>
                                         <strong>{label}</strong>
-                                        <small>{completed ? 'Completed' : current ? '+10 XP • Start here' : 'Complete the previous lesson'}</small>
+                                        <small>{completed ? uiCopy.completed : current ? `+10 XP • ${uiCopy.startHere}` : uiCopy.previousLesson}</small>
                                     </Link>
                                 )
                             })}
@@ -785,11 +838,11 @@ export default function DashboardPage() {
                         <div className="duolingo-reference-cta">
                             <div className="cta-copy">
                                 <strong>{activeUnitDetails?.[0] || selectedLessonTitle}</strong>
-                                <span>Unit {activeUnit} • 3 lessons • +10 XP each</span>
+                                <span>{uiCopy.unitSummary.replace('{unit}', activeUnit)}</span>
                             </div>
                             <div className="cta-actions">
                                 <button type="button" onClick={goToNextUnlockedUnit} className="jump-btn" style={{ border: 'none', cursor: 'pointer' }}>
-                                    {activeUnit < selectedUnits.length ? `GO TO UNIT ${Math.min(activeUnit + 1, selectedUnits.length)}` : `REVIEW UNIT ${activeUnit}`}
+                                    {activeUnit < selectedUnits.length ? `${uiCopy.goToUnit} ${Math.min(activeUnit + 1, selectedUnits.length)}` : `${uiCopy.reviewUnit} ${activeUnit}`}
                                 </button>
                                 <button type="button" onClick={goToNextUnlockedUnit} className="play-btn" aria-label={`Go to next unlocked unit`} title={`Go to next unlocked unit`} style={{ border: 'none', cursor: 'pointer' }}>▶</button>
                             </div>
@@ -804,17 +857,17 @@ export default function DashboardPage() {
                             <span>♥ {heartsRemaining}</span>
                         </div>
                         <article className="reference-side-card leaderboard-unlock-card">
-                            <h2>Unlock Leaderboards!</h2>
+                            <h2>{uiCopy.unlockLeaderboards}</h2>
                             <div className="reference-card-detail">
                                 <span className="reference-card-icon">🏅</span>
-                                <strong>{totalCompletedLessons >= 3 ? 'You are ready to compete!' : `Complete ${Math.max(0, 3 - totalCompletedLessons)} more lessons to start competing`}</strong>
+                                <strong>{totalCompletedLessons >= 3 ? uiCopy.readyToCompete : uiCopy.competePrompt.replace('{count}', Math.max(0, 3 - totalCompletedLessons))}</strong>
                             </div>
                         </article>
                         <article className="reference-side-card daily-quests-card">
-                            <div className="reference-side-card-header"><h2>Daily Quests</h2><button type="button" onClick={() => setActiveSection('quests')}>VIEW ALL</button></div>
+                            <div className="reference-side-card-header"><h2>{uiCopy.dailyQuests}</h2><button type="button" onClick={() => setActiveSection('quests')}>{uiCopy.viewAll}</button></div>
                             <div className="reference-quest-row">
                                 <span className="quest-lightning">⚡</span>
-                                <div><strong>Earn 10 XP</strong><div className="reference-quest-progress"><span style={{ width: `${Math.min(100, (xpTotal / 10) * 100)}%` }} /></div><small>{Math.min(xpTotal, 10)} / 10</small></div>
+                                <div><strong>{uiCopy.earnXp}</strong><div className="reference-quest-progress"><span style={{ width: `${Math.min(100, (xpTotal / 10) * 100)}%` }} /></div><small>{Math.min(xpTotal, 10)} / 10</small></div>
                                 <span>🎁</span>
                             </div>
                         </article>
