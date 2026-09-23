@@ -1,51 +1,72 @@
 .admin-dashboard-page {
-    display: grid;
-    grid-template-columns: 240px minmax(0, 1fr);
     min-height: 100vh;
     background: #0c1117;
     color: #edf6ff;
     font-family: 'Segoe UI', sans-serif;
 }
 
-.admin-sidebar-shell {
-    background: #101922;
-    border-right: 1px solid rgba(148, 163, 184, 0.12);
-    padding: 24px 18px;
+.admin-top-nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 28px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+    background: rgba(10, 17, 24, 0.95);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
-.admin-sidebar-brand {
+.admin-header-brand {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 26px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+    min-width: 140px;
 }
 
 .admin-logo-box {
-    width: 42px;
-    height: 42px;
+    width: 36px;
+    height: 36px;
     display: grid;
     place-items: center;
-    border-radius: 12px;
+    border-radius: 10px;
     background: linear-gradient(135deg, #7dd3fc, #34d399);
     color: #08141c;
     font-weight: 800;
+    font-size: 1.15rem;
 }
 
-.admin-sidebar-brand strong {
+.admin-header-brand strong {
     display: block;
     font-size: 1.12rem;
 }
 
-.admin-sidebar-brand small {
-    color: #9bb7c7;
+.admin-top-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
-.admin-sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.admin-top-nav-item {
+    border: 1px solid transparent;
+    background: transparent;
+    color: #dfeaf5;
+    padding: 10px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.admin-top-nav-item:hover,
+.admin-top-nav-item.selected {
+    background: rgba(125, 211, 252, 0.08);
+    border-color: rgba(125, 211, 252, 0.18);
+    color: #f2fbff;
 }
 
 .admin-section-toolbar-actions {
