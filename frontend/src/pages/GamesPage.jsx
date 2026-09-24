@@ -589,6 +589,212 @@ const VISUAL_GAMES_BY_LANGUAGE = {
     ],
 }
 
+const FLIP_MATCH_QUESTION_BANK = {
+    en: [
+        { prompt: 'Choose the correct greeting word.', answers: ['HELLO', 'WINDOW', 'TABLE', 'MORNING', 'BOOK'], correct: 'HELLO' },
+        { prompt: 'Choose the correct word for a daily action.', answers: ['LEARN', 'GOODBYE', 'MOUNTAIN', 'BREAD', 'GARDEN'], correct: 'LEARN' },
+        { prompt: 'Choose the correct word for a place to study.', answers: ['SCHOOL', 'RIVER', 'CLOUD', 'CHAIR', 'SUN'], correct: 'SCHOOL' },
+        { prompt: 'Choose the correct word for a drink.', answers: ['WATER', 'HOUSE', 'TRAIN', 'FRIEND', 'TREE'], correct: 'WATER' },
+        { prompt: 'Choose the correct fruit word.', answers: ['APPLE', 'BOOK', 'DOOR', 'BIRD', 'RAIN'], correct: 'APPLE' },
+    ],
+    hi: [
+        { prompt: 'सही अभिवादन शब्द चुनें।', answers: ['नमस्ते', 'खिड़की', 'मेज़', 'सुबह', 'किताब'], correct: 'नमस्ते' },
+        { prompt: 'दैनिक क्रिया का सही शब्द चुनें।', answers: ['सीखना', 'अलविदा', 'पहाड़', 'रोटी', 'बगीचा'], correct: 'सीखना' },
+        { prompt: 'पढ़ने की जगह का सही शब्द चुनें।', answers: ['स्कूल', 'नदी', 'बादल', 'कुर्सी', 'सूर्य'], correct: 'स्कूल' },
+        { prompt: 'पेय का सही शब्द चुनें।', answers: ['पानी', 'घर', 'रेल', 'दोस्त', 'पेड़'], correct: 'पानी' },
+        { prompt: 'फल का सही शब्द चुनें।', answers: ['सेब', 'किताब', 'दरवाज़ा', 'पक्षी', 'बारिश'], correct: 'सेब' },
+    ],
+    kn: [
+        { prompt: 'ಸರಿಯಾದ ಸ್ವಾಗತ ಪದವನ್ನು ಆಯ್ಕೆಮಾಡಿ.', answers: ['ಹಲೋ', 'ಕಿಟಕಿ', 'ಮಂಚ', 'ಬೆಳಗ್ಗೆ', 'ಪುಸ್ತಕ'], correct: 'ಹಲೋ' },
+        { prompt: 'ದೈನಂದಿನ ಕ್ರಿಯೆಗೆ ಸರಿಯಾದ ಪದವನ್ನು ಆಯ್ಕೆಮಾಡಿ.', answers: ['ಕಲಿಯಿರಿ', 'ಅಲविदಾ', 'ಪರ್ವತ', 'ರೊಟ್ಟಿ', 'ತೋಟ'], correct: 'ಕಲಿಯಿರಿ' },
+        { prompt: 'ಸಮೀಕ್ಷಿತ ಸ್ಥಳದ ಸರಿಯಾದ ಪದವನ್ನು ಆಯ್ಕೆಮಾಡಿ.', answers: ['ಪಾಠಶಾಲೆ', 'ನದಿ', 'ಮೋಡ', 'ಕುರ್ಚಿ', 'ಸೂರ್ಯ'], correct: 'ಪಾಠಶಾಲೆ' },
+        { prompt: 'ಪಾನೀಯದ ಸರಿಯಾದ ಪದವನ್ನು ಆಯ್ಕೆಮಾಡಿ.', answers: ['ನೀರು', 'ಮನೆ', 'ರೈಲು', 'ಮಿತ್ರ', 'ಮರ'], correct: 'ನೀರು' },
+        { prompt: 'ಹಣ್ಣಿನ ಸರಿಯಾದ ಪದವನ್ನು ಆಯ್ಕೆಮಾಡಿ.', answers: ['ಆಪಲ್', 'ಪುಸ್ತಕ', 'ಕದ', 'ಪಕ್ಷಿ', 'ಮಳೆ'], correct: 'ಆಪಲ್' },
+    ],
+    ta: [
+        { prompt: 'சரியான வரவேற்பு சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['வணக்கம்', 'ஜன்னல்', 'மேஜை', 'காலை', 'புத்தகம்'], correct: 'வணக்கம்' },
+        { prompt: 'நாள்தோறும் செய்யும் செயலுக்கான சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['கற்க', 'விடைபெறுகிறேன்', 'மலை', 'ரொட்டி', 'தோட்டம்'], correct: 'கற்க' },
+        { prompt: 'கற்றல் இடத்திற்கான சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['பள்ளி', 'ஆறு', 'முகில்', 'கோல்', 'சூரியன்'], correct: 'பள்ளி' },
+        { prompt: 'பானத்திற்கான சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['நீர்', 'வீடு', 'ரயில்', 'நண்பர்', 'மரம்'], correct: 'நீர்' },
+        { prompt: 'பழத்திற்கான சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['ஆப்பிள்', 'புத்தகம்', 'கதவு', 'பறவை', 'மழை'], correct: 'ஆப்பிள்' },
+    ],
+    te: [
+        { prompt: 'సరైన స్వాగత పదాన్ని ఎంచుకోండి.', answers: ['హలో', 'కిటికీ', 'మెజ్జ', 'ఉదయం', 'పుస్తకం'], correct: 'హలో' },
+        { prompt: 'దినచర్యకు సరైన పదాన్ని ఎంచుకోండి.', answers: ['నేర్చుకోండి', 'విధేయత', 'పర్వతం', 'రొట్టె', 'తోట'], correct: 'నేర్చుకోండి' },
+        { prompt: 'చదువుకునే ప్రదేశానికి సరైన పదాన్ని ఎంచుకోండి.', answers: ['పాఠశాల', 'నది', 'మేఘం', 'కుర్చీ', 'సూర్యుడు'], correct: 'పాఠశాల' },
+        { prompt: 'పానీయానికి సరైన పదాన్ని ఎంచుకోండి.', answers: ['నీరు', 'ఇల్లు', 'రైలు', 'స్నేహితుడు', 'చెట్టు'], correct: 'నీరు' },
+        { prompt: 'పండుకు సరైన పదాన్ని ఎంచుకోండి.', answers: ['ఆపిల్', 'పుస్తకం', 'ద్వారం', 'పక్షి', 'వర్షం'], correct: 'ఆపిల్' },
+    ],
+}
+
+function shuffleGameOptions(items) {
+    return [...items].sort(() => Math.random() - 0.5)
+}
+
+const getFlipMatchTrainingSet = (languageCode) => {
+    const languageQuestions = FLIP_MATCH_QUESTION_BANK[languageCode] || FLIP_MATCH_QUESTION_BANK.en
+    return languageQuestions.map((question) => {
+        const safeAnswers = [...new Set((question.answers || []).slice(0, 6))]
+        return {
+            ...question,
+            answers: shuffleGameOptions(safeAnswers),
+        }
+    })
+}
+
+const UNIVERSAL_GAMES_BY_LANGUAGE = {
+    en: [
+        {
+            id: 'word-builder', icon: '🔤', title: 'Word Builder', description: 'Arrange scrambled letters into the target word.', type: 'word-builder',
+            questions: wordBuilderQuestions,
+        },
+        {
+            id: 'mystery-word', icon: '🕵️', title: 'Mystery Word', description: 'Reveal clues and solve the word.', type: 'mystery-word',
+            questions: [
+                { prompt: 'What am I?', clues: ['You can eat me.', 'I can be red or green.', 'I grow on a tree.'], answers: ['APPLE', 'BANANA', 'ORANGE'], correct: 'APPLE' },
+                { prompt: 'What am I?', clues: ['I can fly.', 'I have feathers.', 'I can sing.'], answers: ['BIRD', 'FISH', 'HORSE'], correct: 'BIRD' },
+                { prompt: 'What am I?', clues: ['I give light.', 'You see me in the sky.', 'I shine during the day.'], answers: ['SUN', 'MOON', 'CLOUD'], correct: 'SUN' },
+                { prompt: 'What am I?', clues: ['I have four legs.', 'People can ride me.', 'I can run fast.'], answers: ['HORSE', 'TIGER', 'SNAKE'], correct: 'HORSE' },
+                { prompt: 'What am I?', clues: ['I am cold.', 'I can melt.', 'People use me in drinks.'], answers: ['ICE', 'SAND', 'PAPER'], correct: 'ICE' },
+            ],
+        },
+        {
+            id: 'word-hunt', icon: '🎯', title: 'Word Hunt', description: 'Find all words that match the mission.', type: 'word-hunt',
+            questions: [
+                { prompt: 'Find 3 words related to food.', answers: ['BOOK', 'APPLE', 'HOUSE', 'WATER', 'BREAD', 'DOG'], correct: ['APPLE', 'WATER', 'BREAD'] },
+                { prompt: 'Find 3 words related to places.', answers: ['SCHOOL', 'CAT', 'MARKET', 'RIVER', 'HOUSE', 'GREEN'], correct: ['SCHOOL', 'MARKET', 'HOUSE'] },
+                { prompt: 'Find 3 words related to nature.', answers: ['TREE', 'BOOK', 'RIVER', 'SUN', 'CHAIR', 'DOG'], correct: ['TREE', 'RIVER', 'SUN'] },
+                { prompt: 'Find 3 words related to animals.', answers: ['DOG', 'TABLE', 'CAT', 'BIRD', 'HOUSE', 'BLUE'], correct: ['DOG', 'CAT', 'BIRD'] },
+                { prompt: 'Find 3 words related to school.', answers: ['PENCIL', 'RIVER', 'TEACHER', 'BOOK', 'APPLE', 'MOON'], correct: ['PENCIL', 'TEACHER', 'BOOK'] },
+            ],
+        },
+        {
+            id: 'flip-card', icon: '🃏', title: 'Flip Card Challenge', description: 'Flip the cards and match the right word.', type: 'flip-card',
+            questions: getFlipMatchTrainingSet('en'),
+        },
+    ],
+    hi: [
+        {
+            id: 'word-builder', icon: '🔤', title: 'शब्द बनाओ', description: 'अस्थिर अक्षरों को सही शब्द में लगाएँ।', type: 'word-builder',
+            questions: wordBuilderQuestions,
+        },
+        {
+            id: 'mystery-word', icon: '🕵️', title: 'गुप्त शब्द', description: 'सुराग देखें और शब्द पहचानें।', type: 'mystery-word',
+            questions: [
+                { prompt: 'मैं कौन हूँ?', clues: ['आप मुझे खा सकते हैं।', 'मैं लाल या हरा हो सकता हूँ।', 'मैं पेड़ पर grows होता हूँ।'], answers: ['APPLE', 'BANANA', 'ORANGE'], correct: 'APPLE' },
+                { prompt: 'मैं कौन हूँ?', clues: ['मैं उड़ सकता हूँ।', 'मेरे पास पंख होते हैं।', 'मैं गा सकता हूँ।'], answers: ['BIRD', 'FISH', 'HORSE'], correct: 'BIRD' },
+                { prompt: 'मैं कौन हूँ?', clues: ['मैं प्रकाश देता हूँ।', 'आप मुझे आसमान में देखते हैं।', 'मैं दिन में चमकता हूँ।'], answers: ['SUN', 'MOON', 'CLOUD'], correct: 'SUN' },
+                { prompt: 'मैं कौन हूँ?', clues: ['मेरे चार पैर हैं।', 'लोग मुझे सवारी करते हैं।', 'मैं तेज़ दौड़ सकता हूँ।'], answers: ['HORSE', 'TIGER', 'SNAKE'], correct: 'HORSE' },
+                { prompt: 'मैं कौन हूँ?', clues: ['मैं ठंडा हूँ।', 'मैं पिघल सकता हूँ।', 'लोग मुझे पीने में उपयोग करते हैं।'], answers: ['ICE', 'SAND', 'PAPER'], correct: 'ICE' },
+            ],
+        },
+        {
+            id: 'word-hunt', icon: '🎯', title: 'शब्द खोज', description: 'मिशन से मेल खाने वाले सारे शब्द ढूँढें।', type: 'word-hunt',
+            questions: [
+                { prompt: 'खाने से जुड़े 3 शब्द ढूँढें।', answers: ['BOOK', 'APPLE', 'HOUSE', 'WATER', 'BREAD', 'DOG'], correct: ['APPLE', 'WATER', 'BREAD'] },
+                { prompt: 'जगहों से जुड़े 3 शब्द ढूँढें।', answers: ['SCHOOL', 'CAT', 'MARKET', 'RIVER', 'HOUSE', 'GREEN'], correct: ['SCHOOL', 'MARKET', 'HOUSE'] },
+                { prompt: 'प्रकृति से जुड़े 3 शब्द ढूँढें।', answers: ['TREE', 'BOOK', 'RIVER', 'SUN', 'CHAIR', 'DOG'], correct: ['TREE', 'RIVER', 'SUN'] },
+                { prompt: 'पशुओं से जुड़े 3 शब्द ढूँढें।', answers: ['DOG', 'TABLE', 'CAT', 'BIRD', 'HOUSE', 'BLUE'], correct: ['DOG', 'CAT', 'BIRD'] },
+                { prompt: 'स्कूल से जुड़े 3 शब्द ढूँढें।', answers: ['PENCIL', 'RIVER', 'TEACHER', 'BOOK', 'APPLE', 'MOON'], correct: ['PENCIL', 'TEACHER', 'BOOK'] },
+            ],
+        },
+        {
+            id: 'flip-card', icon: '🃏', title: 'फ्लिप कार्ड चैलेंज', description: 'कार्ड पलटें और सही शब्द चुनें।', type: 'flip-card',
+            questions: getFlipMatchTrainingSet('hi'),
+        },
+    ],
+    kn: [
+        {
+            id: 'word-builder', icon: '🔤', title: 'ಪದ ನಿರ್ಮಾಣ', description: 'ಚದರಾಕ್ಷರಗಳನ್ನು ಸರಿಯಾಗಿ ಜೋಡಿಸಿ.', type: 'word-builder',
+            questions: wordBuilderQuestions,
+        },
+        {
+            id: 'mystery-word', icon: '🕵️', title: 'ರಹಸ್ಯ ಪದ', description: 'ಸುಳಿವುಗಳನ್ನು ನೋಡಿ ಮತ್ತು ಪದವನ್ನು ಪತ್ತೆಹಚ್ಚಿ.', type: 'mystery-word',
+            questions: [
+                { prompt: 'ನಾನು ಯಾರು?', clues: ['ನೀವು ನನ್ನನ್ನು ತಿನ್ನಬಹುದು.', 'ನಾನು ಕೆಂಪಾಗಿರಬಹುದು ಅಥವಾ ಹಸಿರು ಆಗಿರಬಹುದು.', 'ನಾನು ಮರದ ಮೇಲೆ ಬೆಳೆಯುತ್ತೇನೆ.'], answers: ['APPLE', 'BANANA', 'ORANGE'], correct: 'APPLE' },
+                { prompt: 'ನಾನು ಯಾರು?', clues: ['ನಾನು ಹಾರಬಲ್ಲೆ.', 'ನನ್ನಲ್ಲಿ ರೆಕ್ಕೆಗಳಿವೆ.', 'ನಾನು ಹಾಡಬಲ್ಲೆ.'], answers: ['BIRD', 'FISH', 'HORSE'], correct: 'BIRD' },
+                { prompt: 'ನಾನು ಯಾರು?', clues: ['ನಾನು ಬೆಳಕನ್ನು ಕೊಡುತ್ತೇನೆ.', 'ನಿಮ್ಮ ಕಣ್ಣುಗಳಲ್ಲಿ ನನ್ನನ್ನು ನೋಡುತ್ತೀರಿ.', 'ನಾನು ದಿನದಲ್ಲಿ ಹೊಳೆಯುತ್ತೇನೆ.'], answers: ['SUN', 'MOON', 'CLOUD'], correct: 'SUN' },
+                { prompt: 'ನಾನು ಯಾರು?', clues: ['ನನಗೆ ನಾಲ್ಕು ಕಾಲುಗಳಿವೆ.', 'ಜನರು ನನ್ನ ಮೇಲೆ ಕುಳಿತುಕೊಳ್ಳುತ್ತಾರೆ.', 'ನಾನು ವೇಗವಾಗಿ ಓಡುತ್ತೇನೆ.'], answers: ['HORSE', 'TIGER', 'SNAKE'], correct: 'HORSE' },
+                { prompt: 'ನಾನು ಯಾರು?', clues: ['ನಾನು ತಂಪಾಗಿದ್ದೇನೆ.', 'ನಾನು ಕರಗಬಹುದು.', 'ಜನರು ನನ್ನನ್ನು ಪಾನೀಯದಲ್ಲಿ ಬಳಸುತ್ತಾರೆ.'], answers: ['ICE', 'SAND', 'PAPER'], correct: 'ICE' },
+            ],
+        },
+        {
+            id: 'word-hunt', icon: '🎯', title: 'ಪದ ಹುಡುಕಿ', description: 'ಮಿಷನ್‌ಗೆ ಹೊಂದುವ ಎಲ್ಲಾ ಪದಗಳನ್ನು ಹುಡುಕಿ.', type: 'word-hunt',
+            questions: [
+                { prompt: 'ಆಹಾರಕ್ಕೆ ಸಂಬಂಧಪಟ್ಟ 3 ಪದಗಳನ್ನು ಹುಡುಕಿ.', answers: ['BOOK', 'APPLE', 'HOUSE', 'WATER', 'BREAD', 'DOG'], correct: ['APPLE', 'WATER', 'BREAD'] },
+                { prompt: 'ಸ್ಥಳಗಳಿಗೆ ಸಂಬಂಧಪಟ್ಟ 3 ಪದಗಳನ್ನು ಹುಡುಕಿ.', answers: ['SCHOOL', 'CAT', 'MARKET', 'RIVER', 'HOUSE', 'GREEN'], correct: ['SCHOOL', 'MARKET', 'HOUSE'] },
+                { prompt: 'ಪ್ರಕೃತಿಗೆ ಸಂಬಂಧಪಟ್ಟ 3 ಪದಗಳನ್ನು ಹುಡುಕಿ.', answers: ['TREE', 'BOOK', 'RIVER', 'SUN', 'CHAIR', 'DOG'], correct: ['TREE', 'RIVER', 'SUN'] },
+                { prompt: 'ಜೀವಜಂತುಗಳಿಗೆ ಸಂಬಂಧಪಟ್ಟ 3 ಪದಗಳನ್ನು ಹುಡುಕಿ.', answers: ['DOG', 'TABLE', 'CAT', 'BIRD', 'HOUSE', 'BLUE'], correct: ['DOG', 'CAT', 'BIRD'] },
+                { prompt: 'ಶಾಲೆಗೆ ಸಂಬಂಧಪಟ್ಟ 3 ಪದಗಳನ್ನು ಹುಡುಕಿ.', answers: ['PENCIL', 'RIVER', 'TEACHER', 'BOOK', 'APPLE', 'MOON'], correct: ['PENCIL', 'TEACHER', 'BOOK'] },
+            ],
+        },
+        {
+            id: 'flip-card', icon: '🃏', title: 'ಫ್ಲಿಪ್ ಕಾರ್ಡ್ ಚಾಲೆಂಜ್', description: 'ಕಾರ್ಡ್ಗಳನ್ನು ತಿರುಗಿಸಿ ಮತ್ತು ಸರಿಯಾದ ಪದವನ್ನು ಆರಿಸಿ.', type: 'flip-card',
+            questions: getFlipMatchTrainingSet('kn'),
+        },
+    ],
+    ta: [
+        {
+            id: 'word-builder', icon: '🔤', title: 'சொல் உருவாக்கம்', description: 'குழப்பமான எழுத்துக்களை சரியான சொல்லாக மாற்றவும்.', type: 'word-builder',
+            questions: wordBuilderQuestions,
+        },
+        {
+            id: 'mystery-word', icon: '🕵️', title: 'ரகசிய சொல்', description: 'சுருக்கங்களைப் பார்த்து சொல்லைக் கண்டுபிடி.', type: 'mystery-word',
+            questions: [
+                { prompt: 'நான் யார்?', clues: ['நீங்கள் என்னை சாப்பிடலாம்.', 'நான் சிவப்பு அல்லது பச்சையாக இருக்கலாம்.', 'நான் மரத்தில் வளரும்.'], answers: ['APPLE', 'BANANA', 'ORANGE'], correct: 'APPLE' },
+                { prompt: 'நான் யார்?', clues: ['நான் பறக்க முடியும்.', 'எனக்கு இறகுகள் இருக்கின்றன.', 'நான் பாட முடியும்.'], answers: ['BIRD', 'FISH', 'HORSE'], correct: 'BIRD' },
+                { prompt: 'நான் யார்?', clues: ['நான் ஒளியை தருகிறேன்.', 'வானத்தில் என்னை பார்க்கிறீர்கள்.', 'நான் பகலில் பிரகாசிக்கிறேன்.'], answers: ['SUN', 'MOON', 'CLOUD'], correct: 'SUN' },
+                { prompt: 'நான் யார்?', clues: ['எனக்கு நான்கு கால்கள் உள்ளன.', 'மக்கள் என்னை ஓட்டுகிறார்கள்.', 'நான் வேகமாக ஓடுகிறேன்.'], answers: ['HORSE', 'TIGER', 'SNAKE'], correct: 'HORSE' },
+                { prompt: 'நான் யார்?', clues: ['நான் குளிராக இருக்கிறேன்.', 'நான் உருக முடியும்.', 'மக்கள் என்னைப் பானங்களில் பயன்படுத்துகிறார்கள்.'], answers: ['ICE', 'SAND', 'PAPER'], correct: 'ICE' },
+            ],
+        },
+        {
+            id: 'word-hunt', icon: '🎯', title: 'சொல் வேட்டை', description: 'பணிக்கு பொருந்தும் அனைத்து சொற்களையும் கண்டுபிடி.', type: 'word-hunt',
+            questions: [
+                { prompt: 'உணவுடன் தொடர்புடைய 3 சொற்களைக் கண்டுபிடி.', answers: ['BOOK', 'APPLE', 'HOUSE', 'WATER', 'BREAD', 'DOG'], correct: ['APPLE', 'WATER', 'BREAD'] },
+                { prompt: 'இடங்களுடன் தொடர்புடைய 3 சொற்களைக் கண்டுபிடி.', answers: ['SCHOOL', 'CAT', 'MARKET', 'RIVER', 'HOUSE', 'GREEN'], correct: ['SCHOOL', 'MARKET', 'HOUSE'] },
+                { prompt: 'இயற்கையுடன் தொடர்புடைய 3 சொற்களைக் கண்டுபிடி.', answers: ['TREE', 'BOOK', 'RIVER', 'SUN', 'CHAIR', 'DOG'], correct: ['TREE', 'RIVER', 'SUN'] },
+                { prompt: 'விலங்குகளுடன் தொடர்புடைய 3 சொற்களைக் கண்டுபிடி.', answers: ['DOG', 'TABLE', 'CAT', 'BIRD', 'HOUSE', 'BLUE'], correct: ['DOG', 'CAT', 'BIRD'] },
+                { prompt: 'பள்ளியுடன் தொடர்புடைய 3 சொற்களைக் கண்டுபிடி.', answers: ['PENCIL', 'RIVER', 'TEACHER', 'BOOK', 'APPLE', 'MOON'], correct: ['PENCIL', 'TEACHER', 'BOOK'] },
+            ],
+        },
+        {
+            id: 'flip-card', icon: '🃏', title: 'ஃபிளிப் கார்டு சவால்', description: 'கார்டுகளை புரட்டி சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', type: 'flip-card',
+            questions: getFlipMatchTrainingSet('ta'),
+        },
+    ],
+    te: [
+        {
+            id: 'word-builder', icon: '🔤', title: 'పద నిర్మాణం', description: 'కంక్రమించిన అక్షరాలను సరైన పదంలో ఏర్పరచండి.', type: 'word-builder',
+            questions: wordBuilderQuestions,
+        },
+        {
+            id: 'mystery-word', icon: '🕵️', title: 'రహస్య పదం', description: 'సూచనలను చూడండి మరియు పదాన్ని కనుగొనండి.', type: 'mystery-word',
+            questions: [
+                { prompt: 'నేను ఎవరు?', clues: ['మీరు నా కొరకు తినవచ్చు.', 'నేను ఎరుపు లేదా ఆకుపచ్చగా ఉండవచ్చు.', 'నేను చెట్టు మీద పెరుగుతాను.'], answers: ['APPLE', 'BANANA', 'ORANGE'], correct: 'APPLE' },
+                { prompt: 'నేను ఎవరు?', clues: ['నేను ఎగరగలను.', 'నాకి రెక్కలు ఉన్నాయి.', 'నేను పాట పాడగలను.'], answers: ['BIRD', 'FISH', 'HORSE'], correct: 'BIRD' },
+                { prompt: 'నేను ఎవరు?', clues: ['నేను కాంతిని ఇస్తాను.', 'మీరు ఆకాశంలో నన్ను చూస్తారు.', 'నేను రోజులో ప్రకాశిస్తాను.'], answers: ['SUN', 'MOON', 'CLOUD'], correct: 'SUN' },
+                { prompt: 'నేను ఎవరు?', clues: ['నాకు నాలుగు కాళ్ళు ఉన్నాయి.', 'ప్రజలు నన్ను సవారీ చేస్తారు.', 'నేను వేగంగా పరుగెత్తగలను.'], answers: ['HORSE', 'TIGER', 'SNAKE'], correct: 'HORSE' },
+                { prompt: 'నేను ఎవరు?', clues: ['నేను చల్లగా ఉన్నాను.', 'నేను కరిగిపోగలను.', 'ప్రజలు నన్ను పానీయాలలో వాడతారు.'], answers: ['ICE', 'SAND', 'PAPER'], correct: 'ICE' },
+            ],
+        },
+        {
+            id: 'word-hunt', icon: '🎯', title: 'పదాల వేట', description: 'మిషన్‌కు సరిపోయే అన్ని పదాలను కనుగొనండి.', type: 'word-hunt',
+            questions: [
+                { prompt: 'ఆహారం సంబంధిత 3 పదాలను కనుగొనండి.', answers: ['BOOK', 'APPLE', 'HOUSE', 'WATER', 'BREAD', 'DOG'], correct: ['APPLE', 'WATER', 'BREAD'] },
+                { prompt: 'స్థలాలకు సంబంధిత 3 పదాలను కనుగొనండి.', answers: ['SCHOOL', 'CAT', 'MARKET', 'RIVER', 'HOUSE', 'GREEN'], correct: ['SCHOOL', 'MARKET', 'HOUSE'] },
+                { prompt: 'బయోపదం సంబంధిత 3 పదాలను కనుగొనండి.', answers: ['TREE', 'BOOK', 'RIVER', 'SUN', 'CHAIR', 'DOG'], correct: ['TREE', 'RIVER', 'SUN'] },
+                { prompt: 'జంతువులకు సంబంధిత 3 పదాలను కనుగొనండి.', answers: ['DOG', 'TABLE', 'CAT', 'BIRD', 'HOUSE', 'BLUE'], correct: ['DOG', 'CAT', 'BIRD'] },
+                { prompt: 'పాఠశాలకు సంబంధిత 3 పదాలను కనుగొనండి.', answers: ['PENCIL', 'RIVER', 'TEACHER', 'BOOK', 'APPLE', 'MOON'], correct: ['PENCIL', 'TEACHER', 'BOOK'] },
+            ],
+        },
+        {
+            id: 'flip-card', icon: '🃏', title: 'ఫ్లిప్ కార్డ్ ఛాలెంజ్', description: 'కార్డులను తిప్పి సరైన పదాన్ని ఎంచుకోండి.', type: 'flip-card',
+            questions: getFlipMatchTrainingSet('te'),
+        },
+    ],
+}
+
 const UNIVERSAL_GAMES = [
     {
         id: 'word-builder', icon: '🔤', title: 'Word Builder', description: 'Arrange scrambled letters into the target word.', type: 'word-builder',
@@ -615,18 +821,10 @@ const UNIVERSAL_GAMES = [
         ],
     },
     {
-        id: 'learning-wheel', icon: '🎡', title: 'Learning Wheel', description: 'Spin the wheel for a surprise challenge.', type: 'learning-wheel',
-        questions: [
-            { prompt: 'Complete the vocabulary challenge.', category: 'Vocabulary', answers: ['APPLE', 'BOOK', 'WATER'], correct: 'APPLE' },
-            { prompt: 'Complete the spelling challenge.', category: 'Spelling', answers: ['SCHOOL', 'FRIEND', 'MORNING'], correct: 'SCHOOL' },
-            { prompt: 'Complete the grammar challenge.', category: 'Grammar', answers: ['LEARN', 'LEARNING', 'LEARNS'], correct: 'LEARN' },
-            { prompt: 'Complete the listening challenge.', category: 'Listening', answers: ['WELCOME', 'GOODBYE', 'THANKS'], correct: 'WELCOME' },
-            { prompt: 'Complete the speaking challenge.', category: 'Speaking', answers: ['HELLO', 'TABLE', 'WINDOW'], correct: 'HELLO' },
-        ],
+        id: 'flip-card', icon: '🃏', title: 'Flip Card Challenge', description: 'Flip the cards and match the right word.', type: 'flip-card',
+        questions: getFlipMatchTrainingSet('en'),
     },
 ]
-
-const shuffleGameOptions = (items) => [...items].sort(() => Math.random() - 0.5)
 
 const shuffleBuilderLetters = (letters, answer) => {
     let shuffled = shuffleGameOptions(letters)
@@ -638,21 +836,92 @@ const shuffleBuilderLetters = (letters, answer) => {
     return shuffled
 }
 
+const LOCALIZED_WORD_BUILDER_HINTS = {
+    hi: {
+        'a fruit': 'फल',
+        'a drink': 'पानी',
+        'a greeting': 'नमस्ते',
+        'a place to learn': 'सीखने की जगह',
+        'a reading object': 'पढ़ने की चीज़',
+        'a close person': 'करीबी व्यक्ति',
+        'a bright object in the sky': 'आसमान में चमकने वाली चीज़',
+        'a large animal': 'बड़ा जानवर',
+        'a place with many books': 'कई किताबों वाली जगह',
+        'a morning meal': 'सुबह का भोजन',
+        'a color like grass': 'घास जैसा रंग',
+        'a place to live': 'रहने की जगह',
+        'a means of travel': 'यात्रा का साधन',
+        'a person who teaches': 'शिक्षक',
+        'a place to buy food': 'खाना खरीदने की जगह',
+        'the opposite of night': 'रात का विपरीत',
+        'a season after winter': 'सर्दियों के बाद का मौसम',
+        'a piece of furniture': 'फर्नीचर का टुकड़ा',
+        'a vehicle with two wheels': 'दो पहियों वाला वाहन',
+        'a place to see animals': 'जानवर देखने की जगह',
+        'a hot drink': 'गर्म पेय',
+        'a yellow fruit': 'पीला फल',
+        'a room for cooking': 'खाना पकाने का कमरा',
+        'a place for sports': 'खेल का मैदान',
+        'a person who drives': 'चालक',
+        'the opposite of fast': 'तेज़ का विपरीत',
+        'a body of flowing water': 'बहते पानी का हिस्सा',
+        'a tool for writing': 'लिखने का औज़ार',
+        'a place for airplanes': 'हवाई जहाज़ों का स्थान',
+        'a meal in the evening': 'शाम का भोजन',
+        'a color like the sky': 'आसमान जैसा रंग',
+        'a small animal that says meow': 'म्याऊँ कहने वाला छोटा जानवर',
+        'a place to catch a train': 'ट्रेन पकड़ने की जगह',
+        'a person who helps sick people': 'बीमार लोगों की मदद करने वाला',
+        'the opposite of empty': 'खाली का विपरीत',
+        'a bright light in the night sky': 'रात में चमकने वाला प्रकाश',
+        'a place with trees': 'पेड़ों वाली जगह',
+        'something worn on the feet': 'पैरों में पहना जाने वाला',
+        'a building where films are shown': 'सिनेमा घर',
+        'a vehicle that flies': 'उड़ने वाला वाहन',
+        'a red fruit': 'लाल फल',
+        'a place for swimming': 'तैराकी की जगह',
+        'a person who cooks food': 'खाना पकाने वाला व्यक्ति',
+        'the opposite of old': 'पुराने का विपरीत',
+        'a place to borrow books': 'किताबें उधार लेने की जगह',
+        'a natural high landform': 'प्राकृतिक ऊँची स्थल आकृति',
+        'a container for carrying things': 'चीज़ें रखने का कंटेनर',
+        'a room where people sleep': 'जहाँ लोग सोते हैं',
+        'a day after Friday': 'शुक्रवार के बाद का दिन',
+        'a person who paints': 'चित्रकार',
+    },
+}
+
+const localizeGameQuestion = (question, game, languageCode) => {
+    if (languageCode !== 'hi' || game.id !== 'word-builder' || !question.prompt || !question.prompt.startsWith('Build the word for')) {
+        return question
+    }
+
+    const hint = question.prompt.replace(/^Build the word for (.*)\.$/, '$1')
+    const translatedHint = LOCALIZED_WORD_BUILDER_HINTS.hi[hint] || hint
+    return {
+        ...question,
+        prompt: `शब्द बनाएं: ${translatedHint}।`,
+    }
+}
+
 const getGameLibraryWithListening = (languageCode) => [
-    ...UNIVERSAL_GAMES,
+    ...(UNIVERSAL_GAMES_BY_LANGUAGE[languageCode] || UNIVERSAL_GAMES_BY_LANGUAGE.en),
     ...(VISUAL_GAMES_BY_LANGUAGE[languageCode] || VISUAL_GAMES_BY_LANGUAGE.en),
     LISTENING_GAME_BY_LANGUAGE[languageCode] || LISTENING_GAME_BY_LANGUAGE.en,
 ].map((game) => ({
     ...game,
-    questions: game.questions.map((question) => ({
-        ...question,
-        answers: question.answers ? shuffleGameOptions(question.answers) : question.answers,
-        letters: question.letters ? shuffleBuilderLetters(question.letters, question.correct) : question.letters,
-    })),
+    questions: game.questions.map((question) => {
+        const localizedQuestion = localizeGameQuestion(question, game, languageCode)
+        return {
+            ...localizedQuestion,
+            answers: localizedQuestion.answers ? shuffleGameOptions(localizedQuestion.answers) : localizedQuestion.answers,
+            letters: localizedQuestion.letters ? shuffleBuilderLetters(localizedQuestion.letters, localizedQuestion.correct) : localizedQuestion.letters,
+        }
+    }),
 }))
 const shuffleQuestions = (items) => [...items].sort(() => Math.random() - 0.5)
 const createQuestionRound = (items) => shuffleQuestions(items).slice(0, Math.min(5, items.length))
-const PERSISTED_ROUND_GAME_IDS = new Set(['word-builder', 'mystery-word', 'word-hunt', 'learning-wheel'])
+const PERSISTED_ROUND_GAME_IDS = new Set(['word-builder', 'mystery-word', 'word-hunt', 'flip-card'])
 
 const getRoundStorageKey = (gameId) => `neolit_${gameId}_current_round`
 
@@ -678,10 +947,194 @@ const RUNNER_EXTRA_WORDS = {
     ta: ['ஆறு', 'பச்சை', 'புத்தகம்', 'அமைதி', 'பள்ளி', 'பிரகாசம்', 'சிறிய', 'நண்பர்', 'காலை', 'தெரு'],
     te: ['నది', 'ఆకుపచ్చ', 'పుస్తకం', 'నిశ్శబ్దం', 'పాఠశాల', 'ప్రకాశం', 'చిన్న', 'స్నేహితుడు', 'ఉదయం', 'వీధి'],
 }
+const LANGUAGE_GAME_LABELS = {
+    en: 'English Games',
+    hi: 'Hindi Games',
+    kn: 'Kannada Games',
+    ta: 'Tamil Games',
+    te: 'Telugu Games',
+}
 
 export default function GamesPage() {
+    const nativeLanguageName = localStorage.getItem('neolit_native_language') || 'Hindi'
+    const nativeLanguageCode = { English: 'en', Hindi: 'hi', Kannada: 'kn', Tamil: 'ta', Telugu: 'te' }[nativeLanguageName] || 'en'
+    const gamesNativeCopy = {
+        en: {
+            title: 'Play. Learn. Level up.',
+            subtitle: 'Every move teaches you something. Pick a world and keep your streak alive.',
+            score: 'Session score',
+            chooseMode: 'Choose a mode',
+            switchGame: 'Switch game',
+            endless: 'Endless run · new obstacle',
+            question: 'Question',
+            seconds: 's',
+        },
+        hi: {
+            title: 'खेलें. सीखें. स्तर बढ़ाएँ.',
+            subtitle: 'हर चाल आपको कुछ सिखाती है। कोई दुनिया चुनें और अपनी स्ट्रीक बनाएं।',
+            score: 'सत्र स्कोर',
+            chooseMode: 'मोड चुनें',
+            switchGame: 'गेम बदलें',
+            endless: 'अनंत दौड़ · नई बाधा',
+            question: 'प्रश्न',
+            seconds: 'से',
+        },
+        kn: {
+            title: 'ಆಟವಾಡಿ. ಕಲಿಯಿರಿ. ಮಟ್ಟವನ್ನು ಹೆಚ್ಚಿಸಿ.',
+            subtitle: 'ಪ್ರತಿ ಚಲನೆಯೂ ನಿಮಗೆ ಏನನ್ನಾದರೂ ಕಲಿಸುತ್ತದೆ. ಜಗತ್ತನ್ನು ಆಯ್ಕೆ ಮಾಡಿ ಮತ್ತು ನಿಮ್ಮ ಸ್ಟ್ರೀಕ್‍ ಅನ್ನು ಮುಂದುವರಿಸಿ.',
+            score: 'ಸೆಷನ್ ಸ್ಕೋರ್',
+            chooseMode: 'ಮೋಡ್ ಆಯ್ಕೆಮಾಡಿ',
+            switchGame: 'गेम್ ಬದಲಿಸಿ',
+            endless: 'ಅನಂತ ಓಟ · ಹೊಸ ಅಡೆತಡೆ',
+            question: 'ಪ್ರಶ್ನೆ',
+            seconds: 'ಸೆ',
+        },
+        ta: {
+            title: 'விளையாடு. கற்றுக் கொள்ளுங்கள். நிலையை உயர்த்துங்கள்.',
+            subtitle: 'ஒவ்வொரு நகர்வும் உங்களுக்கு ஏதாவது கற்பிக்கிறது. ஒரு உலகத்தைத் தேர்ந்தெடுத்து உங்கள் தொடர்ச்சியைத் தொடருங்கள்.',
+            score: 'அமர்வு மதிப்பெண்',
+            chooseMode: 'மோடையைத் தேர்ந்தெடுக்கவும்',
+            switchGame: 'गेम மாற்றவும்',
+            endless: 'எல்லையற்ற ஓட்டம் · புதிய தடைகள்',
+            question: 'கேள்வி',
+            seconds: 'வி',
+        },
+        te: {
+            title: 'ఆట play. నేర్చుకోండి. స్థాయిని పెంచండి.',
+            subtitle: 'ప్రతి చొరవ మీకు ఏదో నేర్పిస్తుంది. ఒక ప్రపంచాన్ని ఎంచుకుని మీ స్ట్రీక్‌ను కొనసాగించండి.',
+            score: 'సెషన్ స్కోర్',
+            chooseMode: 'మోడ్‌ను ఎంచుకోండి',
+            switchGame: 'గేమ్ మార్చండి',
+            endless: 'అనంత రన్ · కొత్త అడ్డంకి',
+            question: 'ప్రశ్న',
+            seconds: 'సె',
+        },
+    }
+    const gamesUiCopy = gamesNativeCopy[nativeLanguageCode] || gamesNativeCopy.en
     const [languageCode, setLanguageCode] = useState(() => localStorage.getItem('neolit_selected_language') || 'en')
-    const games = useMemo(() => getGameLibraryWithListening(languageCode), [languageCode])
+    const gameContentCopy = {
+        en: {
+            tapLetters: 'Tap the letters in order',
+            clue: 'Clue',
+            revealNext: 'Reveal next clue',
+            found: 'found',
+            spinWheel: 'Spin the wheel',
+            currentDistrict: 'Current district',
+            missionClue: 'Mission clue',
+            cityResponds: 'City responds to your choice',
+            missionUpdated: 'Mission updated',
+            missionActive: 'Mission active',
+            listenHint: 'Listen twice if you need another clue, then choose the meaning you heard.',
+            nextQuestion: 'Next question',
+            correct: 'Correct! Great work.',
+            wrong: 'Try another answer.',
+            timeout: 'Time is up! Move to the next challenge.',
+            dragonTimeout: 'Time is up! One heart lost.',
+            dragonWrong: 'Wrong word. One heart lost.',
+            runComplete: 'Run complete',
+            runAgain: 'Run again',
+        },
+        hi: {
+            tapLetters: 'अक्षरों को क्रम में चुनें',
+            clue: 'सुराग',
+            revealNext: 'अगला सुराग दिखाएँ',
+            found: 'मिले',
+            spinWheel: 'पहिया घुमाएँ',
+            currentDistrict: 'वर्तमान क्षेत्र',
+            missionClue: 'मिशन सुराग',
+            cityResponds: 'शहर आपकी पसंद से प्रतिक्रिया देता है',
+            missionUpdated: 'मिशन अपडेट हुआ',
+            missionActive: 'मिशन सक्रिय',
+            listenHint: 'अगर आपको दूसरा सुराग चाहिए तो दो बार सुनें, फिर सही अर्थ चुनें।',
+            nextQuestion: 'अगला सवाल',
+            correct: 'सही! बहुत अच्छा।',
+            wrong: 'दूसरा उत्तर चुनें।',
+            timeout: 'समय समाप्त! अगले चुनौती पर जाएँ।',
+            dragonTimeout: 'समय समाप्त! एक दिल खो गया।',
+            dragonWrong: 'गलत शब्द। एक दिल खो गया।',
+            runComplete: 'रन समाप्त',
+            runAgain: 'फिर से चलाएँ',
+        },
+        kn: {
+            tapLetters: 'ಅಕ್ಷರಗಳನ್ನು ಕ್ರಮವಾಗಿ ಆಯ್ಕೆಮಾಡಿ',
+            clue: 'ಸುಳಿವು',
+            revealNext: 'ಮುಂದಿನ ಸುಳಿವು ತೋರಿಸಿ',
+            found: 'ಕಂಡುಬಂದವು',
+            spinWheel: 'ಚಕ್ರವನ್ನು ತಿರುಗಿಸಿ',
+            currentDistrict: 'ಪ್ರಸ್ತುತ ವಲಯ',
+            missionClue: 'ಮಿಷನ್ ಸುಳಿವು',
+            cityResponds: 'ನಗರವು ನಿಮ್ಮ ಆಯ್ಕೆಗೆ ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತದೆ',
+            missionUpdated: 'ಮಿಷನ್ ನವೀಕರಿಸಲಾಗಿದೆ',
+            missionActive: 'ಮಿಷನ್ ಸಕ್ರಿಯವಾಗಿದೆ',
+            listenHint: 'ಮತ್ತೊಂದು ಸುಳಿವು ಬೇಕಿದ್ದರೆ ಎರಡನೇ ಬಾರಿ ಕೇಳಿ, ನಂತರ ನೀವು ಕೇಳಿದ ಅರ್ಥವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ.',
+            nextQuestion: 'ಮುಂದಿನ ಪ್ರಶ್ನೆ',
+            correct: 'ಸರಿಯಾಗಿದೆ! ಕ್ಷಮಿಸಬೇಡಿ.',
+            wrong: 'ಮತ್ತೊಂದು ಉತ್ತರ ಪ್ರಯತ್ನಿಸಿ.',
+            timeout: 'ಸಮಯ ಮುಗಿತು! ಮುಂದಿನ ಸವಾಲಿಗೆ ಹೋಗಿ.',
+            dragonTimeout: 'ಸಮಯ ಮುಗಿತು! ಒಂದು ಹೃದಯ ತಪ್ಪಿದೆ.',
+            dragonWrong: 'ತಪ್ಪಾದ ಪದ. ಒಂದು ಹೃದಯ ತಪ್ಪಿದೆ.',
+            runComplete: 'ರನ್ ಪೂರ್ಣಗೊಂಡಿದೆ',
+            runAgain: 'ಮತ್ತೆ ಚಲಿಸಿ',
+        },
+        ta: {
+            tapLetters: 'எழுத்துக்களை வரிசையில் தேர்ந்தெடுக்கவும்',
+            clue: 'குறிப்பு',
+            revealNext: 'அடுத்த குறிப்பை காட்டவும்',
+            found: 'கண்டுபிடிக்கப்பட்டது',
+            spinWheel: 'சக்கரத்தை சுழற்றவும்',
+            currentDistrict: 'தற்போதைய மாவட்டம்',
+            missionClue: 'பணிக் குறிப்பு',
+            cityResponds: 'நகரம் உங்கள் தேர்வுக்கு பதிலளிக்கிறது',
+            missionUpdated: 'பணி புதுப்பிக்கப்பட்டது',
+            missionActive: 'பணி செயல்பாட்டில் உள்ளது',
+            listenHint: 'மற்றொரு குறிப்புத் தேவைப்பட்டால் இரண்டு முறை கேளுங்கள், பின்னர் நீங்கள் கேட்ட அர்த்தத்தை தேர்ந்தெடுக்கவும்.',
+            nextQuestion: 'அடுத்த கேள்வி',
+            correct: 'சரி! சிறப்பாக செய்தீர்கள்.',
+            wrong: 'மற்றொரு பதிலை முயற்சிக்கவும்.',
+            timeout: 'நேரம் முடிந்துவிட்டது! அடுத்த சவாலுக்கு செல்லுங்கள்.',
+            dragonTimeout: 'நேரம் முடிந்துவிட்டது! ஒரு இதயம் இழந்தது.',
+            dragonWrong: 'தவறான சொல். ஒரு இதயம் இழந்தது.',
+            runComplete: 'ஓட்டம் முடிந்தது',
+            runAgain: 'மீண்டும் ஓடவும்',
+        },
+        te: {
+            tapLetters: 'అక్షరాలను క్రమంలో ఎంచుకోండి',
+            clue: 'సూచన',
+            revealNext: 'తదుపరి సూచనను చూపించండి',
+            found: 'కనబడింది',
+            spinWheel: 'చక్రాన్ని తిప్పండి',
+            currentDistrict: 'ప్రస్తుత జిల్లా',
+            missionClue: 'మిషన్ సూచన',
+            cityResponds: 'నగరం మీ ఎంపికకు స్పందిస్తుంది',
+            missionUpdated: 'మిషన్ నవీకరించబడింది',
+            missionActive: 'మిషన్ సక్రియంగా ఉంది',
+            listenHint: 'మరొక సూచన అవసరమైతే రెండుసార్లు వినండి, తర్వాత మీరు విన్న అర్థాన్ని ఎంచుకోండి.',
+            nextQuestion: 'తదుపరి ప్రశ్న',
+            correct: 'సరైనది! బాగా చేసారు.',
+            wrong: 'మరొక సమాధానాన్ని ప్రయత్నించండి.',
+            timeout: 'సమయం ముగిసింది! తదుపరి సవాలుకు వెళ్లండి.',
+            dragonTimeout: 'సమయం ముగిసింది! ఒక హృదయం కోల్పోయింది.',
+            dragonWrong: 'తప్పు పదం. ఒక హృదయం కోల్పోయింది.',
+            runComplete: 'రన్ పూర్తయింది',
+            runAgain: 'మళ్లీ చక్రం',
+        },
+    }
+    const localizedGameCopy = gameContentCopy[languageCode] || gameContentCopy.en
+    const games = useMemo(() => {
+        return getGameLibraryWithListening(languageCode).map((game) => ({
+            ...game,
+            languageLabel: LANGUAGE_GAME_LABELS[languageCode] || LANGUAGE_GAME_LABELS.en,
+        }))
+    }, [languageCode])
+
+    const gameGroups = useMemo(() => {
+        const activeLabel = LANGUAGE_GAME_LABELS[languageCode] || LANGUAGE_GAME_LABELS.en
+        return [{
+            label: activeLabel,
+            games: games.filter((game) => game.languageLabel === activeLabel),
+        }].filter((group) => group.games.length > 0)
+    }, [games, languageCode])
+
     const [selectedId, setSelectedId] = useState(games[0].id)
     const [answer, setAnswer] = useState('')
     const [score, setScore] = useState(0)
@@ -695,7 +1148,11 @@ export default function GamesPage() {
     const [builderLetters, setBuilderLetters] = useState([])
     const [mysteryClueIndex, setMysteryClueIndex] = useState(0)
     const [huntFound, setHuntFound] = useState([])
-    const [wheelCategory, setWheelCategory] = useState('')
+    const [flipCardDeck, setFlipCardDeck] = useState([])
+    const [selectedFlipCards, setSelectedFlipCards] = useState([])
+    const [matchedFlipCards, setMatchedFlipCards] = useState([])
+    const [flipCardLocked, setFlipCardLocked] = useState(false)
+    const [flipCardStatus, setFlipCardStatus] = useState(null)
     const [dragonHealth, setDragonHealth] = useState(3)
     const [dragonCoins, setDragonCoins] = useState(0)
     const [dragonDistance, setDragonDistance] = useState(0)
@@ -755,7 +1212,11 @@ export default function GamesPage() {
         setBuilderLetters([])
         setMysteryClueIndex(0)
         setHuntFound([])
-        setWheelCategory('')
+        setSelectedFlipCards([])
+        setMatchedFlipCards([])
+        setFlipCardLocked(false)
+        setFlipCardDeck([])
+        setFlipCardStatus(null)
         setTimeLeft(gameTimeLimit)
         setDragonHealth(3)
         setDragonCoins(0)
@@ -889,6 +1350,17 @@ export default function GamesPage() {
         return () => window.clearInterval(timer)
     }, [answer, questionIndex, selectedGame.id, gameTimeLimit])
 
+    useEffect(() => {
+        if (answer !== 'timeout') return undefined
+        if (selectedGame.type === 'dragon' && dragonHealth === 0) return undefined
+
+        const timeoutId = window.setTimeout(() => {
+            nextQuestion()
+        }, 1100)
+
+        return () => window.clearTimeout(timeoutId)
+    }, [answer, selectedGame.type, dragonHealth, questionIndex])
+
     const chooseGame = (gameId) => {
         const nextGame = games.find((game) => game.id === gameId) || games[0]
         setSelectedId(nextGame.id)
@@ -905,7 +1377,11 @@ export default function GamesPage() {
         setBuilderLetters([])
         setMysteryClueIndex(0)
         setHuntFound([])
-        setWheelCategory('')
+        setSelectedFlipCards([])
+        setMatchedFlipCards([])
+        setFlipCardLocked(false)
+        setFlipCardDeck([])
+        setFlipCardStatus(null)
         setShooterAmmo(6)
         setShooterStreak(0)
         setShooterMisses(0)
@@ -1033,8 +1509,71 @@ export default function GamesPage() {
         }
     }
 
-    const spinLearningWheel = () => {
-        if (!answer) setWheelCategory(question.category)
+    useEffect(() => {
+        if (selectedGame.type !== 'flip-card') {
+            setFlipCardDeck([])
+            setSelectedFlipCards([])
+            setMatchedFlipCards([])
+            setFlipCardLocked(false)
+            return
+        }
+
+        const questionChoices = [...new Set((selectedGame.questions?.[questionIndex % selectedGame.questions.length]?.answers || []).slice(0, 6))]
+        const flipPairs = questionChoices.flatMap((choice, answerIndex) => {
+            const choiceKey = choice.toUpperCase()
+            return [
+                { id: `${selectedGame.id}-${choiceKey}-a-${answerIndex}`, pairId: choiceKey, display: choice, face: 'word' },
+                { id: `${selectedGame.id}-${choiceKey}-b-${answerIndex}`, pairId: choiceKey, display: choice, face: 'word-alt' },
+            ]
+        })
+
+        setFlipCardDeck(shuffleQuestions(flipPairs))
+        setSelectedFlipCards([])
+        setMatchedFlipCards([])
+        setFlipCardLocked(false)
+        setAnswer('')
+    }, [selectedGame, questionIndex])
+
+    const flipCardChoice = (cardId) => {
+        if (answer || flipCardLocked) return
+        const card = flipCardDeck.find((item) => item.id === cardId)
+        if (!card || matchedFlipCards.includes(cardId) || selectedFlipCards.includes(cardId)) return
+
+        const nextSelection = [...selectedFlipCards, cardId]
+        setSelectedFlipCards(nextSelection)
+
+        if (nextSelection.length !== 2) return
+
+        setFlipCardLocked(true)
+        const [firstId, secondId] = nextSelection
+        const firstCard = flipCardDeck.find((item) => item.id === firstId)
+        const secondCard = flipCardDeck.find((item) => item.id === secondId)
+        const isMatch = firstCard && secondCard && firstCard.pairId === secondCard.pairId
+
+        if (isMatch) {
+            setMatchedFlipCards((current) => [...current, firstId, secondId])
+            setFlipCardStatus('correct')
+            setAnswer('')
+            setScore((current) => current + difficultySettings.points)
+            learningApi.recordGameActivity({
+                game_id: selectedGame.id,
+                score: difficultySettings.points,
+                duration_seconds: Math.round((Date.now() - gameStartedAt.current) / 1000),
+            }).catch(() => { })
+            window.setTimeout(() => {
+                setSelectedFlipCards([])
+                setFlipCardLocked(false)
+            }, 500)
+            return
+        }
+
+        setFlipCardStatus('wrong')
+        setAnswer('')
+        window.setTimeout(() => {
+            setSelectedFlipCards([])
+            setFlipCardLocked(false)
+            setFlipCardStatus(null)
+        }, 900)
     }
 
     const nextQuestion = () => {
@@ -1053,7 +1592,11 @@ export default function GamesPage() {
         setBuilderLetters([])
         setMysteryClueIndex(0)
         setHuntFound([])
-        setWheelCategory('')
+        setSelectedFlipCards([])
+        setMatchedFlipCards([])
+        setFlipCardLocked(false)
+        setFlipCardDeck([])
+        setFlipCardStatus(null)
         setTimeLeft(gameTimeLimit)
         setRunnerFallen(false)
         setShooterAmmo(6)
@@ -1098,28 +1641,34 @@ export default function GamesPage() {
             <section className="games-hero" aria-labelledby="games-title">
                 <div>
                     <span className="games-kicker">NeoLit Arcade</span>
-                    <h1 id="games-title">Play. Learn. Level up.</h1>
-                    <p>Every move teaches you something. Pick a world and keep your streak alive.</p>
+                    <h1 id="games-title">{gamesUiCopy.title}</h1>
+                    <p>{gamesUiCopy.subtitle}</p>
                 </div>
-                <div className="games-score" aria-label={`Session score ${score} points`}>
-                    <span>Session score</span>
+                <div className="games-score" aria-label={`${gamesUiCopy.score} ${score} points`}>
+                    <span>{gamesUiCopy.score}</span>
                     <strong>{score}<small> pts</small></strong>
                 </div>
             </section>
             <section className="games-selector" aria-label="Choose a game">
                 <div className="games-selector-heading">
-                    <span className="games-kicker">Choose a mode</span>
-                    <small>Switch game</small>
+                    <span className="games-kicker">{gamesUiCopy.chooseMode}</span>
+                    <small>{gamesUiCopy.switchGame}</small>
                 </div>
-                <div className="games-grid">
-                    {games.map((game) => (
-                        <button key={game.id} type="button" className={`game-card ${selectedId === game.id ? 'active' : ''}`} onClick={() => chooseGame(game.id)}>
-                            <span className="game-card-icon">{game.icon}</span>
-                            <strong>{game.title}</strong>
-                            <small>{game.description}</small>
-                        </button>
-                    ))}
-                </div>
+
+                {gameGroups.map((group) => (
+                    <div key={group.label} className="games-language-group">
+                        <h3>{group.label}</h3>
+                        <div className="games-grid">
+                            {group.games.map((game) => (
+                                <button key={game.id} type="button" className={`game-card ${selectedId === game.id ? 'active' : ''}`} onClick={() => chooseGame(game.id)}>
+                                    <span className="game-card-icon">{game.icon}</span>
+                                    <strong>{game.title}</strong>
+                                    <small>{game.description}</small>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                ))}
             </section>
 
             <section className="game-board">
@@ -1129,8 +1678,8 @@ export default function GamesPage() {
                 </div>
                 <p className="game-board-description">{selectedGame.description}</p>
                 <div className="game-meta-row">
-                    <span className="game-question-count">{selectedGame.type === 'dragon' || selectedGame.type === 'runner' ? 'Endless run · new obstacle' : `Question ${Math.min(questionIndex + 1, activeQuestionOrder.length)}/${activeQuestionOrder.length}`}</span>
-                    <span className={`game-timer ${timeLeft <= 4 ? 'warning' : ''}`}>{timeLeft}s</span>
+                    <span className="game-question-count">{selectedGame.type === 'dragon' || selectedGame.type === 'runner' ? gamesUiCopy.endless : `${gamesUiCopy.question} ${Math.min(questionIndex + 1, activeQuestionOrder.length)}/${activeQuestionOrder.length}`}</span>
+                    <span className={`game-timer ${timeLeft <= 4 ? 'warning' : ''}`}>{timeLeft}{gamesUiCopy.seconds}</span>
                 </div>
                 {selectedGame.type !== 'memory' && <h2>{question.prompt}</h2>}
 
@@ -1257,7 +1806,7 @@ export default function GamesPage() {
                         <div className="listening-wave" aria-hidden="true">
                             <i /><i /><i /><i /><i /><i /><i /><i /><i />
                         </div>
-                        <p className="listening-hint">Listen twice if you need another clue, then choose the meaning you heard.</p>
+                        <p className="listening-hint">{localizedGameCopy.listenHint}</p>
                         <div className="listening-answer-grid">
                             {question.answers.map((choice) => (
                                 <button
@@ -1280,14 +1829,14 @@ export default function GamesPage() {
                             <span className="city-road" />
                         </div>
                         <div className="city-mission-location">
-                            <span>Current district</span>
+                            <span>{localizedGameCopy.currentDistrict}</span>
                             <strong>{question.location}</strong>
                         </div>
                         <div className="city-status-strip">
-                            <span><i className="city-status-dot" /> City responds to your choice</span>
-                            <strong>{answer ? 'Mission updated' : 'Mission active'}</strong>
+                            <span><i className="city-status-dot" /> {localizedGameCopy.cityResponds}</span>
+                            <strong>{answer ? localizedGameCopy.missionUpdated : localizedGameCopy.missionActive}</strong>
                         </div>
-                        <p className="city-mission-clue"><span>Mission clue</span>{question.clue}</p>
+                        <p className="city-mission-clue"><span>{localizedGameCopy.missionClue}</span>{question.clue}</p>
                         <div className="city-choice-grid">
                             {question.answers.map((choice) => (
                                 <button
@@ -1304,27 +1853,51 @@ export default function GamesPage() {
                     </div>
                 ) : selectedGame.type === 'word-builder' ? (
                     <div className="special-game-panel word-builder-panel">
-                        <p className="special-game-label">Tap the letters in order</p>
+                        <p className="special-game-label">{localizedGameCopy.tapLetters}</p>
                         <div className="builder-answer">{builderLetters.map((item) => <button key={item.index} type="button" onClick={() => removeBuilderLetter(item.index)}>{item.letter}</button>)}</div>
                         <div className="builder-letters">{question.letters.map((letter, index) => <button key={`${letter}-${index}`} type="button" disabled={builderLetters.some((item) => item.index === index)} onClick={() => chooseBuilderLetter(letter, index)}>{letter}</button>)}</div>
                     </div>
                 ) : selectedGame.type === 'mystery-word' ? (
                     <div className="special-game-panel mystery-panel">
-                        <p className="special-game-label">Clue {mysteryClueIndex + 1} of {question.clues.length}</p>
+                        <p className="special-game-label">{localizedGameCopy.clue} {mysteryClueIndex + 1} / {question.clues.length}</p>
                         <strong>{question.clues[mysteryClueIndex]}</strong>
                         <div className="game-answer-grid">{question.answers.map((choice) => <button key={choice} type="button" onClick={() => chooseAnswer(choice)}>{choice}</button>)}</div>
-                        <button type="button" className="game-secondary-button" onClick={revealMysteryClue} disabled={mysteryClueIndex === question.clues.length - 1}>Reveal next clue</button>
+                        <button type="button" className="game-secondary-button" onClick={revealMysteryClue} disabled={mysteryClueIndex === question.clues.length - 1}>{localizedGameCopy.revealNext}</button>
                     </div>
                 ) : selectedGame.type === 'word-hunt' ? (
                     <div className="special-game-panel word-hunt-panel">
-                        <p className="special-game-label">{huntFound.length}/{question.correct.length} found</p>
+                        <p className="special-game-label">{huntFound.length}/{question.correct.length} {localizedGameCopy.found}</p>
                         <div className="game-answer-grid">{question.answers.map((choice) => <button key={choice} type="button" className={huntFound.includes(choice) ? 'selected' : ''} onClick={() => chooseHuntWord(choice)}>{choice}</button>)}</div>
                     </div>
-                ) : selectedGame.type === 'learning-wheel' ? (
-                    <div className="special-game-panel learning-wheel-panel">
-                        <div className={`learning-wheel ${wheelCategory ? 'spun' : ''}`}>{wheelCategory || 'SPIN'}</div>
-                        <button type="button" className="game-primary-button" onClick={spinLearningWheel} disabled={Boolean(wheelCategory)}>Spin the wheel</button>
-                        {wheelCategory && <div className="game-answer-grid">{question.answers.map((choice) => <button key={choice} type="button" onClick={() => chooseAnswer(choice)}>{choice}</button>)}</div>}
+                ) : selectedGame.type === 'flip-card' ? (
+                    <div className="special-game-panel flip-card-panel">
+                        <p className="special-game-label">{question.prompt}</p>
+                        <div className="flip-match-grid">
+                            {flipCardDeck.map((card) => {
+                                const isVisible = selectedFlipCards.includes(card.id) || matchedFlipCards.includes(card.id)
+                                return (
+                                    <button
+                                        key={card.id}
+                                        type="button"
+                                        className={`flip-match-card ${isVisible ? 'flipped' : ''} ${matchedFlipCards.includes(card.id) ? 'matched' : ''}`}
+                                        onClick={() => flipCardChoice(card.id)}
+                                    >
+                                        <span className="flip-match-inner">
+                                            <span className="flip-match-face flip-match-front">?</span>
+                                            <span className="flip-match-face flip-match-back">{card.display}</span>
+                                        </span>
+                                    </button>
+                                )
+                            })}
+                        </div>
+                        {flipCardStatus && (
+                            <>
+                                <p className={`game-feedback ${flipCardStatus === 'correct' ? 'correct' : 'wrong'}`}>
+                                    {flipCardStatus === 'correct' ? localizedGameCopy.correct : localizedGameCopy.wrong}
+                                </p>
+                                <button type="button" className="game-next-button" onClick={nextQuestion}>{localizedGameCopy.nextQuestion}</button>
+                            </>
+                        )}
                     </div>
                 ) : selectedGame.type === 'cards' ? (
                     <div className="catch-word-stage" aria-label="Catch the correct word">
@@ -1401,14 +1974,14 @@ export default function GamesPage() {
 
                 {selectedGame.type === 'dragon' && dragonHealth === 0 ? (
                     <div className="dragon-game-over">
-                        <strong>Run complete</strong>
+                        <strong>{localizedGameCopy.runComplete}</strong>
                         <span>{dragonDistance}m reached · {dragonCoins} coins collected</span>
-                        <button type="button" className="game-next-button" onClick={restartDragonRun}>Run again</button>
+                        <button type="button" className="game-next-button" onClick={restartDragonRun}>{localizedGameCopy.runAgain}</button>
                     </div>
                 ) : (
                     <>
-                        {answer && <p className={`game-feedback ${answer === question.correct || (selectedGame.type === 'word-hunt' && answer === 'correct') ? 'correct' : 'wrong'}`}>{answer === 'timeout' ? (selectedGame.type === 'dragon' ? 'Time is up! One heart lost.' : 'Time is up! Move to the next challenge.') : answer === question.correct || (selectedGame.type === 'word-hunt' && answer === 'correct') ? 'Correct! Great work.' : selectedGame.type === 'dragon' ? 'Wrong word. One heart lost.' : 'Try another answer.'}</p>}
-                        {answer && <button type="button" className="game-next-button" onClick={nextQuestion}>Next question</button>}
+                        {selectedGame.type !== 'flip-card' && answer && <p className={`game-feedback ${answer === question.correct || (selectedGame.type === 'word-hunt' && answer === 'correct') ? 'correct' : 'wrong'}`}>{answer === 'timeout' ? (selectedGame.type === 'dragon' ? localizedGameCopy.dragonTimeout : localizedGameCopy.timeout) : answer === question.correct || (selectedGame.type === 'word-hunt' && answer === 'correct') ? localizedGameCopy.correct : selectedGame.type === 'dragon' ? localizedGameCopy.dragonWrong : localizedGameCopy.wrong}</p>}
+                        {selectedGame.type !== 'flip-card' && answer && <button type="button" className="game-next-button" onClick={nextQuestion}>{localizedGameCopy.nextQuestion}</button>}
                     </>
                 )}
             </section>
