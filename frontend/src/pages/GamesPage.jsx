@@ -596,6 +596,10 @@ const FLIP_MATCH_QUESTION_BANK = {
         { prompt: 'Choose the correct word for a place to study.', answers: ['SCHOOL', 'RIVER', 'CLOUD', 'CHAIR', 'SUN'], correct: 'SCHOOL' },
         { prompt: 'Choose the correct word for a drink.', answers: ['WATER', 'HOUSE', 'TRAIN', 'FRIEND', 'TREE'], correct: 'WATER' },
         { prompt: 'Choose the correct fruit word.', answers: ['APPLE', 'BOOK', 'DOOR', 'BIRD', 'RAIN'], correct: 'APPLE' },
+        { prompt: 'Choose the word that means “a place to live”.', answers: ['HOUSE', 'CHERRY', 'CLOUD', 'SMILE', 'MUSIC'], correct: 'HOUSE' },
+        { prompt: 'Choose the correct word for a warm feeling.', answers: ['HAPPY', 'SILENT', 'ROCKET', 'METAL', 'MIRROR'], correct: 'HAPPY' },
+        { prompt: 'Select the word that matches “to travel”.', answers: ['TRAVEL', 'SANDWICH', 'PLANET', 'TUNNEL', 'BREEZE'], correct: 'TRAVEL' },
+        { prompt: 'Find the correct word for a group of people learning together.', answers: ['CLASS', 'RIDDLE', 'SHADOW', 'RIVER', 'BRIDGE'], correct: 'CLASS' },
     ],
     hi: [
         { prompt: 'सही अभिवादन शब्द चुनें।', answers: ['नमस्ते', 'खिड़की', 'मेज़', 'सुबह', 'किताब'], correct: 'नमस्ते' },
@@ -603,6 +607,10 @@ const FLIP_MATCH_QUESTION_BANK = {
         { prompt: 'पढ़ने की जगह का सही शब्द चुनें।', answers: ['स्कूल', 'नदी', 'बादल', 'कुर्सी', 'सूर्य'], correct: 'स्कूल' },
         { prompt: 'पेय का सही शब्द चुनें।', answers: ['पानी', 'घर', 'रेल', 'दोस्त', 'पेड़'], correct: 'पानी' },
         { prompt: 'फल का सही शब्द चुनें।', answers: ['सेब', 'किताब', 'दरवाज़ा', 'पक्षी', 'बारिश'], correct: 'सेब' },
+        { prompt: '“रहने की जगह” से सही शब्द चुनें।', answers: ['घर', 'आम', 'बादल', 'हँसी', 'संगीत'], correct: 'घर' },
+        { prompt: 'सही शब्द चुनें जो “सुखद महसूस” बताता है।', answers: ['खुश', 'शांत', 'रॉकेट', 'धातु', 'दर्पण'], correct: 'खुश' },
+        { prompt: '“यात्रा” से मेल खाने वाला शब्द चुनें।', answers: ['यात्रा', 'सैंडविच', 'ग्रह', 'सुरंग', 'हवा'], correct: 'यात्रा' },
+        { prompt: 'एक साथ सीखने वालों के समूह का सही शब्द चुनें।', answers: ['कक्षा', 'पहेली', 'छाया', 'नदी', 'पुल'], correct: 'कक्षा' },
     ],
     kn: [
         { prompt: 'ಸರಿಯಾದ ಸ್ವಾಗತ ಪದವನ್ನು ಆಯ್ಕೆಮಾಡಿ.', answers: ['ಹಲೋ', 'ಕಿಟಕಿ', 'ಮಂಚ', 'ಬೆಳಗ್ಗೆ', 'ಪುಸ್ತಕ'], correct: 'ಹಲೋ' },
@@ -610,6 +618,10 @@ const FLIP_MATCH_QUESTION_BANK = {
         { prompt: 'ಸಮೀಕ್ಷಿತ ಸ್ಥಳದ ಸರಿಯಾದ ಪದವನ್ನು ಆಯ್ಕೆಮಾಡಿ.', answers: ['ಪಾಠಶಾಲೆ', 'ನದಿ', 'ಮೋಡ', 'ಕುರ್ಚಿ', 'ಸೂರ್ಯ'], correct: 'ಪಾಠಶಾಲೆ' },
         { prompt: 'ಪಾನೀಯದ ಸರಿಯಾದ ಪದವನ್ನು ಆಯ್ಕೆಮಾಡಿ.', answers: ['ನೀರು', 'ಮನೆ', 'ರೈಲು', 'ಮಿತ್ರ', 'ಮರ'], correct: 'ನೀರು' },
         { prompt: 'ಹಣ್ಣಿನ ಸರಿಯಾದ ಪದವನ್ನು ಆಯ್ಕೆಮಾಡಿ.', answers: ['ಆಪಲ್', 'ಪುಸ್ತಕ', 'ಕದ', 'ಪಕ್ಷಿ', 'ಮಳೆ'], correct: 'ಆಪಲ್' },
+        { prompt: '“ವಾಸಸ್ಥಾನ”ಕ್ಕೆ ಸರಿಯಾದ ಪದವನ್ನು ಆರಿಸಿ.', answers: ['ಮನೆ', 'ಚೆರ್ರಿ', 'ಮೋಡ', 'ನಗು', 'ಸಂಗೀತ'], correct: 'ಮನೆ' },
+        { prompt: '“ಸಂತೋಷದ ಸಂಜ್ಞೆ”ಯ ಸರಿಯಾದ ಪದವನ್ನು ಆರಿಸಿ.', answers: ['ಸಂತೋಷ', 'ಮೌನ', 'ರಾಕೆಟ್', 'ಲೋಹ', 'ಕನ್ನಡಿ'], correct: 'ಸಂತೋಷ' },
+        { prompt: '“ಪ್ರಯಾಣ”ಕ್ಕೆ ಹೊಂದುವ ಪದವನ್ನು ಆರಿಸಿ.', answers: ['ಪ್ರಯಾಣ', 'ಸ್ಯಾಂಡ್ವಿಚ್', 'ಗ್ರಹ', 'ಸುಮಾರು', 'ಗಾಳಿ'], correct: 'ಪ್ರಯಾಣ' },
+        { prompt: 'ಒಟ್ಟಿಗೆ ಕಲಿಯುವ ಜನರಿಗೆ ಸರಿಯಾದ ಪದವನ್ನು ಆರಿಸಿ.', answers: ['ಕ್ಲಾಸ್', 'ರಿಡಲ್', 'ನೆರಳು', 'ನದಿ', 'ಸೇತುವೆ'], correct: 'ಕ್ಲಾಸ್' },
     ],
     ta: [
         { prompt: 'சரியான வரவேற்பு சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['வணக்கம்', 'ஜன்னல்', 'மேஜை', 'காலை', 'புத்தகம்'], correct: 'வணக்கம்' },
@@ -617,6 +629,10 @@ const FLIP_MATCH_QUESTION_BANK = {
         { prompt: 'கற்றல் இடத்திற்கான சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['பள்ளி', 'ஆறு', 'முகில்', 'கோல்', 'சூரியன்'], correct: 'பள்ளி' },
         { prompt: 'பானத்திற்கான சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['நீர்', 'வீடு', 'ரயில்', 'நண்பர்', 'மரம்'], correct: 'நீர்' },
         { prompt: 'பழத்திற்கான சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['ஆப்பிள்', 'புத்தகம்', 'கதவு', 'பறவை', 'மழை'], correct: 'ஆப்பிள்' },
+        { prompt: '“வாழும் இடம்” என்பதற்கு சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['வீடு', 'செம்பு', 'முகில்', 'சிரிப்பு', 'இசை'], correct: 'வீடு' },
+        { prompt: '“மகிழ்ச்சி” தரும் சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['மகிழ்ச்சி', 'மௌனம்', 'ரோசெட்', 'உலோகம்', 'அரங்கம்'], correct: 'மகிழ்ச்சி' },
+        { prompt: '“பயணம்” உடன் பொருந்தும் சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['பயணம்', 'சாண்ட்விச்', 'கோள்', 'சுரங்கம்', 'காற்று'], correct: 'பயணம்' },
+        { prompt: 'ஒரே நேரத்தில் கற்கும் குழுவிற்கான சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['வகுப்பு', 'விளக்கு', 'நிழல்', 'ஆறு', 'பாலம்'], correct: 'வகுப்பு' },
     ],
     te: [
         { prompt: 'సరైన స్వాగత పదాన్ని ఎంచుకోండి.', answers: ['హలో', 'కిటికీ', 'మెజ్జ', 'ఉదయం', 'పుస్తకం'], correct: 'హలో' },
@@ -624,6 +640,10 @@ const FLIP_MATCH_QUESTION_BANK = {
         { prompt: 'చదువుకునే ప్రదేశానికి సరైన పదాన్ని ఎంచుకోండి.', answers: ['పాఠశాల', 'నది', 'మేఘం', 'కుర్చీ', 'సూర్యుడు'], correct: 'పాఠశాల' },
         { prompt: 'పానీయానికి సరైన పదాన్ని ఎంచుకోండి.', answers: ['నీరు', 'ఇల్లు', 'రైలు', 'స్నేహితుడు', 'చెట్టు'], correct: 'నీరు' },
         { prompt: 'పండుకు సరైన పదాన్ని ఎంచుకోండి.', answers: ['ఆపిల్', 'పుస్తకం', 'ద్వారం', 'పక్షి', 'వర్షం'], correct: 'ఆపిల్' },
+        { prompt: '“చేరే స్థలం”కు సరైన పదాన్ని ఎంచుకోండి.', answers: ['ఇల్లు', 'చెర్రీ', 'మేఘం', 'నవ్వు', 'సంగీతం'], correct: 'ఇల్లు' },
+        { prompt: '“సంతోషం” సూచించే సరైన పదాన్ని ఎంచుకోండి.', answers: ['సంతోషం', 'నిశ్శబ్దం', 'రాకెట్', 'లోహం', 'మిర్రర్'], correct: 'సంతోషం' },
+        { prompt: '“ప్రయాణం”కి సరిపోయే పదాన్ని ఎంచుకోండి.', answers: ['ప్రయాణం', 'సాండ్‌విచ్', 'గ్రహం', 'సొరంగం', 'గాలి'], correct: 'ప్రయాణం' },
+        { prompt: 'ఒకే సమయంలో నేర్చుకునే సమూహానికి సరైన పదాన్ని ఎంచుకోండి.', answers: ['క్లాస్', 'రహస్యం', 'నెమ్మదింపు', 'నది', 'వంతెన'], correct: 'క్లాస్' },
     ],
 }
 
@@ -634,10 +654,11 @@ function shuffleGameOptions(items) {
 const getFlipMatchTrainingSet = (languageCode) => {
     const languageQuestions = FLIP_MATCH_QUESTION_BANK[languageCode] || FLIP_MATCH_QUESTION_BANK.en
     return languageQuestions.map((question) => {
-        const safeAnswers = [...new Set((question.answers || []).slice(0, 6))]
+        const safeAnswers = [...new Set((question.answers || []).map((answer) => String(answer).trim()).filter(Boolean))]
+        const harderPool = safeAnswers.filter((answer) => answer.length >= 4)
         return {
             ...question,
-            answers: shuffleGameOptions(safeAnswers),
+            answers: shuffleGameOptions((harderPool.length ? harderPool : safeAnswers).slice(0, 5)),
         }
     })
 }
@@ -1522,9 +1543,12 @@ export default function GamesPage() {
             return
         }
 
-        const questionChoices = [...new Set((selectedGame.questions?.[questionIndex % selectedGame.questions.length]?.answers || []).slice(0, 6))]
-        const flipPairs = questionChoices.flatMap((choice, answerIndex) => {
-            const choiceKey = choice.toUpperCase()
+        const currentQuestion = selectedGame.questions?.[questionIndex % selectedGame.questions.length]
+        const questionChoices = [...new Set((currentQuestion?.answers || []).map((answer) => String(answer).trim()).filter(Boolean))]
+        const hardPool = questionChoices.filter((choice) => choice.length >= 4)
+        const deckChoices = shuffleQuestions((hardPool.length ? hardPool : questionChoices).slice(0, 4))
+        const flipPairs = deckChoices.flatMap((choice, answerIndex) => {
+            const choiceKey = String(choice).toUpperCase()
             return [
                 { id: `${selectedGame.id}-${choiceKey}-a-${answerIndex}`, pairId: choiceKey, display: choice, face: 'word' },
                 { id: `${selectedGame.id}-${choiceKey}-b-${answerIndex}`, pairId: choiceKey, display: choice, face: 'word-alt' },
@@ -1875,7 +1899,10 @@ export default function GamesPage() {
                     </div>
                 ) : selectedGame.type === 'flip-card' ? (
                     <div className="special-game-panel flip-card-panel">
-                        <p className="special-game-label">{question.prompt}</p>
+                        <div className="flip-card-header">
+                            <p className="special-game-label">Flip Card Challenge</p>
+                            <h3>{question.prompt}</h3>
+                        </div>
                         <div className="flip-match-grid">
                             {flipCardDeck.map((card) => {
                                 const isVisible = selectedFlipCards.includes(card.id) || matchedFlipCards.includes(card.id)
@@ -1885,6 +1912,7 @@ export default function GamesPage() {
                                         type="button"
                                         className={`flip-match-card ${isVisible ? 'flipped' : ''} ${matchedFlipCards.includes(card.id) ? 'matched' : ''}`}
                                         onClick={() => flipCardChoice(card.id)}
+                                        aria-label={`Flip card ${card.display}`}
                                     >
                                         <span className="flip-match-inner">
                                             <span className="flip-match-face flip-match-front">?</span>
