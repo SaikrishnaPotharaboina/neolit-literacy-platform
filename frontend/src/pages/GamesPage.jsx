@@ -589,6 +589,60 @@ const VISUAL_GAMES_BY_LANGUAGE = {
     ],
 }
 
+const WORD_ARCHER_GAME_BY_LANGUAGE = {
+    en: {
+        id: 'archer', icon: '🏹', title: 'Word Archer', description: 'Aim at the correct vocabulary target.', type: 'archer',
+        questions: [
+            { prompt: 'Which word means "to examine carefully"?', answers: ['Analyze', 'Gather', 'Breathe', 'Ignore'], correct: 'Analyze' },
+            { prompt: 'Select the word for "a sudden feeling of fear".', answers: ['Panic', 'Lantern', 'Pillow', 'Ribbon'], correct: 'Panic' },
+            { prompt: 'What does "fragile" mean?', answers: ['Easily broken', 'Very loud', 'Extremely slow', 'Completely empty'], correct: 'Easily broken' },
+            { prompt: 'Choose the word that means "a long journey".', answers: ['Expedition', 'Cabin', 'Shadow', 'Thread'], correct: 'Expedition' },
+            { prompt: 'Which option best matches "to postpone"?', answers: ['Delay', 'Arrange', 'Accept', 'Measure'], correct: 'Delay' },
+            { prompt: 'Find the word for "a place where books are kept".', answers: ['Library', 'Market', 'Harbor', 'Factory'], correct: 'Library' },
+        ],
+    },
+    hi: {
+        id: 'archer', icon: '🏹', title: 'वर्ड आर्चर', description: 'सही शब्द पर निशाना लगाएँ।', type: 'archer',
+        questions: [
+            { prompt: '"casa" का अर्थ क्या है?', answers: ['घर', 'पानी', 'किताब', 'भोजन'], correct: 'घर' },
+            { prompt: '"agua" का अर्थ क्या है?', answers: ['पानी', 'घर', 'नदी', 'पेड़'], correct: 'पानी' },
+            { prompt: '"school" का सही शब्द चुनें।', answers: ['स्कूल', 'सड़क', 'बादल', 'कुर्सी'], correct: 'स्कूल' },
+            { prompt: '"friend" का सही शब्द चुनें।', answers: ['दोस्त', 'दरवाज़ा', 'चाँद', 'रोटी'], correct: 'दोस्त' },
+            { prompt: '"apple" का सही शब्द चुनें।', answers: ['सेब', 'पत्थर', 'खिड़की', 'सूर्य'], correct: 'सेब' },
+        ],
+    },
+    kn: {
+        id: 'archer', icon: '🏹', title: 'ವರ್ಡ್ ಆರ್ಚರ್', description: 'ಸರಿಯಾದ ಪದದ ಮೇಲೆ ಬಾಣ ಹೂಡಿ.', type: 'archer',
+        questions: [
+            { prompt: '"casa" ಎಂಬುದು ಎಂದರೇನು?', answers: ['ಮನೆ', 'ನೀರು', 'ಪುಸ್ತಕ', 'ಆಹಾರ'], correct: 'ಮನೆ' },
+            { prompt: '"agua" ಎಂಬುದು ಎಂದರೇನು?', answers: ['ನೀರು', 'ಮನೆ', 'ನದಿ', 'ಮರ'], correct: 'ನೀರು' },
+            { prompt: '"school" ಗಾಗಿ ಸರಿಯಾದ ಪದ ಆಯ್ಕೆಮಾಡಿ.', answers: ['ಪಾಠಶಾಲೆ', 'ರಸ್ತೆ', 'ಮೋಡ', 'ಕುರ್ಚಿ'], correct: 'ಪಾಠಶಾಲೆ' },
+            { prompt: '"friend" ಗಾಗಿ ಸರಿಯಾದ ಪದ ಆಯ್ಕೆಮಾಡಿ.', answers: ['ಮಿತ್ರ', 'ಕದ', 'ಚಂದ್ರ', 'ರೊಟ್ಟಿ'], correct: 'ಮित्र' },
+            { prompt: '"apple" ಗಾಗಿ ಸರಿಯಾದ ಪದ ಆಯ್ಕೆಮಾಡಿ.', answers: ['ಆಪಲ್', 'ಕಲ್ಲು', 'ಕಿಟಕಿ', 'ಸೂರ್ಯ'], correct: 'ಆಪಲ್' },
+        ],
+    },
+    ta: {
+        id: 'archer', icon: '🏹', title: 'வேர்ட் ஆர்ச்சர்', description: 'சரியான சொற்களுக்கு அம்பு எய்யுங்கள்.', type: 'archer',
+        questions: [
+            { prompt: '"casa" என்பதன் அர்த்தம் என்ன?', answers: ['வீடு', 'தண்ணீர்', 'புத்தகம்', 'சாப்பாடு'], correct: 'வீடு' },
+            { prompt: '"agua" என்பதன் அர்த்தம் என்ன?', answers: ['தண்ணீர்', 'வீடு', 'ஆறு', 'மரம்'], correct: 'தண்ணீர்' },
+            { prompt: '"school"-க்கு சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['பள்ளி', 'தெரு', 'முகில்', 'கார்'], correct: 'பள்ளி' },
+            { prompt: '"friend"-க்கு சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['நண்பர்', 'கதவு', 'சந்திரன்', 'ரொட்டி'], correct: 'நண்பர்' },
+            { prompt: '"apple"-க்கு சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['ஆப்பிள்', 'கல்', 'ஜன்னல்', 'சூரியன்'], correct: 'ஆப்பிள்' },
+        ],
+    },
+    te: {
+        id: 'archer', icon: '🏹', title: 'వర్డ్ ఆర్చర్', description: 'సరైన పదంపై బాణం ఎక్కించండి.', type: 'archer',
+        questions: [
+            { prompt: '"casa" అర్థం ఏమిటి?', answers: ['ఇల్లు', 'నీరు', 'పుస్తకం', 'ఆహారం'], correct: 'ఇల్లు' },
+            { prompt: '"agua" అర్థం ఏమిటి?', answers: ['నీరు', 'ఇల్లు', 'నది', 'చెట్టు'], correct: 'నీరు' },
+            { prompt: '"school" కోసం సరైన పదాన్ని ఎంచుకోండి.', answers: ['పాఠశాల', 'వీధి', 'మేఘం', 'కుర్చీ'], correct: 'పాఠశాల' },
+            { prompt: '"friend" కోసం సరైన పదాన్ని ఎంచుకోండి.', answers: ['స్నేహితుడు', 'తలుపు', 'చంద్రుడు', 'రొట్టె'], correct: 'స్నేహితుడు' },
+            { prompt: '"apple" కోసం సరైన పదాన్ని ఎంచుకోండి.', answers: ['ఆపిల్', 'రాయి', 'కిటికీ', 'సూర్యుడు'], correct: 'ఆపిల్' },
+        ],
+    },
+}
+
 const FLIP_MATCH_QUESTION_BANK = {
     en: [
         { prompt: 'Choose the correct greeting word.', answers: ['HELLO', 'WINDOW', 'TABLE', 'MORNING', 'BOOK'], correct: 'HELLO' },
@@ -930,6 +984,7 @@ const REMOVED_GAME_IDS = new Set(['listening', 'mystery-word', 'runner'])
 const getGameLibraryWithListening = (languageCode) => [
     ...(UNIVERSAL_GAMES_BY_LANGUAGE[languageCode] || UNIVERSAL_GAMES_BY_LANGUAGE.en),
     ...(VISUAL_GAMES_BY_LANGUAGE[languageCode] || VISUAL_GAMES_BY_LANGUAGE.en),
+    ...(WORD_ARCHER_GAME_BY_LANGUAGE[languageCode] ? [WORD_ARCHER_GAME_BY_LANGUAGE[languageCode]] : []),
     LISTENING_GAME_BY_LANGUAGE[languageCode] || LISTENING_GAME_BY_LANGUAGE.en,
 ].filter(Boolean)
     .filter((game) => !REMOVED_GAME_IDS.has(game.id))
@@ -1189,6 +1244,7 @@ export default function GamesPage() {
     const [shooterAimY, setShooterAimY] = useState(55)
     const [shotFlash, setShotFlash] = useState(false)
     const [shotTarget, setShotTarget] = useState(null)
+    const [archerShot, setArcherShot] = useState(null)
     const [shooterAmmo, setShooterAmmo] = useState(6)
     const [shooterStreak, setShooterStreak] = useState(0)
     const [shooterMisses, setShooterMisses] = useState(0)
@@ -1254,6 +1310,7 @@ export default function GamesPage() {
         setShooterAimY(55)
         setShotFlash(false)
         setShotTarget(null)
+        setArcherShot(null)
     }, [selectedGame, gameTimeLimit])
 
     useEffect(() => {
@@ -1427,6 +1484,12 @@ export default function GamesPage() {
 
         const isCorrect = choice === question.correct
         setAnswer(choice)
+        if (selectedGame.type === 'archer') {
+            const targetX = isCorrect ? 50 : 18 + Math.random() * 64
+            const targetY = isCorrect ? 52 : 18 + Math.random() * 56
+            setArcherShot({ x: targetX, y: targetY, correct: isCorrect })
+            window.setTimeout(() => setArcherShot(null), 900)
+        }
         learningApi.recordGameActivity({
             game_id: selectedGame.id,
             score: isCorrect ? difficultySettings.points : 0,
@@ -1711,7 +1774,38 @@ export default function GamesPage() {
                 </div>
                 {selectedGame.type !== 'memory' && <h2>{question.prompt}</h2>}
 
-                {selectedGame.type === 'dragon' ? (
+                {selectedGame.type === 'archer' ? (
+                    <div className="special-game-panel archer-stage">
+                        <div className="archer-target-board" aria-label="Archer target board">
+                            <span className="archer-ring archer-ring-outer" />
+                            <span className="archer-ring archer-ring-mid" />
+                            <span className="archer-ring archer-ring-inner" />
+                            <span className="archer-bullseye">★</span>
+                            {archerShot && (
+                                <span
+                                    className={`archer-hit ${archerShot.correct ? 'correct' : 'wrong'}`}
+                                    style={{ left: `${archerShot.x}%`, top: `${archerShot.y}%` }}
+                                    aria-label={archerShot.correct ? 'Correct shot hit the target' : 'Wrong shot missed the target'}
+                                >
+                                    ➤
+                                </span>
+                            )}
+                        </div>
+                        <p className="special-game-label">Aim at the correct target</p>
+                        <div className="game-answer-grid archer-grid">
+                            {question.answers.map((choice) => (
+                                <button
+                                    key={choice}
+                                    type="button"
+                                    className={`archer-target ${answer === choice ? (choice === question.correct ? 'correct' : 'wrong') : ''}`}
+                                    onClick={() => chooseAnswer(choice)}
+                                >
+                                    {choice}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                ) : selectedGame.type === 'dragon' ? (
                     <div className="dragon-game-stage">
                         <div className="dragon-game-scene village-scene">
                             <span className="dragon-cloud dragon-cloud-one" />
