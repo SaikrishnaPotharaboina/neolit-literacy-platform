@@ -5539,8 +5539,29 @@
 }
 
 .flip-match-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 14px;
+}
+
+.flip-card-panel {
+    gap: 16px;
+}
+
+.flip-card-header {
+    display: grid;
+    gap: 8px;
+    padding: 16px 18px;
+    border: 1px solid rgba(127, 238, 192, 0.16);
+    border-radius: 16px;
+    background: rgba(13, 27, 31, 0.72);
+}
+
+.flip-card-header h3 {
+    margin: 0;
+    color: #f1fbf6;
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    line-height: 1.5;
+    text-align: center;
 }
 
 .flip-match-card {
@@ -5551,6 +5572,12 @@
     background: transparent;
     perspective: 1000px;
     cursor: pointer;
+    transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+.flip-match-card:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.04);
 }
 
 .flip-match-inner {
@@ -5579,20 +5606,23 @@
     border: 1px solid rgba(127, 238, 192, 0.2);
     font-weight: 900;
     font-size: 1.5rem;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+    user-select: none;
 }
 
 .flip-match-front {
-    background: linear-gradient(135deg, rgba(83, 121, 128, 0.8), rgba(41, 86, 90, 0.9));
+    background: linear-gradient(135deg, rgba(83, 121, 128, 0.82), rgba(41, 86, 90, 0.94));
     color: #f2fbf6;
-    font-size: 2rem;
+    font-size: 2.1rem;
 }
 
 .flip-match-back {
     transform: rotateY(180deg);
-    background: linear-gradient(135deg, rgba(127, 238, 192, 0.18), rgba(32, 166, 120, 0.32));
+    background: linear-gradient(135deg, rgba(127, 238, 192, 0.22), rgba(32, 166, 120, 0.36));
     color: #f3fffb;
-    font-size: clamp(1.5rem, 2vw, 2.2rem);
+    font-size: clamp(1.15rem, 2vw, 2rem);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
 }
 
 .flip-match-card.matched .flip-match-face {
