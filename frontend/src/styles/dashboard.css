@@ -5445,7 +5445,8 @@
 .game-orb-grid,
 .memory-grid,
 .speed-grid,
-.sentence-word-grid {
+.sentence-word-grid,
+.flip-match-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
@@ -5535,6 +5536,68 @@
 .game-answer-grid button.wrong {
     border-color: rgba(239, 99, 99, 0.35);
     background: rgba(239, 99, 99, 0.06);
+}
+
+.flip-match-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.flip-match-card {
+    width: 100%;
+    min-height: 118px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.flip-match-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 118px;
+    display: block;
+    transform-style: preserve-3d;
+    transition: transform 0.55s ease;
+}
+
+.flip-match-card.flipped .flip-match-inner,
+.flip-match-card.matched .flip-match-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-match-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    border-radius: 18px;
+    border: 1px solid rgba(127, 238, 192, 0.2);
+    font-weight: 900;
+    font-size: 1.5rem;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+}
+
+.flip-match-front {
+    background: linear-gradient(135deg, rgba(83, 121, 128, 0.8), rgba(41, 86, 90, 0.9));
+    color: #f2fbf6;
+    font-size: 2rem;
+}
+
+.flip-match-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(135deg, rgba(127, 238, 192, 0.18), rgba(32, 166, 120, 0.32));
+    color: #f3fffb;
+    font-size: clamp(1.5rem, 2vw, 2.2rem);
+}
+
+.flip-match-card.matched .flip-match-face {
+    border-color: rgba(110, 239, 177, 0.6);
+    box-shadow: 0 12px 28px rgba(39, 197, 155, 0.2);
 }
 
 .special-game-panel {
