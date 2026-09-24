@@ -304,9 +304,9 @@ export default function DashboardPage() {
     const nativeLanguageName = localStorage.getItem('neolit_native_language') || profile?.native_language || user?.native_language || 'English'
     const nativeLanguageCode = nativeLanguageCodes[nativeLanguageName] || 'en'
     const uiCopy = dashboardUiCopy[nativeLanguageCode] || dashboardUiCopy.en
-    const activeStageCopy = lessonStageCopy[nativeLanguageCode]?.[selectedLesson] || lessonStageCopy.en[selectedLesson] || 'Talk about food'
-    const selectedLessonTitle = lessonTitles[nativeLanguageCode] || lessonTitles.en
-    const selectedUnits = courseUnits[nativeLanguageCode] || courseUnits.en
+    const activeStageCopy = lessonStageCopy[selectedLanguageCode]?.[selectedLesson] || lessonStageCopy.en[selectedLesson] || 'Talk about food'
+    const selectedLessonTitle = lessonTitles[selectedLanguageCode] || lessonTitles.en
+    const selectedUnits = courseUnits[selectedLanguageCode] || courseUnits.en
     const totalUnitsPerSection = 4
     const sectionNumber = Math.ceil(activeUnit / totalUnitsPerSection)
     const sectionStartIndex = (sectionNumber - 1) * totalUnitsPerSection
@@ -326,8 +326,8 @@ export default function DashboardPage() {
     const dailyGoalProgress = Math.min(100, (dailyLessons / dailyGoalTarget) * 100)
     const areAllLessonsCompleted = (unitNumber) => (completedPathLessons[`${selectedLanguageCode}-${unitNumber}`] || []).length === unitLessonLabels.length
     const isUnitUnlocked = (unitNumber) => unitNumber === 1 || areAllLessonsCompleted(unitNumber - 1)
-    const selectedLetters = letterLessons[nativeLanguageCode] || letterLessons.en
-    const unitLessonLabels = unitLessonLabelsByLanguage[nativeLanguageCode] || unitLessonLabelsByLanguage.en
+    const selectedLetters = letterLessons[selectedLanguageCode] || letterLessons.en
+    const unitLessonLabels = unitLessonLabelsByLanguage[selectedLanguageCode] || unitLessonLabelsByLanguage.en
     const letterItems = useMemo(
         () => [...selectedLetters.vowels, ...selectedLetters.consonants],
         [selectedLetters]
