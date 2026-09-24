@@ -904,24 +904,28 @@ const localizeGameQuestion = (question, game, languageCode) => {
     }
 }
 
+const REMOVED_GAME_IDS = new Set(['listening', 'mystery-word', 'runner'])
+
 const getGameLibraryWithListening = (languageCode) => [
     ...(UNIVERSAL_GAMES_BY_LANGUAGE[languageCode] || UNIVERSAL_GAMES_BY_LANGUAGE.en),
     ...(VISUAL_GAMES_BY_LANGUAGE[languageCode] || VISUAL_GAMES_BY_LANGUAGE.en),
     LISTENING_GAME_BY_LANGUAGE[languageCode] || LISTENING_GAME_BY_LANGUAGE.en,
-].map((game) => ({
-    ...game,
-    questions: game.questions.map((question) => {
-        const localizedQuestion = localizeGameQuestion(question, game, languageCode)
-        return {
-            ...localizedQuestion,
-            answers: localizedQuestion.answers ? shuffleGameOptions(localizedQuestion.answers) : localizedQuestion.answers,
-            letters: localizedQuestion.letters ? shuffleBuilderLetters(localizedQuestion.letters, localizedQuestion.correct) : localizedQuestion.letters,
-        }
-    }),
-}))
+].filter(Boolean)
+    .filter((game) => !REMOVED_GAME_IDS.has(game.id))
+    .map((game) => ({
+        ...game,
+        questions: game.questions.map((question) => {
+            const localizedQuestion = localizeGameQuestion(question, game, languageCode)
+            return {
+                ...localizedQuestion,
+                answers: localizedQuestion.answers ? shuffleGameOptions(localizedQuestion.answers) : localizedQuestion.answers,
+                letters: localizedQuestion.letters ? shuffleBuilderLetters(localizedQuestion.letters, localizedQuestion.correct) : localizedQuestion.letters,
+            }
+        }),
+    }))
 const shuffleQuestions = (items) => [...items].sort(() => Math.random() - 0.5)
 const createQuestionRound = (items) => shuffleQuestions(items).slice(0, Math.min(5, items.length))
-const PERSISTED_ROUND_GAME_IDS = new Set(['word-builder', 'mystery-word', 'word-hunt', 'flip-card'])
+const PERSISTED_ROUND_GAME_IDS = new Set(['word-builder', 'word-hunt', 'flip-card'])
 
 const getRoundStorageKey = (gameId) => `neolit_${gameId}_current_round`
 
