@@ -7,6 +7,15 @@ const highlights = [
     { icon: '03', title: 'Make it yours', text: 'Choose your learning language and follow your own progress.' },
 ]
 
+const productAreas = [
+    { number: '01', label: 'Learning path', title: 'A clear route forward', text: 'Move through units and lessons with a path that keeps your next step obvious.', tone: 'mint' },
+    { number: '02', label: 'Lessons', title: 'Practice that sticks', text: 'Read, listen, write, and speak through short activities built around useful words.', tone: 'blue' },
+    { number: '03', label: 'Letters', title: 'Start with the script', text: 'Explore vowels, consonants, pronunciation, and example words in your chosen language.', tone: 'gold' },
+    { number: '04', label: 'Games', title: 'Learn through play', text: 'Use Word Builder, Word Hunt, Flip Cards, Archer, and more to test your skills.', tone: 'rose' },
+    { number: '05', label: 'Progress', title: 'See your momentum', text: 'Track XP, streaks, scores, completed lessons, and personal improvement.', tone: 'violet' },
+    { number: '06', label: 'Your profile', title: 'Make it personal', text: 'Choose your native language, learning course, level, and practice rhythm.', tone: 'teal' },
+]
+
 export default function LandingPage() {
     return (
         <main className="landing-page">
@@ -47,6 +56,30 @@ export default function LandingPage() {
                         <div><h2>{highlight.title}</h2><p>{highlight.text}</p></div>
                     </article>
                 ))}
+            </section>
+
+            <section className="landing-product" aria-labelledby="landing-product-title">
+                <div className="landing-section-heading">
+                    <p className="landing-eyebrow">Everything in one place</p>
+                    <h2 id="landing-product-title">Your complete language<br /><em>learning space.</em></h2>
+                    <p>From your first letter to your next high score, NeoLit brings the whole journey together.</p>
+                </div>
+                <div className="landing-product-grid">
+                    {productAreas.map((area) => (
+                        <article key={area.number} className={`landing-product-card ${area.tone}`}>
+                            <span className="landing-product-number">{area.number}</span>
+                            <p>{area.label}</p>
+                            <h3>{area.title}</h3>
+                            <span>{area.text}</span>
+                        </article>
+                    ))}
+                </div>
+            </section>
+
+            <section className="landing-stats" aria-label="NeoLit learning promise">
+                <div><strong>5</strong><span>learning languages</span></div>
+                <div><strong>6+</strong><span>ways to practice</span></div>
+                <div><strong>1</strong><span>place for your journey</span></div>
             </section>
 
             <footer className="landing-footer">
