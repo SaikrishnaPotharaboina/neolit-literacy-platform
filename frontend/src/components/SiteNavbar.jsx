@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/useAuth'
 import { learningApi } from '../services/learningApi'
+import InstallApp from './InstallApp'
 
 const navigation = [
     { label: 'Home', to: '/learning-path' },
@@ -129,6 +130,7 @@ export default function SiteNavbar() {
                 ))}
             </nav>
             <div className="site-navbar-actions">
+                <InstallApp compact />
                 <div className="site-language-pair">
                     <div className="site-native-switcher">
                         <button type="button" className="site-language-card" onClick={() => setNativeMenuOpen((open) => !open)} aria-expanded={nativeMenuOpen}>

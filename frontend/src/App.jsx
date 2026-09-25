@@ -6,6 +6,7 @@ import SiteNavbar from './components/SiteNavbar'
 import SiteFooter from './components/SiteFooter'
 
 const LoginPage = lazy(() => import('./pages/LoginPage'))
+const LandingPage = lazy(() => import('./pages/LandingPage'))
 const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'))
 const RegisterPage = lazy(() => import('./pages/RegisterPage'))
 const DashboardPage = lazy(() => import('./pages/DashboardPage'))
@@ -84,9 +85,7 @@ function RootRedirect() {
         return <PageLoading />
     }
 
-    if (!user) {
-        return <Navigate to="/login" replace />
-    }
+    if (!user) return <LandingPage />
 
     return <Navigate to={user.role === 'admin' ? '/admin' : '/learning-path'} replace />
 }
