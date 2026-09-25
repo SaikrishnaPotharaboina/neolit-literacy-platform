@@ -334,7 +334,7 @@ export default function DashboardPage() {
     )
     const practicedLetters = Object.keys(letterProgress).length
     const quizItem = letterItems[quizIndex % letterItems.length]
-    const quizOptions = [quizItem, letterItems[(quizIndex + 3) % letterItems.length], letterItems[(quizIndex + 7) % letterItems.length]]
+    const quizOptions = Array.from({ length: 5 }, (_, optionIndex) => letterItems[(quizIndex + optionIndex * 3) % letterItems.length])
 
     const levelName = (levelId) => levels.find((level) => level.id === levelId)?.name || 'Beginner'
     const mockupCopy = {
@@ -636,7 +636,8 @@ export default function DashboardPage() {
                         <div className="quiz-options">
                             {quizOptions.map(([letter, word]) => (
                                 <button key={`${letter}-${word}`} type="button" className={quizAnswer === letter ? (letter === quizItem[0] ? 'correct' : 'wrong') : ''} onClick={() => { setQuizAnswer(letter); if (letter === quizItem[0]) setQuizScore((score) => score + 1) }}>
-                                    {letter}
+                                    <strong>{letter}</strong>
+                                    <small>{word}</small>
                                 </button>
                             ))}
                         </div>

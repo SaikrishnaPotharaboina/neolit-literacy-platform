@@ -2893,19 +2893,40 @@
 }
 
 .quiz-options {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(72px, 1fr));
     gap: 8px;
+    min-width: 170px;
 }
 
 .quiz-options button {
-    width: 58px;
-    height: 58px;
+    min-width: 78px;
+    min-height: 66px;
+    padding: 8px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
     border: 2px solid #2d5965;
     border-radius: 13px;
     background: #102a32;
     color: #edf8f8;
+    cursor: pointer;
+}
+
+.quiz-options button strong {
     font-size: 1.15rem;
     font-weight: 900;
+}
+
+.quiz-options button small {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: rgba(237, 248, 248, 0.68);
+    font-size: 0.68rem;
 }
 
 .quiz-options button.correct,
@@ -2927,6 +2948,39 @@
 }
 
 .quiz-next-button {
+    margin-top: 6px;
+}
+
+.builder-english-subtitle {
+    margin: 12px 0 0;
+    color: rgba(237, 248, 248, 0.66);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-align: center;
+}
+
+.game-english-subtitle,
+.game-english-options,
+.game-english-clue {
+    color: rgba(237, 248, 248, 0.62);
+    font-size: 0.82rem;
+}
+
+.game-english-subtitle {
+    margin: -10px auto 14px;
+    text-align: center;
+}
+
+.game-english-options {
+    margin: 14px auto 0;
+    max-width: 760px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.game-english-clue {
+    display: block;
     margin-top: 6px;
 }
 
@@ -6122,6 +6176,10 @@
 
 .game-feedback.wrong {
     color: #d45a5a;
+}
+
+.game-feedback.timeout {
+    color: #c99b3d;
 }
 
 @media (max-width: 760px) {

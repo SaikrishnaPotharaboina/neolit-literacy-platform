@@ -1,6 +1,303 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { learningApi } from '../services/learningApi'
-import { wordBuilderQuestions } from '../data/wordBuilderSets'
+import { wordBuilderQuestions, wordBuilderSets } from '../data/wordBuilderSets'
+import { buildLocalizedGameBank, getFreshQuestionSet } from '../features/games/gameData'
+
+const HINDI_WORD_BUILDER_TRANSLATIONS = {
+    APPLE: 'सेब',
+    WATER: 'पानी',
+    HELLO: 'नमस्ते',
+    SCHOOL: 'स्कूल',
+    BOOK: 'किताब',
+    FRIEND: 'दोस्त',
+    SUN: 'सूर्य',
+    ELEPHANT: 'हाथी',
+    LIBRARY: 'पुस्तकालय',
+    BREAKFAST: 'नाश्ता',
+    GREEN: 'हरा',
+    HOUSE: 'घर',
+    TRAIN: 'रेल',
+    TEACHER: 'शिक्षक',
+    MARKET: 'बाज़ार',
+    DAY: 'दिन',
+    SPRING: 'वसंत',
+    TABLE: 'मेज़',
+    BICYCLE: 'साइकिल',
+    ZOO: 'चिड़ियाघर',
+    COFFEE: 'कॉफ़ी',
+    BANANA: 'केला',
+    KITCHEN: 'रसोई',
+    STADIUM: 'स्टेडियम',
+    DRIVER: 'चालक',
+    SLOW: 'धीमा',
+    RIVER: 'नदी',
+    PENCIL: 'पेंसिल',
+    AIRPORT: 'हवाईअड्डा',
+    DINNER: 'रात्रिभोजन',
+    BLUE: 'नीला',
+    CAT: 'बिल्ली',
+    STATION: 'स्टेशन',
+    DOCTOR: 'डॉक्टर',
+    FULL: 'भरा',
+    MOON: 'चाँद',
+    GARDEN: 'बगीचा',
+    SHOES: 'जूते',
+    CINEMA: 'सिनेमा',
+    AIRPLANE: 'हवाईजहाज़',
+    TOMATO: 'टमाटर',
+    POOL: 'तैराकी ताल',
+    CHEF: 'शेफ़',
+    NEW: 'नया',
+    MOUNTAIN: 'पर्वत',
+    BAG: 'बैग',
+    BEDROOM: 'शयनकक्ष',
+    SATURDAY: 'शनिवार',
+    ARTIST: 'कलाकार',
+}
+
+const LOCALIZED_WORD_BUILDER_HINTS = {
+    hi: {
+        'a fruit': 'फल',
+        'a drink': 'पानी',
+        'a greeting': 'नमस्ते',
+        'a place to learn': 'सीखने की जगह',
+        'a reading object': 'पढ़ने की चीज़',
+        'a close person': 'करीबी व्यक्ति',
+        'a bright object in the sky': 'आसमान में चमकने वाली चीज़',
+        'a large animal': 'बड़ा जानवर',
+        'a place with many books': 'कई किताबों वाली जगह',
+        'a morning meal': 'सुबह का भोजन',
+        'a color like grass': 'घास जैसा रंग',
+        'a place to live': 'रहने की जगह',
+        'a means of travel': 'यात्रा का साधन',
+        'a person who teaches': 'शिक्षक',
+        'a place to buy food': 'खाना खरीदने की जगह',
+        'the opposite of night': 'रात का विपरीत',
+        'a season after winter': 'सर्दियों के बाद का मौसम',
+        'a piece of furniture': 'फर्नीचर का टुकड़ा',
+        'a vehicle with two wheels': 'दो पहियों वाला वाहन',
+        'a place to see animals': 'जानवर देखने की जगह',
+        'a hot drink': 'गर्म पेय',
+        'a yellow fruit': 'पीला फल',
+        'a room for cooking': 'खाना पकाने का कमरा',
+        'a place for sports': 'खेल का मैदान',
+        'a person who drives': 'चालक',
+        'the opposite of fast': 'तेज़ का विपरीत',
+        'a body of flowing water': 'बहते पानी का हिस्सा',
+        'a tool for writing': 'लिखने का औज़ार',
+        'a place for airplanes': 'हवाई जहाज़ों का स्थान',
+        'a meal in the evening': 'शाम का भोजन',
+        'a color like the sky': 'आसमान जैसा रंग',
+        'a small animal that says meow': 'म्याऊँ कहने वाला छोटा जानवर',
+        'a place to catch a train': 'ट्रेन पकड़ने की जगह',
+        'a person who helps sick people': 'बीमार लोगों की मदद करने वाला',
+        'the opposite of empty': 'खाली का विपरीत',
+        'a bright light in the night sky': 'रात में चमकने वाला प्रकाश',
+        'a place with trees': 'पेड़ों वाली जगह',
+        'something worn on the feet': 'पैरों में पहना जाने वाला',
+        'a building where films are shown': 'सिनेमा घर',
+        'a vehicle that flies': 'उड़ने वाला वाहन',
+        'a red fruit': 'लाल फल',
+        'a place for swimming': 'तैराकी की जगह',
+        'a person who cooks food': 'खाना पकाने वाला व्यक्ति',
+        'the opposite of old': 'पुराने का विपरीत',
+        'a place to borrow books': 'किताबें उधार लेने की जगह',
+        'a natural high landform': 'प्राकृतिक ऊँची स्थल आकृति',
+        'a container for carrying things': 'चीज़ें रखने का कंटेनर',
+        'a room where people sleep': 'जहाँ लोग सोते हैं',
+        'a day after Friday': 'शुक्रवार के बाद का दिन',
+        'a person who paints': 'चित्रकार',
+    },
+    kn: {
+        'a fruit': 'ಹಣ್ಣು',
+        'a drink': 'ಪಾನೀಯ',
+        'a greeting': 'ನಮಸ್ಕಾರ',
+        'a place to learn': 'ಕಲಿಯುವ ಸ್ಥಳ',
+        'a reading object': 'ಓದುವ ವಸ್ತು',
+        'a close person': 'ಹತ್ತಿರದ ವ್ಯಕ್ತಿ',
+        'a bright object in the sky': 'ಆಕಾಶದಲ್ಲಿ ಮೆರೆವ ವಸ್ತು',
+        'a large animal': 'ದೊಡ್ಡ ಪ್ರಾಣಿ',
+        'a place with many books': 'ಹಲವು ಪುಸ್ತಕಗಳನ್ನು ಹೊಂದಿರುವ ಸ್ಥಳ',
+        'a morning meal': 'ಬೆಳಗಿನ ತಿಂಡಿ',
+        'a color like grass': 'ಹಸಿರು ಬಣ್ಣ',
+        'a place to live': 'ವಾಸಿಸಲು ಸ್ಥಳ',
+        'a means of travel': 'ಪ್ರಯಾಣದ ಸಾಧನ',
+        'a person who teaches': 'ಶಿಕ್ಷಕ',
+        'a place to buy food': 'ಆಹಾರ ಕೊಂಡುಕೊಳ್ಳುವ ಸ್ಥಳ',
+        'the opposite of night': 'ರಾತ್ರಿಯ ವಿರುದ್ಧ',
+        'a season after winter': 'ಚಳಿಗಾಲದ ನಂತರದ ಕಾಲ',
+        'a piece of furniture': 'ಫರ್ನಿಚರ್ ತುಂಡು',
+        'a vehicle with two wheels': 'ಎರಡು ಚಕ್ರವಿರುವ ವಾಹನ',
+        'a place to see animals': 'ಪ್ರಾಣಿಗಳನ್ನು ನೋಡಲು ಸ್ಥಳ',
+        'a hot drink': 'ಬಿಸಿಯ ಪಾನೀಯ',
+        'a yellow fruit': 'ಮೆಲ್ಲಿನ ಹಣ್ಣು',
+        'a room for cooking': 'ಅಡುಗೆ room',
+        'a place for sports': 'ಕೆಲಸದ ಸ್ಥಳ',
+        'a person who drives': 'ಚಾಲಕ',
+        'the opposite of fast': 'ವೇಗದ ವಿರುದ್ಧ',
+        'a body of flowing water': 'ಹರಿಯುವ ನೀರಿನ ಜಾಗ',
+        'a tool for writing': 'ಬರೆಯಲು ಉಪಕರಣ',
+        'a place for airplanes': 'ವಿಮಾನಗಳ ಸ್ಥಳ',
+        'a meal in the evening': 'ಸಂಜೆಯ ഭക്ഷೆ',
+        'a color like the sky': 'ಆಕಾಶದ ಬಣ್ಣ',
+        'a small animal that says meow': 'ಮ್ಯಾವ್ ಎಂದು ಹೇಳುವ ಸಣ್ಣ ಪ್ರಾಣಿ',
+        'a place to catch a train': 'ರೈಲು ಹತ್ತಲು ಸ್ಥಳ',
+        'a person who helps sick people': 'ಅಸ್ವಸ್ಥ ವ್ಯಕ್ತಿಗಳಿಗೆ ಸಹಾಯ ಮಾಡುವ ವ್ಯಕ್ತಿ',
+        'the opposite of empty': 'ಖಾಲಿಯ ವಿರುದ್ಧ',
+        'a bright light in the night sky': 'ರಾತ್ರಿ ಆಕಾಶದಲ್ಲಿ ಪ್ರಕಾಶಿಸುವ ಬೆಳಕು',
+        'a place with trees': 'ಮರಗಳಿರುವ ಸ್ಥಳ',
+        'something worn on the feet': 'ಕಾಲುಗಳಿಗೆ ಧರಿಸುವ ವಸ್ತು',
+        'a building where films are shown': 'ಚಲನಚಿತ್ರಗಳನ್ನು ತೋರಿಸುವ ಕಟ್ಟಡ',
+        'a vehicle that flies': 'ಹಾರುವ ವಾಹನ',
+        'a red fruit': 'ಕೆಂಪು ಹಣ್ಣು',
+        'a place for swimming': 'ಈಜಲು ಸ್ಥಳ',
+        'a person who cooks food': 'ಆಹಾರದ ಪಾಕವಸ್ತು ತಯಾರಿಸುವ ವ್ಯಕ್ತಿ',
+        'the opposite of old': 'ಹಳೆಯದರ ವಿರುದ್ಧ',
+        'a place to borrow books': 'ಪುಸ್ತಕಗಳನ್ನು ಸಾಲವಾಗಿ ಪಡೆಯುವ ಸ್ಥಳ',
+        'a natural high landform': 'ಪ್ರಕೃತಿಯ ಉನ್ನತ ರೂಪ',
+        'a container for carrying things': 'ವಸ್ತುಗಳನ್ನು ಸಾಗಿಸುವ.container',
+        'a room where people sleep': 'ಜನರು ನಿದ್ರೆ ಮಾಡುವ room',
+        'a day after Friday': 'ಶುಕ್ರವಾರದ ನಂತರದ ದಿನ',
+        'a person who paints': 'ಚಿತ್ರಕಾರ',
+    },
+    ta: {
+        'a fruit': 'பழம்',
+        'a drink': 'பானம்',
+        'a greeting': 'வணக்கம்',
+        'a place to learn': 'கற்றுக்கொள்ளும் இடம்',
+        'a reading object': 'படிக்கும் பொருள்',
+        'a close person': 'நெருங்கியவர்',
+        'a bright object in the sky': 'வானத்தில் பிரகாசிக்கும் பொருள்',
+        'a large animal': 'பெரிய விலங்கு',
+        'a place with many books': 'பல புத்தகங்கள் உள்ள இடம்',
+        'a morning meal': 'காலை உணவு',
+        'a color like grass': 'புல்லைப் போன்ற நிறம்',
+        'a place to live': 'வசிக்கும் இடம்',
+        'a means of travel': 'பயணத்தின் வழி',
+        'a person who teaches': 'ஆசிரியர்',
+        'a place to buy food': 'உணவு வாங்கும் இடம்',
+        'the opposite of night': 'இரவின் எதிர்',
+        'a season after winter': 'குளிருக்கு பிறகு வரும் பருவம்',
+        'a piece of furniture': 'சமையலறை கருவி',
+        'a vehicle with two wheels': 'இரண்டு சக்கர வாகனம்',
+        'a place to see animals': 'விலங்குகளை பார்க்கும் இடம்',
+        'a hot drink': 'வெந்நீர்',
+        'a yellow fruit': 'மஞ்சள் பழம்',
+        'a room for cooking': 'சமைக்கும் அறை',
+        'a place for sports': 'விளையாட்டு இடம்',
+        'a person who drives': 'சாரதிய',
+        'the opposite of fast': 'வேகத்திற்கு எதிரானது',
+        'a body of flowing water': 'பாயும் நீரின் பகுதி',
+        'a tool for writing': 'எழுதும் கருவி',
+        'a place for airplanes': 'விமானங்களுக்கான இடம்',
+        'a meal in the evening': 'மாலைக்கான உணவு',
+        'a color like the sky': 'வானத்தைப் போன்ற நிறம்',
+        'a small animal that says meow': 'மியாவ் என்று சொல்லும் சிறிய விலங்கு',
+        'a place to catch a train': 'ரயிலைப் பிடிக்குமிடம்',
+        'a person who helps sick people': 'நோயாளிகளுக்கு உதவும் நபர்',
+        'the opposite of empty': 'காலியிடத்திற்கு எதிரானது',
+        'a bright light in the night sky': 'இரவின் வானத்தில் பிரகாசிக்கும் ஒளி',
+        'a place with trees': 'மரங்கள் உள்ள இடம்',
+        'something worn on the feet': 'காலில் அணியும் பொருள்',
+        'a building where films are shown': 'திரைப்படங்கள் காட்டப்படும் கட்டிடம்',
+        'a vehicle that flies': 'பறக்கும் வாகனம்',
+        'a red fruit': 'சிவப்பு பழம்',
+        'a place for swimming': 'நீந்தும் இடம்',
+        'a person who cooks food': 'உணவு சமைக்கும் நபர்',
+        'the opposite of old': 'பழமையின் எதிர்',
+        'a place to borrow books': 'புத்தகங்களை கடன் வாங்கும் இடம்',
+        'a natural high landform': 'இயற்கையான உயர்ந்த நிலப்பகுதி',
+        'a container for carrying things': 'பொருட்களை எடுத்துச் செல்லும் கொள்கலன்',
+        'a room where people sleep': 'மக்கள் தூங்கும் அறை',
+        'a day after Friday': 'வெள்ளிக்குப் பிறகு வரும் நாள்',
+        'a person who paints': 'சித்திரக் கலைஞர்',
+    },
+    te: {
+        'a fruit': 'పండు',
+        'a drink': 'పానం',
+        'a greeting': 'హలో',
+        'a place to learn': 'చదువుకునే స్థలం',
+        'a reading object': 'చదివే వస్తువు',
+        'a close person': 'చాలా దగ్గర వ్యక్తి',
+        'a bright object in the sky': 'ఆకాశంలో ప్రకాశించే వస్తువు',
+        'a large animal': 'పెద్ద జంతువు',
+        'a place with many books': 'చాలా పుస్తకాలున్న స్థలం',
+        'a morning meal': 'ఉదయం ఆహారం',
+        'a color like grass': 'గడ్డి వంటి రంగు',
+        'a place to live': 'నివాస స్థలం',
+        'a means of travel': 'ప్రయాణ సాధనం',
+        'a person who teaches': 'ఉపాధ్యాయుడు',
+        'a place to buy food': 'ఆహారాన్ని కొనుగోలు చేసే స్థలం',
+        'the opposite of night': 'రాత్రికి వ్యతిరేకం',
+        'a season after winter': 'చలికాలానంతరం వచ్చే సీజన్',
+        'a piece of furniture': 'ఫర్నిచర్ యొక్క టుక్క',
+        'a vehicle with two wheels': 'రెండు చక్రాల వాహనం',
+        'a place to see animals': 'జంతువులను చూసే స్థలం',
+        'a hot drink': 'చల్లని లేక వేడి పానీయం',
+        'a yellow fruit': 'పసుపు పండు',
+        'a room for cooking': 'పాకం చేసే గది',
+        'a place for sports': 'క్రీడల స్థలం',
+        'a person who drives': 'డ్రైవర్',
+        'the opposite of fast': 'వేగానికి వ్యతిరేకం',
+        'a body of flowing water': 'ప్రవహించే నీటి భాగం',
+        'a tool for writing': 'రాయడానికి పనిముట్టు',
+        'a place for airplanes': 'విమానాల స్థలం',
+        'a meal in the evening': 'సాయంత్రం భోజనం',
+        'a color like the sky': 'ఆకాశం లాంటి రంగు',
+        'a small animal that says meow': 'మ్యావ్ అంటున్న చిన్న జంతువు',
+        'a place to catch a train': 'రైలు ప-catching స్థలం',
+        'a person who helps sick people': 'స్వస్థ్యానికి సహాయం చేసే వ్యక్తి',
+        'the opposite of empty': 'ఖాళీకి వ్యతిరేకం',
+        'a bright light in the night sky': 'రాత్రి ఆకాశంలో ప్రకాశించే కాంతి',
+        'a place with trees': 'చెట్లతో కూడిన స్థలం',
+        'something worn on the feet': 'చాల్లపై ధరించే వస్తువు',
+        'a building where films are shown': 'సినిమాలు చూపించే భవనం',
+        'a vehicle that flies': 'ఎగిరే వాహనం',
+        'a red fruit': 'ఎరుపు పండు',
+        'a place for swimming': 'చేపడే స్థలం',
+        'a person who cooks food': 'ఆహారం తయారు చేసే వ్యక్తి',
+        'the opposite of old': 'పాతకు వ్యతిరేకం',
+        'a place to borrow books': 'పుస్తకాలు తీసుకోవడానికి స్థలం',
+        'a natural high landform': 'ప్రకృతిలో ఉన్న ఎత్తైన నేల రూపం',
+        'a container for carrying things': 'వస్తువులను తీసుకెళ్లే కంటైనర్',
+        'a room where people sleep': 'ప్రజలు నిద్రించే గది',
+        'a day after Friday': 'శుక్రవారం తర్వాత వచ్చే రోజు',
+        'a person who paints': 'చిత్రకారుడు',
+    },
+}
+
+const getLocalizedWordBuilderQuestions = (languageCode) => {
+    if (languageCode !== 'hi') {
+        return wordBuilderQuestions
+    }
+
+    const safeWordBuilderSets = Array.isArray(wordBuilderSets)
+        ? wordBuilderSets
+        : Object.values(wordBuilderSets || {})
+
+    return safeWordBuilderSets
+        .map((set, setIndex) => {
+            const entries = Array.isArray(set) ? set : Object.values(set || {})
+
+            return entries.map((entry, questionIndex) => {
+                const [hint, answer] = Array.isArray(entry)
+                    ? entry
+                    : [entry?.hint || entry?.prompt || '', entry?.answer || entry?.correct || '']
+
+                const localizedAnswer = HINDI_WORD_BUILDER_TRANSLATIONS[answer] || answer
+                const localizedHint = LOCALIZED_WORD_BUILDER_HINTS.hi?.[hint] || hint
+
+                return {
+                    id: `word-builder-set-${setIndex + 1}-question-${questionIndex + 1}`,
+                    set: setIndex + 1,
+                    prompt: `शब्द बनाएं: ${localizedHint}।`,
+                    letters: Array.from(localizedAnswer),
+                    correct: localizedAnswer,
+                }
+            })
+        })
+        .flat()
+}
 
 const GAME_LIBRARY_BY_LANGUAGE = {
     en: [
@@ -592,54 +889,23 @@ const VISUAL_GAMES_BY_LANGUAGE = {
 const WORD_ARCHER_GAME_BY_LANGUAGE = {
     en: {
         id: 'archer', icon: '🏹', title: 'Word Archer', description: 'Aim at the correct vocabulary target.', type: 'archer',
-        questions: [
-            { prompt: 'Which word means "to examine carefully"?', answers: ['Analyze', 'Gather', 'Breathe', 'Ignore'], correct: 'Analyze' },
-            { prompt: 'Select the word for "a sudden feeling of fear".', answers: ['Panic', 'Lantern', 'Pillow', 'Ribbon'], correct: 'Panic' },
-            { prompt: 'What does "fragile" mean?', answers: ['Easily broken', 'Very loud', 'Extremely slow', 'Completely empty'], correct: 'Easily broken' },
-            { prompt: 'Choose the word that means "a long journey".', answers: ['Expedition', 'Cabin', 'Shadow', 'Thread'], correct: 'Expedition' },
-            { prompt: 'Which option best matches "to postpone"?', answers: ['Delay', 'Arrange', 'Accept', 'Measure'], correct: 'Delay' },
-            { prompt: 'Find the word for "a place where books are kept".', answers: ['Library', 'Market', 'Harbor', 'Factory'], correct: 'Library' },
-        ],
+        questions: buildLocalizedGameBank('archer', 'en'),
     },
     hi: {
         id: 'archer', icon: '🏹', title: 'वर्ड आर्चर', description: 'सही शब्द पर निशाना लगाएँ।', type: 'archer',
-        questions: [
-            { prompt: '"casa" का अर्थ क्या है?', answers: ['घर', 'पानी', 'किताब', 'भोजन'], correct: 'घर' },
-            { prompt: '"agua" का अर्थ क्या है?', answers: ['पानी', 'घर', 'नदी', 'पेड़'], correct: 'पानी' },
-            { prompt: '"school" का सही शब्द चुनें।', answers: ['स्कूल', 'सड़क', 'बादल', 'कुर्सी'], correct: 'स्कूल' },
-            { prompt: '"friend" का सही शब्द चुनें।', answers: ['दोस्त', 'दरवाज़ा', 'चाँद', 'रोटी'], correct: 'दोस्त' },
-            { prompt: '"apple" का सही शब्द चुनें।', answers: ['सेब', 'पत्थर', 'खिड़की', 'सूर्य'], correct: 'सेब' },
-        ],
+        questions: buildLocalizedGameBank('archer', 'hi'),
     },
     kn: {
         id: 'archer', icon: '🏹', title: 'ವರ್ಡ್ ಆರ್ಚರ್', description: 'ಸರಿಯಾದ ಪದದ ಮೇಲೆ ಬಾಣ ಹೂಡಿ.', type: 'archer',
-        questions: [
-            { prompt: '"casa" ಎಂಬುದು ಎಂದರೇನು?', answers: ['ಮನೆ', 'ನೀರು', 'ಪುಸ್ತಕ', 'ಆಹಾರ'], correct: 'ಮನೆ' },
-            { prompt: '"agua" ಎಂಬುದು ಎಂದರೇನು?', answers: ['ನೀರು', 'ಮನೆ', 'ನದಿ', 'ಮರ'], correct: 'ನೀರು' },
-            { prompt: '"school" ಗಾಗಿ ಸರಿಯಾದ ಪದ ಆಯ್ಕೆಮಾಡಿ.', answers: ['ಪಾಠಶಾಲೆ', 'ರಸ್ತೆ', 'ಮೋಡ', 'ಕುರ್ಚಿ'], correct: 'ಪಾಠಶಾಲೆ' },
-            { prompt: '"friend" ಗಾಗಿ ಸರಿಯಾದ ಪದ ಆಯ್ಕೆಮಾಡಿ.', answers: ['ಮಿತ್ರ', 'ಕದ', 'ಚಂದ್ರ', 'ರೊಟ್ಟಿ'], correct: 'ಮित्र' },
-            { prompt: '"apple" ಗಾಗಿ ಸರಿಯಾದ ಪದ ಆಯ್ಕೆಮಾಡಿ.', answers: ['ಆಪಲ್', 'ಕಲ್ಲು', 'ಕಿಟಕಿ', 'ಸೂರ್ಯ'], correct: 'ಆಪಲ್' },
-        ],
+        questions: buildLocalizedGameBank('archer', 'kn'),
     },
     ta: {
         id: 'archer', icon: '🏹', title: 'வேர்ட் ஆர்ச்சர்', description: 'சரியான சொற்களுக்கு அம்பு எய்யுங்கள்.', type: 'archer',
-        questions: [
-            { prompt: '"casa" என்பதன் அர்த்தம் என்ன?', answers: ['வீடு', 'தண்ணீர்', 'புத்தகம்', 'சாப்பாடு'], correct: 'வீடு' },
-            { prompt: '"agua" என்பதன் அர்த்தம் என்ன?', answers: ['தண்ணீர்', 'வீடு', 'ஆறு', 'மரம்'], correct: 'தண்ணீர்' },
-            { prompt: '"school"-க்கு சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['பள்ளி', 'தெரு', 'முகில்', 'கார்'], correct: 'பள்ளி' },
-            { prompt: '"friend"-க்கு சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['நண்பர்', 'கதவு', 'சந்திரன்', 'ரொட்டி'], correct: 'நண்பர்' },
-            { prompt: '"apple"-க்கு சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', answers: ['ஆப்பிள்', 'கல்', 'ஜன்னல்', 'சூரியன்'], correct: 'ஆப்பிள்' },
-        ],
+        questions: buildLocalizedGameBank('archer', 'ta'),
     },
     te: {
         id: 'archer', icon: '🏹', title: 'వర్డ్ ఆర్చర్', description: 'సరైన పదంపై బాణం ఎక్కించండి.', type: 'archer',
-        questions: [
-            { prompt: '"casa" అర్థం ఏమిటి?', answers: ['ఇల్లు', 'నీరు', 'పుస్తకం', 'ఆహారం'], correct: 'ఇల్లు' },
-            { prompt: '"agua" అర్థం ఏమిటి?', answers: ['నీరు', 'ఇల్లు', 'నది', 'చెట్టు'], correct: 'నీరు' },
-            { prompt: '"school" కోసం సరైన పదాన్ని ఎంచుకోండి.', answers: ['పాఠశాల', 'వీధి', 'మేఘం', 'కుర్చీ'], correct: 'పాఠశాల' },
-            { prompt: '"friend" కోసం సరైన పదాన్ని ఎంచుకోండి.', answers: ['స్నేహితుడు', 'తలుపు', 'చంద్రుడు', 'రొట్టె'], correct: 'స్నేహితుడు' },
-            { prompt: '"apple" కోసం సరైన పదాన్ని ఎంచుకోండి.', answers: ['ఆపిల్', 'రాయి', 'కిటికీ', 'సూర్యుడు'], correct: 'ఆపిల్' },
-        ],
+        questions: buildLocalizedGameBank('archer', 'te'),
     },
 }
 
@@ -735,47 +1001,35 @@ const UNIVERSAL_GAMES_BY_LANGUAGE = {
         },
         {
             id: 'word-hunt', icon: '🎯', title: 'Word Hunt', description: 'Find all words that match the mission.', type: 'word-hunt',
-            questions: [
-                { prompt: 'Find 3 words related to food.', answers: ['BOOK', 'APPLE', 'HOUSE', 'WATER', 'BREAD', 'DOG'], correct: ['APPLE', 'WATER', 'BREAD'] },
-                { prompt: 'Find 3 words related to places.', answers: ['SCHOOL', 'CAT', 'MARKET', 'RIVER', 'HOUSE', 'GREEN'], correct: ['SCHOOL', 'MARKET', 'HOUSE'] },
-                { prompt: 'Find 3 words related to nature.', answers: ['TREE', 'BOOK', 'RIVER', 'SUN', 'CHAIR', 'DOG'], correct: ['TREE', 'RIVER', 'SUN'] },
-                { prompt: 'Find 3 words related to animals.', answers: ['DOG', 'TABLE', 'CAT', 'BIRD', 'HOUSE', 'BLUE'], correct: ['DOG', 'CAT', 'BIRD'] },
-                { prompt: 'Find 3 words related to school.', answers: ['PENCIL', 'RIVER', 'TEACHER', 'BOOK', 'APPLE', 'MOON'], correct: ['PENCIL', 'TEACHER', 'BOOK'] },
-            ],
+            questions: buildLocalizedGameBank('word-hunt', 'en'),
         },
         {
             id: 'flip-card', icon: '🃏', title: 'Flip Card Challenge', description: 'Flip the cards and match the right word.', type: 'flip-card',
-            questions: getFlipMatchTrainingSet('en'),
+            questions: buildLocalizedGameBank('flip-card', 'en'),
         },
     ],
     hi: [
         {
             id: 'word-builder', icon: '🔤', title: 'शब्द बनाओ', description: 'अस्थिर अक्षरों को सही शब्द में लगाएँ।', type: 'word-builder',
-            questions: wordBuilderQuestions,
+            questions: getLocalizedWordBuilderQuestions('hi'),
         },
         {
             id: 'mystery-word', icon: '🕵️', title: 'गुप्त शब्द', description: 'सुराग देखें और शब्द पहचानें।', type: 'mystery-word',
             questions: [
-                { prompt: 'मैं कौन हूँ?', clues: ['आप मुझे खा सकते हैं।', 'मैं लाल या हरा हो सकता हूँ।', 'मैं पेड़ पर grows होता हूँ।'], answers: ['APPLE', 'BANANA', 'ORANGE'], correct: 'APPLE' },
-                { prompt: 'मैं कौन हूँ?', clues: ['मैं उड़ सकता हूँ।', 'मेरे पास पंख होते हैं।', 'मैं गा सकता हूँ।'], answers: ['BIRD', 'FISH', 'HORSE'], correct: 'BIRD' },
-                { prompt: 'मैं कौन हूँ?', clues: ['मैं प्रकाश देता हूँ।', 'आप मुझे आसमान में देखते हैं।', 'मैं दिन में चमकता हूँ।'], answers: ['SUN', 'MOON', 'CLOUD'], correct: 'SUN' },
-                { prompt: 'मैं कौन हूँ?', clues: ['मेरे चार पैर हैं।', 'लोग मुझे सवारी करते हैं।', 'मैं तेज़ दौड़ सकता हूँ।'], answers: ['HORSE', 'TIGER', 'SNAKE'], correct: 'HORSE' },
-                { prompt: 'मैं कौन हूँ?', clues: ['मैं ठंडा हूँ।', 'मैं पिघल सकता हूँ।', 'लोग मुझे पीने में उपयोग करते हैं।'], answers: ['ICE', 'SAND', 'PAPER'], correct: 'ICE' },
+                { prompt: 'मैं कौन हूँ?', clues: ['आप मुझे खा सकते हैं।', 'मैं लाल या हरा हो सकता हूँ।', 'मैं पेड़ पर बढ़ता हूँ।'], answers: ['सेब', 'केला', 'नारंगी'], correct: 'सेब' },
+                { prompt: 'मैं कौन हूँ?', clues: ['मैं उड़ सकता हूँ।', 'मेरे पास पंख होते हैं।', 'मैं गा सकता हूँ।'], answers: ['चिड़िया', 'मछली', 'घोड़ा'], correct: 'चिड़िया' },
+                { prompt: 'मैं कौन हूँ?', clues: ['मैं प्रकाश देता हूँ।', 'आप मुझे आसमान में देखते हैं।', 'मैं दिन में चमकता हूँ।'], answers: ['सूर्य', 'चाँद', 'बादल'], correct: 'सूर्य' },
+                { prompt: 'मैं कौन हूँ?', clues: ['मेरे चार पैर हैं।', 'लोग मुझे सवारी करते हैं।', 'मैं तेज़ दौड़ सकता हूँ।'], answers: ['घोड़ा', 'बाघ', 'साँप'], correct: 'घोड़ा' },
+                { prompt: 'मैं कौन हूँ?', clues: ['मैं ठंडा हूँ।', 'मैं पिघल सकता हूँ।', 'लोग मुझे पीने में उपयोग करते हैं।'], answers: ['बर्फ', 'रेत', 'कागज़'], correct: 'बर्फ' },
             ],
         },
         {
             id: 'word-hunt', icon: '🎯', title: 'शब्द खोज', description: 'मिशन से मेल खाने वाले सारे शब्द ढूँढें।', type: 'word-hunt',
-            questions: [
-                { prompt: 'खाने से जुड़े 3 शब्द ढूँढें।', answers: ['BOOK', 'APPLE', 'HOUSE', 'WATER', 'BREAD', 'DOG'], correct: ['APPLE', 'WATER', 'BREAD'] },
-                { prompt: 'जगहों से जुड़े 3 शब्द ढूँढें।', answers: ['SCHOOL', 'CAT', 'MARKET', 'RIVER', 'HOUSE', 'GREEN'], correct: ['SCHOOL', 'MARKET', 'HOUSE'] },
-                { prompt: 'प्रकृति से जुड़े 3 शब्द ढूँढें।', answers: ['TREE', 'BOOK', 'RIVER', 'SUN', 'CHAIR', 'DOG'], correct: ['TREE', 'RIVER', 'SUN'] },
-                { prompt: 'पशुओं से जुड़े 3 शब्द ढूँढें।', answers: ['DOG', 'TABLE', 'CAT', 'BIRD', 'HOUSE', 'BLUE'], correct: ['DOG', 'CAT', 'BIRD'] },
-                { prompt: 'स्कूल से जुड़े 3 शब्द ढूँढें।', answers: ['PENCIL', 'RIVER', 'TEACHER', 'BOOK', 'APPLE', 'MOON'], correct: ['PENCIL', 'TEACHER', 'BOOK'] },
-            ],
+            questions: buildLocalizedGameBank('word-hunt', 'hi'),
         },
         {
             id: 'flip-card', icon: '🃏', title: 'फ्लिप कार्ड चैलेंज', description: 'कार्ड पलटें और सही शब्द चुनें।', type: 'flip-card',
-            questions: getFlipMatchTrainingSet('hi'),
+            questions: buildLocalizedGameBank('flip-card', 'hi'),
         },
     ],
     kn: [
@@ -794,18 +1048,12 @@ const UNIVERSAL_GAMES_BY_LANGUAGE = {
             ],
         },
         {
-            id: 'word-hunt', icon: '🎯', title: 'ಪದ ಹುಡುಕಿ', description: 'ಮಿಷನ್‌ಗೆ ಹೊಂದುವ ಎಲ್ಲಾ ಪದಗಳನ್ನು ಹುಡುಕಿ.', type: 'word-hunt',
-            questions: [
-                { prompt: 'ಆಹಾರಕ್ಕೆ ಸಂಬಂಧಪಟ್ಟ 3 ಪದಗಳನ್ನು ಹುಡುಕಿ.', answers: ['BOOK', 'APPLE', 'HOUSE', 'WATER', 'BREAD', 'DOG'], correct: ['APPLE', 'WATER', 'BREAD'] },
-                { prompt: 'ಸ್ಥಳಗಳಿಗೆ ಸಂಬಂಧಪಟ್ಟ 3 ಪದಗಳನ್ನು ಹುಡುಕಿ.', answers: ['SCHOOL', 'CAT', 'MARKET', 'RIVER', 'HOUSE', 'GREEN'], correct: ['SCHOOL', 'MARKET', 'HOUSE'] },
-                { prompt: 'ಪ್ರಕೃತಿಗೆ ಸಂಬಂಧಪಟ್ಟ 3 ಪದಗಳನ್ನು ಹುಡುಕಿ.', answers: ['TREE', 'BOOK', 'RIVER', 'SUN', 'CHAIR', 'DOG'], correct: ['TREE', 'RIVER', 'SUN'] },
-                { prompt: 'ಜೀವಜಂತುಗಳಿಗೆ ಸಂಬಂಧಪಟ್ಟ 3 ಪದಗಳನ್ನು ಹುಡುಕಿ.', answers: ['DOG', 'TABLE', 'CAT', 'BIRD', 'HOUSE', 'BLUE'], correct: ['DOG', 'CAT', 'BIRD'] },
-                { prompt: 'ಶಾಲೆಗೆ ಸಂಬಂಧಪಟ್ಟ 3 ಪದಗಳನ್ನು ಹುಡುಕಿ.', answers: ['PENCIL', 'RIVER', 'TEACHER', 'BOOK', 'APPLE', 'MOON'], correct: ['PENCIL', 'TEACHER', 'BOOK'] },
-            ],
+            id: 'word-hunt', icon: '🎯', title: 'ಪದ ಹುಡುಕಿ', description: 'ಮಿಷನ್‌ಗಾಗಿನ ಎಲ್ಲಾ ಪದಗಳನ್ನು ಹುಡುಕಿ.', type: 'word-hunt',
+            questions: buildLocalizedGameBank('word-hunt', 'kn'),
         },
         {
             id: 'flip-card', icon: '🃏', title: 'ಫ್ಲಿಪ್ ಕಾರ್ಡ್ ಚಾಲೆಂಜ್', description: 'ಕಾರ್ಡ್ಗಳನ್ನು ತಿರುಗಿಸಿ ಮತ್ತು ಸರಿಯಾದ ಪದವನ್ನು ಆರಿಸಿ.', type: 'flip-card',
-            questions: getFlipMatchTrainingSet('kn'),
+            questions: buildLocalizedGameBank('flip-card', 'kn'),
         },
     ],
     ta: [
@@ -825,17 +1073,11 @@ const UNIVERSAL_GAMES_BY_LANGUAGE = {
         },
         {
             id: 'word-hunt', icon: '🎯', title: 'சொல் வேட்டை', description: 'பணிக்கு பொருந்தும் அனைத்து சொற்களையும் கண்டுபிடி.', type: 'word-hunt',
-            questions: [
-                { prompt: 'உணவுடன் தொடர்புடைய 3 சொற்களைக் கண்டுபிடி.', answers: ['BOOK', 'APPLE', 'HOUSE', 'WATER', 'BREAD', 'DOG'], correct: ['APPLE', 'WATER', 'BREAD'] },
-                { prompt: 'இடங்களுடன் தொடர்புடைய 3 சொற்களைக் கண்டுபிடி.', answers: ['SCHOOL', 'CAT', 'MARKET', 'RIVER', 'HOUSE', 'GREEN'], correct: ['SCHOOL', 'MARKET', 'HOUSE'] },
-                { prompt: 'இயற்கையுடன் தொடர்புடைய 3 சொற்களைக் கண்டுபிடி.', answers: ['TREE', 'BOOK', 'RIVER', 'SUN', 'CHAIR', 'DOG'], correct: ['TREE', 'RIVER', 'SUN'] },
-                { prompt: 'விலங்குகளுடன் தொடர்புடைய 3 சொற்களைக் கண்டுபிடி.', answers: ['DOG', 'TABLE', 'CAT', 'BIRD', 'HOUSE', 'BLUE'], correct: ['DOG', 'CAT', 'BIRD'] },
-                { prompt: 'பள்ளியுடன் தொடர்புடைய 3 சொற்களைக் கண்டுபிடி.', answers: ['PENCIL', 'RIVER', 'TEACHER', 'BOOK', 'APPLE', 'MOON'], correct: ['PENCIL', 'TEACHER', 'BOOK'] },
-            ],
+            questions: buildLocalizedGameBank('word-hunt', 'ta'),
         },
         {
             id: 'flip-card', icon: '🃏', title: 'ஃபிளிப் கார்டு சவால்', description: 'கார்டுகளை புரட்டி சரியான சொல்லைத் தேர்ந்தெடுக்கவும்.', type: 'flip-card',
-            questions: getFlipMatchTrainingSet('ta'),
+            questions: buildLocalizedGameBank('flip-card', 'ta'),
         },
     ],
     te: [
@@ -855,17 +1097,11 @@ const UNIVERSAL_GAMES_BY_LANGUAGE = {
         },
         {
             id: 'word-hunt', icon: '🎯', title: 'పదాల వేట', description: 'మిషన్‌కు సరిపోయే అన్ని పదాలను కనుగొనండి.', type: 'word-hunt',
-            questions: [
-                { prompt: 'ఆహారం సంబంధిత 3 పదాలను కనుగొనండి.', answers: ['BOOK', 'APPLE', 'HOUSE', 'WATER', 'BREAD', 'DOG'], correct: ['APPLE', 'WATER', 'BREAD'] },
-                { prompt: 'స్థలాలకు సంబంధిత 3 పదాలను కనుగొనండి.', answers: ['SCHOOL', 'CAT', 'MARKET', 'RIVER', 'HOUSE', 'GREEN'], correct: ['SCHOOL', 'MARKET', 'HOUSE'] },
-                { prompt: 'బయోపదం సంబంధిత 3 పదాలను కనుగొనండి.', answers: ['TREE', 'BOOK', 'RIVER', 'SUN', 'CHAIR', 'DOG'], correct: ['TREE', 'RIVER', 'SUN'] },
-                { prompt: 'జంతువులకు సంబంధిత 3 పదాలను కనుగొనండి.', answers: ['DOG', 'TABLE', 'CAT', 'BIRD', 'HOUSE', 'BLUE'], correct: ['DOG', 'CAT', 'BIRD'] },
-                { prompt: 'పాఠశాలకు సంబంధిత 3 పదాలను కనుగొనండి.', answers: ['PENCIL', 'RIVER', 'TEACHER', 'BOOK', 'APPLE', 'MOON'], correct: ['PENCIL', 'TEACHER', 'BOOK'] },
-            ],
+            questions: buildLocalizedGameBank('word-hunt', 'te'),
         },
         {
             id: 'flip-card', icon: '🃏', title: 'ఫ్లిప్ కార్డ్ ఛాలెంజ్', description: 'కార్డులను తిప్పి సరైన పదాన్ని ఎంచుకోండి.', type: 'flip-card',
-            questions: getFlipMatchTrainingSet('te'),
+            questions: buildLocalizedGameBank('flip-card', 'te'),
         },
     ],
 }
@@ -911,97 +1147,84 @@ const shuffleBuilderLetters = (letters, answer) => {
     return shuffled
 }
 
-const LOCALIZED_WORD_BUILDER_HINTS = {
-    hi: {
-        'a fruit': 'फल',
-        'a drink': 'पानी',
-        'a greeting': 'नमस्ते',
-        'a place to learn': 'सीखने की जगह',
-        'a reading object': 'पढ़ने की चीज़',
-        'a close person': 'करीबी व्यक्ति',
-        'a bright object in the sky': 'आसमान में चमकने वाली चीज़',
-        'a large animal': 'बड़ा जानवर',
-        'a place with many books': 'कई किताबों वाली जगह',
-        'a morning meal': 'सुबह का भोजन',
-        'a color like grass': 'घास जैसा रंग',
-        'a place to live': 'रहने की जगह',
-        'a means of travel': 'यात्रा का साधन',
-        'a person who teaches': 'शिक्षक',
-        'a place to buy food': 'खाना खरीदने की जगह',
-        'the opposite of night': 'रात का विपरीत',
-        'a season after winter': 'सर्दियों के बाद का मौसम',
-        'a piece of furniture': 'फर्नीचर का टुकड़ा',
-        'a vehicle with two wheels': 'दो पहियों वाला वाहन',
-        'a place to see animals': 'जानवर देखने की जगह',
-        'a hot drink': 'गर्म पेय',
-        'a yellow fruit': 'पीला फल',
-        'a room for cooking': 'खाना पकाने का कमरा',
-        'a place for sports': 'खेल का मैदान',
-        'a person who drives': 'चालक',
-        'the opposite of fast': 'तेज़ का विपरीत',
-        'a body of flowing water': 'बहते पानी का हिस्सा',
-        'a tool for writing': 'लिखने का औज़ार',
-        'a place for airplanes': 'हवाई जहाज़ों का स्थान',
-        'a meal in the evening': 'शाम का भोजन',
-        'a color like the sky': 'आसमान जैसा रंग',
-        'a small animal that says meow': 'म्याऊँ कहने वाला छोटा जानवर',
-        'a place to catch a train': 'ट्रेन पकड़ने की जगह',
-        'a person who helps sick people': 'बीमार लोगों की मदद करने वाला',
-        'the opposite of empty': 'खाली का विपरीत',
-        'a bright light in the night sky': 'रात में चमकने वाला प्रकाश',
-        'a place with trees': 'पेड़ों वाली जगह',
-        'something worn on the feet': 'पैरों में पहना जाने वाला',
-        'a building where films are shown': 'सिनेमा घर',
-        'a vehicle that flies': 'उड़ने वाला वाहन',
-        'a red fruit': 'लाल फल',
-        'a place for swimming': 'तैराकी की जगह',
-        'a person who cooks food': 'खाना पकाने वाला व्यक्ति',
-        'the opposite of old': 'पुराने का विपरीत',
-        'a place to borrow books': 'किताबें उधार लेने की जगह',
-        'a natural high landform': 'प्राकृतिक ऊँची स्थल आकृति',
-        'a container for carrying things': 'चीज़ें रखने का कंटेनर',
-        'a room where people sleep': 'जहाँ लोग सोते हैं',
-        'a day after Friday': 'शुक्रवार के बाद का दिन',
-        'a person who paints': 'चित्रकार',
-    },
+const WORD_BUILDER_PROMPT_TEMPLATES = {
+    en: (hint) => `Build the word for ${hint}.`,
+    hi: (hint) => `शब्द बनाएं: ${hint}।`,
+    kn: (hint) => `ಪದವನ್ನು ನಿರ್ಮಿಸಿ: ${hint}.`,
+    ta: (hint) => `சொல்லை உருவாக்கு: ${hint}.`,
+    te: (hint) => `పదాన్ని నిర్మించండి: ${hint}.`,
 }
 
 const localizeGameQuestion = (question, game, languageCode) => {
-    if (languageCode !== 'hi' || game.id !== 'word-builder' || !question.prompt || !question.prompt.startsWith('Build the word for')) {
+    if (game.id !== 'word-builder' || !question.prompt) {
+        return question
+    }
+
+    const localizedTemplate = WORD_BUILDER_PROMPT_TEMPLATES[languageCode]
+    const normalizedCorrect = typeof question.correct === 'string' ? question.correct.toUpperCase() : ''
+    const translatedCorrect = languageCode === 'hi' ? HINDI_WORD_BUILDER_TRANSLATIONS[normalizedCorrect] || question.correct : question.correct
+
+    if (languageCode === 'hi' && translatedCorrect && translatedCorrect !== question.correct) {
+        return {
+            ...question,
+            prompt: localizedTemplate ? localizedTemplate(LOCALIZED_WORD_BUILDER_HINTS.hi?.[question.prompt.replace(/^Build the word for (.*)\.$/, '$1')] || question.prompt.replace(/^Build the word for (.*)\.$/, '$1')) : question.prompt,
+            correct: translatedCorrect,
+            letters: Array.from(translatedCorrect),
+        }
+    }
+
+    if (!question.prompt.startsWith('Build the word for')) {
+        return question
+    }
+
+    if (!localizedTemplate) {
         return question
     }
 
     const hint = question.prompt.replace(/^Build the word for (.*)\.$/, '$1')
-    const translatedHint = LOCALIZED_WORD_BUILDER_HINTS.hi[hint] || hint
+    const translatedHint = LOCALIZED_WORD_BUILDER_HINTS[languageCode]?.[hint] || hint
     return {
         ...question,
-        prompt: `शब्द बनाएं: ${translatedHint}।`,
+        prompt: localizedTemplate(translatedHint),
     }
 }
 
 const REMOVED_GAME_IDS = new Set(['listening', 'mystery-word', 'runner'])
 
-const getGameLibraryWithListening = (languageCode) => [
-    ...(UNIVERSAL_GAMES_BY_LANGUAGE[languageCode] || UNIVERSAL_GAMES_BY_LANGUAGE.en),
-    ...(VISUAL_GAMES_BY_LANGUAGE[languageCode] || VISUAL_GAMES_BY_LANGUAGE.en),
-    ...(WORD_ARCHER_GAME_BY_LANGUAGE[languageCode] ? [WORD_ARCHER_GAME_BY_LANGUAGE[languageCode]] : []),
-    LISTENING_GAME_BY_LANGUAGE[languageCode] || LISTENING_GAME_BY_LANGUAGE.en,
-].filter(Boolean)
-    .filter((game) => !REMOVED_GAME_IDS.has(game.id))
-    .map((game) => ({
-        ...game,
-        questions: game.questions.map((question) => {
-            const localizedQuestion = localizeGameQuestion(question, game, languageCode)
-            return {
-                ...localizedQuestion,
-                answers: localizedQuestion.answers ? shuffleGameOptions(localizedQuestion.answers) : localizedQuestion.answers,
-                letters: localizedQuestion.letters ? shuffleBuilderLetters(localizedQuestion.letters, localizedQuestion.correct) : localizedQuestion.letters,
-            }
-        }),
-    }))
+const getGameLibraryWithListening = (languageCode) => {
+    const games = [
+        ...(UNIVERSAL_GAMES_BY_LANGUAGE[languageCode] || UNIVERSAL_GAMES_BY_LANGUAGE.en),
+        ...(VISUAL_GAMES_BY_LANGUAGE[languageCode] || VISUAL_GAMES_BY_LANGUAGE.en),
+        ...(WORD_ARCHER_GAME_BY_LANGUAGE[languageCode] ? [WORD_ARCHER_GAME_BY_LANGUAGE[languageCode]] : []),
+        LISTENING_GAME_BY_LANGUAGE[languageCode] || LISTENING_GAME_BY_LANGUAGE.en,
+    ].filter(Boolean).filter((game) => !REMOVED_GAME_IDS.has(game.id))
+
+    const englishGames = languageCode === 'en' ? [] : getGameLibraryWithListening('en')
+
+    return games.map((game) => {
+        const englishGame = englishGames.find((candidate) => candidate.id === game.id)
+
+        return {
+            ...game,
+            questions: game.questions.map((question, questionIndex) => {
+                const localizedQuestion = localizeGameQuestion(question, game, languageCode)
+                const englishQuestion = englishGame?.questions?.[questionIndex]
+
+                return {
+                    ...localizedQuestion,
+                    englishPrompt: localizedQuestion.englishPrompt || englishQuestion?.prompt,
+                    englishAnswers: localizedQuestion.englishAnswers || englishQuestion?.answers,
+                    englishClues: localizedQuestion.englishClues || englishQuestion?.clues,
+                    answers: localizedQuestion.answers ? shuffleGameOptions(localizedQuestion.answers) : localizedQuestion.answers,
+                    letters: localizedQuestion.letters ? shuffleBuilderLetters(localizedQuestion.letters, localizedQuestion.correct) : localizedQuestion.letters,
+                }
+            }),
+        }
+    })
+}
 const shuffleQuestions = (items) => [...items].sort(() => Math.random() - 0.5)
 const createQuestionRound = (items) => shuffleQuestions(items).slice(0, Math.min(5, items.length))
-const PERSISTED_ROUND_GAME_IDS = new Set(['word-builder', 'word-hunt', 'flip-card'])
+const PERSISTED_ROUND_GAME_IDS = new Set(['word-builder', 'word-hunt', 'flip-card', 'archer'])
 
 const getRoundStorageKey = (gameId) => `neolit_${gameId}_current_round`
 
@@ -1220,6 +1443,7 @@ export default function GamesPage() {
     const [score, setScore] = useState(0)
     const [questionIndex, setQuestionIndex] = useState(0)
     const [timeLeft, setTimeLeft] = useState(12)
+    const timerExpiredRef = useRef(false)
     const [questionOrder, setQuestionOrder] = useState(() => createQuestionRound(games[0].questions))
     const [fallingWords, setFallingWords] = useState([])
     const [runnerWords, setRunnerWords] = useState([])
@@ -1283,7 +1507,7 @@ export default function GamesPage() {
     useEffect(() => {
         const savesRound = PERSISTED_ROUND_GAME_IDS.has(selectedGame.id)
         const savedRound = savesRound ? getSavedGameRound(selectedGame.id, selectedGame.questions) : null
-        const nextOrder = savedRound || createQuestionRound(selectedGame.questions)
+        const nextOrder = savesRound ? (savedRound || getFreshQuestionSet(selectedGame.id, selectedGame.questions)) : createQuestionRound(selectedGame.questions)
         if (savesRound && !savedRound) saveGameRound(selectedGame.id, nextOrder)
         setQuestionOrder(nextOrder)
         setQuestionIndex(0)
@@ -1411,10 +1635,12 @@ export default function GamesPage() {
             return undefined
         }
 
+        timerExpiredRef.current = false
         const timer = window.setInterval(() => {
             setTimeLeft((current) => {
                 if (current <= 1) {
                     window.clearInterval(timer)
+                    timerExpiredRef.current = true
                     if (selectedGame.type === 'dragon') {
                         setDragonHealth((health) => Math.max(0, health - 1))
                     }
@@ -1447,6 +1673,7 @@ export default function GamesPage() {
         const nextGame = games.find((game) => game.id === gameId) || games[0]
         setSelectedId(nextGame.id)
         setAnswer('')
+        timerExpiredRef.current = false
         setQuestionIndex(0)
         setTimeLeft(gameTimeLimit)
         setRunnerFallen(false)
@@ -1472,6 +1699,7 @@ export default function GamesPage() {
     const restartDragonRun = () => {
         setQuestionIndex(0)
         setAnswer('')
+        timerExpiredRef.current = false
         setDragonHealth(3)
         setDragonCoins(0)
         setDragonDistance(0)
@@ -1480,7 +1708,7 @@ export default function GamesPage() {
     }
 
     const chooseAnswer = (choice) => {
-        if (answer || (selectedGame.type === 'dragon' && dragonHealth === 0)) return
+        if (answer || timerExpiredRef.current || (selectedGame.type === 'dragon' && dragonHealth === 0)) return
 
         const isCorrect = choice === question.correct
         setAnswer(choice)
@@ -1587,7 +1815,7 @@ export default function GamesPage() {
     }
 
     const chooseHuntWord = (word) => {
-        if (answer || huntFound.includes(word)) return
+        if (answer || timerExpiredRef.current || huntFound.includes(word)) return
         const nextFound = [...huntFound, word]
         setHuntFound(nextFound)
         if (nextFound.length === question.correct.length) {
@@ -1672,12 +1900,15 @@ export default function GamesPage() {
             setQuestionOrder(createQuestionRound(selectedGame.questions))
         }
         if (PERSISTED_ROUND_GAME_IDS.has(selectedGame.id) && questionIndex + 1 >= questionOrder.length) {
-            const nextRound = createQuestionRound(selectedGame.questions)
+            const nextRound = getFreshQuestionSet(selectedGame.id, selectedGame.questions)
             saveGameRound(selectedGame.id, nextRound)
             setQuestionOrder(nextRound)
+            setQuestionIndex(0)
+            return
         }
         setQuestionIndex((current) => (current + 1) % questionOrder.length)
         setAnswer('')
+        timerExpiredRef.current = false
         setMemorySelection([])
         setSentenceWords([])
         setBuilderLetters([])
@@ -1772,7 +2003,12 @@ export default function GamesPage() {
                     <span className="game-question-count">{selectedGame.type === 'dragon' || selectedGame.type === 'runner' ? gamesUiCopy.endless : `${gamesUiCopy.question} ${Math.min(questionIndex + 1, activeQuestionOrder.length)}/${activeQuestionOrder.length}`}</span>
                     <span className={`game-timer ${timeLeft <= 4 ? 'warning' : ''}`}>{timeLeft}{gamesUiCopy.seconds}</span>
                 </div>
-                {selectedGame.type !== 'memory' && <h2>{question.prompt}</h2>}
+                {selectedGame.type !== 'memory' && (
+                    <>
+                        <h2>{question.prompt}</h2>
+                        {languageCode !== 'en' && question.englishPrompt && <p className="game-english-subtitle">English: {question.englishPrompt}</p>}
+                    </>
+                )}
 
                 {selectedGame.type === 'archer' ? (
                     <div className="special-game-panel archer-stage">
@@ -1983,6 +2219,7 @@ export default function GamesPage() {
                     <div className="special-game-panel mystery-panel">
                         <p className="special-game-label">{localizedGameCopy.clue} {mysteryClueIndex + 1} / {question.clues.length}</p>
                         <strong>{question.clues[mysteryClueIndex]}</strong>
+                        {languageCode !== 'en' && question.englishClues?.[mysteryClueIndex] && <small className="game-english-clue">English: {question.englishClues[mysteryClueIndex]}</small>}
                         <div className="game-answer-grid">{question.answers.map((choice) => <button key={choice} type="button" onClick={() => chooseAnswer(choice)}>{choice}</button>)}</div>
                         <button type="button" className="game-secondary-button" onClick={revealMysteryClue} disabled={mysteryClueIndex === question.clues.length - 1}>{localizedGameCopy.revealNext}</button>
                     </div>
@@ -2098,6 +2335,8 @@ export default function GamesPage() {
                     </div>
                 )}
 
+                {languageCode !== 'en' && question.englishAnswers?.length > 0 && selectedGame.type !== 'word-builder' && <p className="game-english-options">English options: {question.englishAnswers.join(' | ')}</p>}
+
                 {selectedGame.type === 'dragon' && dragonHealth === 0 ? (
                     <div className="dragon-game-over">
                         <strong>{localizedGameCopy.runComplete}</strong>
@@ -2106,7 +2345,7 @@ export default function GamesPage() {
                     </div>
                 ) : (
                     <>
-                        {selectedGame.type !== 'flip-card' && answer && <p className={`game-feedback ${answer === question.correct || (selectedGame.type === 'word-hunt' && answer === 'correct') ? 'correct' : 'wrong'}`}>{answer === 'timeout' ? (selectedGame.type === 'dragon' ? localizedGameCopy.dragonTimeout : localizedGameCopy.timeout) : answer === question.correct || (selectedGame.type === 'word-hunt' && answer === 'correct') ? localizedGameCopy.correct : selectedGame.type === 'dragon' ? localizedGameCopy.dragonWrong : localizedGameCopy.wrong}</p>}
+                        {selectedGame.type !== 'flip-card' && answer && <p className={`game-feedback ${answer === 'timeout' ? 'timeout' : answer === question.correct || (selectedGame.type === 'word-hunt' && answer === 'correct') ? 'correct' : 'wrong'}`}>{answer === 'timeout' ? (selectedGame.type === 'dragon' ? localizedGameCopy.dragonTimeout : localizedGameCopy.timeout) : answer === question.correct || (selectedGame.type === 'word-hunt' && answer === 'correct') ? localizedGameCopy.correct : selectedGame.type === 'dragon' ? localizedGameCopy.dragonWrong : localizedGameCopy.wrong}</p>}
                         {selectedGame.type !== 'flip-card' && answer && <button type="button" className="game-next-button" onClick={nextQuestion}>{localizedGameCopy.nextQuestion}</button>}
                     </>
                 )}
