@@ -71,6 +71,26 @@
     font-size: .75rem;
 }
 
+.install-app-wrap {
+    position: relative;
+}
+
+.install-app-help {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    z-index: 5;
+    width: 230px;
+    margin: 0;
+    padding: 12px;
+    border: 1px solid rgba(102, 227, 166, .35);
+    border-radius: 8px;
+    background: #102b31;
+    color: rgba(233, 246, 241, .8);
+    font-size: .75rem;
+    line-height: 1.45;
+}
+
 .landing-nav-cta:hover,
 .landing-primary-action:hover,
 .install-app-button:hover {
@@ -293,10 +313,6 @@
     .landing-nav-cta {
         padding: 9px 11px;
         font-size: .78rem;
-    }
-
-    .install-app-button.compact {
-        display: none;
     }
 
     .landing-hero {
