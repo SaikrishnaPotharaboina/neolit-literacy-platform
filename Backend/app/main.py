@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 from app.config import settings
 from app.database import ensure_schema
 from app.routers import auth
+from app.routers import games
 from app.routers import learning
 
 logger = logging.getLogger(__name__)
@@ -70,6 +71,12 @@ app.include_router(
     learning.router,
     prefix="/api",
     tags=["learning"],
+)
+
+app.include_router(
+    games.router,
+    prefix="/api",
+    tags=["games"],
 )
 
 app.include_router(
