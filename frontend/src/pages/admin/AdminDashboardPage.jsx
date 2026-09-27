@@ -527,18 +527,32 @@ export default function AdminDashboardPage() {
                                         <td>{person.role || 'user'}</td>
                                         <td><span className={statusStyle(person.status)}>{person.status}</span></td>
                                         <td>
-                                            <div className="admin-row-actions">
-                                                <button type="button" className="admin-action-link" onClick={() => setUserDialog({ user: person, mode: 'view' })}>View</button>
-                                                <button type="button" className="admin-action-link" onClick={() => setUserDialog({ user: person, mode: 'edit' })}>Edit</button>
-                                                <button type="button" className="admin-action-link" onClick={() => handleToggleUser(person)}>{person.is_active ? 'Disable' : 'Enable'}</button>
-                                                <button type="button" className="admin-action-link" onClick={() => handleResetPassword(person)}>Reset password</button>
-                                                <button type="button" className="admin-action-link" onClick={() => setUserDialog({ user: person, mode: 'progress' })}>Progress</button>
-                                                <button type="button" className="admin-action-link" onClick={() => setUserDialog({ user: person, mode: 'history' })}>History</button>
-                                                <button type="button" className="admin-action-link" onClick={() => setUserDialog({ user: person, mode: 'games' })}>Games</button>
-                                                <button type="button" className="admin-action-danger" disabled={deletingUserId === person.id} onClick={() => handleDeleteUser(person.name, person.id)}>
-                                                    {deletingUserId === person.id ? 'Deleting...' : 'Delete'}
-                                                </button>
-                                            </div>
+                                            <select
+                                                className="admin-row-actions-dropdown"
+                                                aria-label={`Actions for ${person.name}`}
+                                                value=""
+                                                onChange={(event) => {
+                                                    const action = event.target.value
+                                                    if (action === 'view') setUserDialog({ user: person, mode: 'view' })
+                                                    if (action === 'edit') setUserDialog({ user: person, mode: 'edit' })
+                                                    if (action === 'toggle') handleToggleUser(person)
+                                                    if (action === 'reset') handleResetPassword(person)
+                                                    if (action === 'progress') setUserDialog({ user: person, mode: 'progress' })
+                                                    if (action === 'history') setUserDialog({ user: person, mode: 'history' })
+                                                    if (action === 'games') setUserDialog({ user: person, mode: 'games' })
+                                                    if (action === 'delete') handleDeleteUser(person.name, person.id)
+                                                }}
+                                            >
+                                                <option value="" disabled>Actions</option>
+                                                <option value="view">View</option>
+                                                <option value="edit">Edit</option>
+                                                <option value="toggle">{person.is_active ? 'Disable' : 'Enable'}</option>
+                                                <option value="reset">Reset password</option>
+                                                <option value="progress">Progress</option>
+                                                <option value="history">History</option>
+                                                <option value="games">Games</option>
+                                                <option value="delete" disabled={deletingUserId === person.id}>Delete</option>
+                                            </select>
                                         </td>
                                     </tr>
                                 ))}
