@@ -2030,9 +2030,9 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    width: 120px;
+    width: 142px;
     min-height: 50px;
-    padding: 6px 6px;
+    padding: 6px 9px;
     border: 1px solid rgba(196, 203, 255, 0.2);
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.04);
