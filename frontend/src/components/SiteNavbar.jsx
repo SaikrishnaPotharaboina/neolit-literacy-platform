@@ -11,7 +11,6 @@ const navigation = [
     { label: 'Leaderboard', to: '/dashboard?section=leaderboard' },
     { label: 'Quests', to: '/dashboard?section=quests' },
     { label: 'Games', to: '/games' },
-    { label: 'Profile', to: '/profile' },
 ]
 
 const supportedLanguageCodes = ['en', 'hi', 'kn', 'ta', 'te']
@@ -29,6 +28,7 @@ export default function SiteNavbar() {
     const location = useLocation()
     const [languages, setLanguages] = useState([])
     const [profile, setProfile] = useState(null)
+    const [avatarFailed, setAvatarFailed] = useState(false)
     const [selectedLanguageCode, setSelectedLanguageCode] = useState(localStorage.getItem('neolit_selected_language') || user?.learning_language || 'en')
     const [courseMenuOpen, setCourseMenuOpen] = useState(false)
     const [nativeMenuOpen, setNativeMenuOpen] = useState(false)
@@ -62,6 +62,12 @@ export default function SiteNavbar() {
     const nativeLanguage = localStorage.getItem('neolit_native_language') || profile?.native_language || user?.native_language || 'English'
     const uiCopy = navbarUiCopy[nativeLanguageCodes[nativeLanguage] || 'en'] || navbarUiCopy.en
     const selectedLanguageName = languages.find((language) => language.code === selectedLanguageCode)?.name || (selectedLanguageCode === 'en' ? 'English' : selectedLanguageCode.toUpperCase())
+    const avatarImageUrl = profile?.avatar_url || profile?.profile_image_url || user?.avatar_url || user?.profile_image_url || ''
+    const avatarInitials = `${user?.first_name?.[0] || ''}${user?.last_name?.[0] || ''}`.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'
+
+    useEffect(() => {
+        setAvatarFailed(false)
+    }, [avatarImageUrl])
     const changeCourse = async (languageCode) => {
         if (languageCode === selectedLanguageCode) {
             setCourseMenuOpen(false)
@@ -168,6 +174,10 @@ export default function SiteNavbar() {
                     </div>
                 </div>
                 <button type="button" className="site-navbar-logout" onClick={logout}>{uiCopy.logout}</button>
+                <Link to="/profile" className="site-navbar-profile" aria-label={uiCopy.profile} title={uiCopy.profile}>
+                    <span>{avatarInitials}</span>
+                    {avatarImageUrl && !avatarFailed && <img src={avatarImageUrl} alt="" onError={() => setAvatarFailed(true)} />}
+                </Link>
             </div>
         </header>
     )

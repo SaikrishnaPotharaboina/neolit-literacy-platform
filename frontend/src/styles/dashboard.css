@@ -1928,6 +1928,37 @@
     background: rgba(62, 189, 117, 0.18);
 }
 
+.site-navbar-profile {
+    position: relative;
+    display: grid;
+    width: 50px;
+    height: 40px;
+    flex: 0 0 40px;
+    place-items: center;
+    overflow: hidden;
+    border: 2px solid rgba(98, 227, 157, 0.72);
+    border-radius: 50%;
+    background: linear-gradient(145deg, #2f806d, #283f72);
+    color: #f2fbf7;
+    font-size: 0.78rem;
+    font-weight: 850;
+    text-decoration: none;
+}
+
+.site-navbar-profile img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    object-fit: cover;
+}
+
+.site-navbar-profile:focus-visible {
+    outline: 2px solid #67e8a2;
+    outline-offset: 3px;
+}
+
 .site-navbar-actions {
     display: flex;
     align-items: center;
