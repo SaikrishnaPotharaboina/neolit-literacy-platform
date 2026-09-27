@@ -11,6 +11,7 @@ const navigation = [
     { label: 'Leaderboard', to: '/dashboard?section=leaderboard' },
     { label: 'Quests', to: '/dashboard?section=quests' },
     { label: 'Games', to: '/games' },
+    { label: 'Profile', to: '/profile' },
 ]
 
 const supportedLanguageCodes = ['en', 'hi', 'kn', 'ta', 'te']
@@ -28,12 +29,14 @@ export default function SiteNavbar() {
     const location = useLocation()
     const [languages, setLanguages] = useState([])
     const [profile, setProfile] = useState(null)
+    const [learningStats, setLearningStats] = useState(null)
     const [avatarFailed, setAvatarFailed] = useState(false)
     const [selectedLanguageCode, setSelectedLanguageCode] = useState(localStorage.getItem('neolit_selected_language') || user?.learning_language || 'en')
     const [courseMenuOpen, setCourseMenuOpen] = useState(false)
     const [nativeMenuOpen, setNativeMenuOpen] = useState(false)
     const [changingCourse, setChangingCourse] = useState(false)
     const [changingNative, setChangingNative] = useState(false)
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
     useEffect(() => {
         learningApi.getLanguages()
@@ -43,6 +46,10 @@ export default function SiteNavbar() {
         learningApi.getProfile()
             .then(setProfile)
             .catch(() => setProfile(null))
+
+        learningApi.getLearningState()
+            .then(setLearningStats)
+            .catch(() => setLearningStats(null))
     }, [])
 
     useEffect(() => {
@@ -64,6 +71,8 @@ export default function SiteNavbar() {
     const selectedLanguageName = languages.find((language) => language.code === selectedLanguageCode)?.name || (selectedLanguageCode === 'en' ? 'English' : selectedLanguageCode.toUpperCase())
     const avatarImageUrl = profile?.avatar_url || profile?.profile_image_url || user?.avatar_url || user?.profile_image_url || ''
     const avatarInitials = `${user?.first_name?.[0] || ''}${user?.last_name?.[0] || ''}`.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'
+    const mobileStreak = learningStats?.streak_days ?? user?.streak_days ?? 0
+    const mobileXp = learningStats?.xp ?? user?.xp ?? 0
 
     useEffect(() => {
         setAvatarFailed(false)
@@ -122,20 +131,34 @@ export default function SiteNavbar() {
     const localizedNavigation = navigation.map((item) => ({ ...item, label: uiCopy[item.to.includes('learning-path') ? 'home' : item.to.includes('section=learn') ? 'learn' : item.to.includes('section=letters') ? 'letters' : item.to.includes('section=leaderboard') ? 'leaderboard' : item.to.includes('section=quests') ? 'quests' : item.to.includes('/games') ? 'games' : 'profile'] }))
 
     return (
-        <header className="site-navbar">
+        <header className={`site-navbar ${mobileMenuOpen ? 'mobile-menu-open' : ''}`}>
+            <button
+                type="button"
+                className="site-mobile-menu-button"
+                aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                aria-expanded={mobileMenuOpen}
+                onClick={() => setMobileMenuOpen((open) => !open)}
+            >
+                {mobileMenuOpen ? '×' : '☰'}
+            </button>
             <Link to="/learning-path" className="site-navbar-brand">NeoLit</Link>
             <nav className="site-navbar-links" aria-label="Main navigation">
                 {localizedNavigation.map((item) => (
                     <Link
                         key={item.to}
                         to={item.to}
-                        className={`site-navbar-link ${location.pathname + location.search === item.to ? 'active' : ''}`}
+                        className={`site-navbar-link ${location.pathname + location.search === item.to ? 'active' : ''} ${item.to === '/profile' ? 'site-navbar-profile-nav-link' : ''}`}
+                        onClick={() => setMobileMenuOpen(false)}
                     >
                         {item.label}
                     </Link>
                 ))}
             </nav>
             <div className="site-navbar-actions">
+                <div className="site-mobile-stats" aria-label="Learning statistics">
+                    <span>🔥 <strong>{mobileStreak}</strong></span>
+                    <span>💎 <strong>{mobileXp}</strong></span>
+                </div>
                 <InstallApp compact />
                 <div className="site-language-pair">
                     <div className="site-native-switcher">
@@ -173,7 +196,7 @@ export default function SiteNavbar() {
                         )}
                     </div>
                 </div>
-                <button type="button" className="site-navbar-logout" onClick={logout}>{uiCopy.logout}</button>
+                <button type="button" className="site-navbar-logout" onClick={() => { setMobileMenuOpen(false); logout() }}>{uiCopy.logout}</button>
                 <Link to="/profile" className="site-navbar-profile" aria-label={uiCopy.profile} title={uiCopy.profile}>
                     <span>{avatarInitials}</span>
                     {avatarImageUrl && !avatarFailed && <img src={avatarImageUrl} alt="" onError={() => setAvatarFailed(true)} />}
