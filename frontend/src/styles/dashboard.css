@@ -1931,7 +1931,7 @@
 .site-navbar-profile {
     position: relative;
     display: grid;
-    width: 50px;
+    width: 40px;
     height: 40px;
     flex: 0 0 40px;
     place-items: center;
