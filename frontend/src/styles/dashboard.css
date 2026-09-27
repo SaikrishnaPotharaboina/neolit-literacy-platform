@@ -6658,3 +6658,1100 @@
         align-items: flex-start;
     }
 }
+
+.neo-learn-dashboard {
+    --dash-bg: #071a20;
+    --dash-surface: #0b262d;
+    --dash-surface-raised: #103139;
+    --dash-border: rgba(132, 184, 190, 0.18);
+    --dash-text: #eff8f5;
+    --dash-muted: #91aeb2;
+    --dash-green: #62e39d;
+    width: 100%;
+    min-height: calc(100vh - 132px);
+    margin: 0;
+    padding: 28px clamp(18px, 3vw, 42px) 48px;
+    background:
+        radial-gradient(ellipse at 50% -20%, rgba(41, 115, 99, 0.2), transparent 55%),
+        linear-gradient(160deg, #071a20 0%, #091e26 54%, #0b2529 100%);
+    color: var(--dash-text);
+}
+
+.neo-dashboard-message {
+    margin-bottom: 14px;
+    padding: 11px 14px;
+    border: 1px solid rgba(255, 211, 95, 0.24);
+    border-radius: 11px;
+    background: rgba(109, 79, 21, 0.2);
+    color: #ffe6a0;
+    font-size: 0.85rem;
+}
+
+.neo-dashboard-topline {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 22px;
+}
+
+.neo-dashboard-welcome {
+    color: var(--dash-muted);
+    font-size: 0.82rem;
+}
+
+.neo-dashboard-topline h1 {
+    margin: 4px 0 0;
+    color: var(--dash-text);
+    font-size: clamp(1.45rem, 2.6vw, 2rem);
+    font-weight: 850;
+    line-height: 1.2;
+}
+
+.neo-dashboard-topline h1 span {
+    color: var(--dash-green);
+}
+
+.neo-dashboard-stats {
+    display: flex;
+    gap: 8px;
+}
+
+.neo-dashboard-stats>div {
+    display: grid;
+    grid-template-columns: 25px auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    min-width: 82px;
+    padding: 8px 10px;
+    border: 1px solid var(--dash-border);
+    border-radius: 11px;
+    background: var(--dash-surface);
+}
+
+.neo-dashboard-stats>div>span {
+    grid-row: 1 / span 2;
+    font-size: 1rem;
+}
+
+.neo-dashboard-stats strong {
+    color: #f4faf7;
+    font-size: 0.88rem;
+    line-height: 1;
+}
+
+.neo-dashboard-stats small {
+    margin-top: 3px;
+    color: var(--dash-muted);
+    font-size: 0.61rem;
+}
+
+.neo-learning-hero {
+    position: relative;
+    display: flex;
+    min-height: 218px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    border: 1px solid rgba(89, 186, 157, 0.2);
+    border-radius: 18px;
+    background: linear-gradient(105deg, #0e3940 0%, #0e343b 52%, #153a3f 100%);
+    box-shadow: 0 18px 40px rgba(0, 8, 15, 0.2);
+}
+
+.neo-learning-hero-copy {
+    position: relative;
+    z-index: 2;
+    width: 58%;
+    padding: 24px 30px;
+}
+
+.neo-learning-hero-copy>span {
+    color: #77eaae;
+    font-size: 0.66rem;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+}
+
+.neo-learning-hero-copy h2 {
+    margin: 9px 0 6px;
+    color: #f4fbf8;
+    font-size: clamp(1.8rem, 3.1vw, 2.5rem);
+    font-weight: 900;
+    line-height: 1.04;
+}
+
+.neo-learning-hero-copy p {
+    max-width: 420px;
+    margin: 0;
+    color: #b3cfd0;
+    font-size: 0.83rem;
+    line-height: 1.55;
+}
+
+.neo-primary-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 39px;
+    margin-top: 13px;
+    padding: 9px 14px;
+    border-radius: 9px;
+    background: var(--dash-green);
+    color: #06231a;
+    font-size: 0.78rem;
+    font-weight: 850;
+    transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+.neo-primary-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.07);
+}
+
+.neo-primary-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.neo-learning-hero-art {
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 47%;
+    overflow: hidden;
+    background: linear-gradient(180deg, #1a5360, #17464b 65%, #123b39);
+}
+
+.neo-learning-hero-art::before,
+.neo-learning-hero-art::after {
+    position: absolute;
+    right: -4%;
+    bottom: -36%;
+    width: 120%;
+    height: 86%;
+    border-radius: 50% 50% 0 0;
+    content: '';
+}
+
+.neo-learning-hero-art::before {
+    right: 14%;
+    bottom: -48%;
+    background: #1a6553;
+    transform: rotate(-8deg);
+}
+
+.neo-learning-hero-art::after {
+    background: #0d473b;
+    transform: rotate(8deg);
+}
+
+.neo-hero-sun {
+    position: absolute;
+    top: 22px;
+    right: 68px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #ffd578;
+    box-shadow: 0 0 42px rgba(255, 213, 120, 0.32);
+}
+
+.neo-hero-mountain {
+    position: absolute;
+    z-index: 1;
+    bottom: 12%;
+    width: 0;
+    height: 0;
+    border-right: 108px solid transparent;
+    border-bottom: 104px solid #31595a;
+    border-left: 108px solid transparent;
+}
+
+.neo-hero-mountain-back {
+    right: 34%;
+    bottom: 18%;
+    border-right-width: 130px;
+    border-bottom-color: #53766d;
+    border-left-width: 130px;
+}
+
+.neo-hero-mountain-front {
+    right: -2%;
+}
+
+.neo-hero-tree {
+    position: absolute;
+    z-index: 3;
+    bottom: 13px;
+    font-size: 2.1rem;
+    filter: drop-shadow(0 6px 5px rgba(0, 0, 0, 0.24));
+}
+
+.neo-hero-tree-one {
+    right: 54%;
+}
+
+.neo-hero-tree-two {
+    right: 27%;
+    bottom: 25px;
+    font-size: 2.6rem;
+}
+
+.neo-hero-tree-three {
+    right: 5%;
+    font-size: 1.8rem;
+}
+
+.neo-hero-owl {
+    position: absolute;
+    z-index: 4;
+    right: 12%;
+    bottom: 9px;
+    font-size: 3.8rem;
+    filter: drop-shadow(0 9px 8px rgba(0, 0, 0, 0.35));
+}
+
+.neo-dashboard-content-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 282px;
+    align-items: start;
+    gap: 22px;
+}
+
+.neo-learning-section {
+    min-width: 0;
+}
+
+.neo-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 16px;
+}
+
+.neo-section-heading>div:first-child>span {
+    color: var(--dash-green);
+    font-size: 0.64rem;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+}
+
+.neo-section-heading h2 {
+    margin: 4px 0 3px;
+    color: #f1f8f6;
+    font-size: 1.3rem;
+    line-height: 1.25;
+}
+
+.neo-section-heading p {
+    margin: 0;
+    color: var(--dash-muted);
+    font-size: 0.78rem;
+}
+
+.neo-unit-progress-ring {
+    display: grid;
+    width: 62px;
+    height: 62px;
+    flex: 0 0 62px;
+    place-items: center;
+    border-radius: 50%;
+    background: conic-gradient(var(--dash-green) 0 var(--unit-progress), #1a3d43 var(--unit-progress) 100%);
+}
+
+.neo-unit-progress-ring span {
+    display: grid;
+    width: 49px;
+    height: 49px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--dash-bg);
+    color: #edfaf3;
+    font-size: 0.78rem;
+    font-weight: 850;
+}
+
+.neo-unit-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 9px;
+    margin-bottom: 14px;
+}
+
+.neo-unit-tab {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+    min-height: 64px;
+    padding: 9px;
+    border: 1px solid var(--dash-border);
+    border-radius: 11px;
+    background: var(--dash-surface);
+    color: #eaf5f1;
+    text-align: left;
+    transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.neo-unit-tab:hover:not(:disabled) {
+    transform: translateY(-2px);
+    border-color: rgba(98, 227, 157, 0.54);
+}
+
+.neo-unit-tab.selected {
+    border-color: var(--dash-green);
+    background: linear-gradient(135deg, rgba(86, 227, 155, 0.13), #0b262d 75%);
+    box-shadow: inset 3px 0 var(--dash-green);
+}
+
+.neo-unit-tab:disabled {
+    cursor: not-allowed;
+    opacity: 0.48;
+}
+
+.neo-unit-tab-icon {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    place-items: center;
+    border-radius: 10px;
+    background: #143a3e;
+    font-size: 1rem;
+}
+
+.neo-unit-tab-copy {
+    display: grid;
+    min-width: 0;
+    gap: 4px;
+}
+
+.neo-unit-tab-copy small {
+    color: #80cba3;
+    font-size: 0.58rem;
+    font-weight: 850;
+}
+
+.neo-unit-tab-copy strong {
+    overflow: hidden;
+    color: #eaf5f1;
+    font-size: 0.68rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.neo-unit-tab-copy i,
+.neo-unit-tab-copy i span {
+    display: block;
+    height: 4px;
+    overflow: hidden;
+    border-radius: 99px;
+}
+
+.neo-unit-tab-copy i {
+    background: #1b4248;
+}
+
+.neo-unit-tab-copy i span {
+    background: var(--dash-green);
+}
+
+.neo-path-card {
+    position: relative;
+    min-height: 352px;
+    overflow: hidden;
+    padding: 18px 20px;
+    border: 1px solid var(--dash-border);
+    border-radius: 16px;
+    background: radial-gradient(circle at 50% 18%, rgba(53, 184, 126, 0.12), transparent 46%), #09252c;
+}
+
+.neo-path-background {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 70%, rgba(25, 117, 83, 0.14), transparent 55%);
+    pointer-events: none;
+}
+
+.neo-learning-path {
+    position: relative;
+    width: min(100%, 620px);
+    margin: 0 auto;
+}
+
+.neo-learning-path::before {
+    position: absolute;
+    top: 43px;
+    bottom: 43px;
+    left: 50%;
+    border-left: 3px dashed rgba(88, 154, 140, 0.44);
+    content: '';
+}
+
+.neo-path-step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    min-height: 105px;
+}
+
+.neo-path-step.path-left {
+    justify-content: flex-start;
+    padding-left: 17%;
+}
+
+.neo-path-step.path-right {
+    justify-content: flex-end;
+    padding-right: 17%;
+}
+
+.neo-path-connector {
+    position: absolute;
+    z-index: -1;
+    top: 68px;
+    left: 37%;
+    width: 26%;
+    height: 53px;
+    overflow: hidden;
+}
+
+.neo-path-connector span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-right: 3px dashed rgba(88, 154, 140, 0.44);
+    border-bottom: 3px dashed rgba(88, 154, 140, 0.44);
+    border-radius: 0 0 38px 0;
+}
+
+.neo-path-step.path-right .neo-path-connector {
+    transform: scaleX(-1);
+}
+
+.neo-lesson-node {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    width: 67px;
+    height: 67px;
+    flex: 0 0 67px;
+    place-items: center;
+    border: 5px solid #24474c;
+    border-radius: 50%;
+    background: #142f35;
+    color: #a9bdbe;
+    box-shadow: 0 7px 0 rgba(0, 0, 0, 0.22);
+    font-size: 1.1rem;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.neo-lesson-node:hover:not(.locked) {
+    transform: scale(1.06);
+}
+
+.neo-lesson-node.completed {
+    border-color: #84e9b2;
+    background: #20a967;
+    color: white;
+    box-shadow: 0 0 0 5px rgba(84, 227, 155, 0.11), 0 7px 0 rgba(0, 0, 0, 0.2);
+}
+
+.neo-lesson-node.current {
+    width: 78px;
+    height: 78px;
+    flex-basis: 78px;
+    border-color: #8df1b8;
+    background: linear-gradient(145deg, #61e69a, #19ae68);
+    color: #082a1a;
+    box-shadow: 0 0 0 7px rgba(86, 227, 155, 0.13), 0 9px 0 rgba(0, 0, 0, 0.2);
+}
+
+.neo-lesson-node.locked {
+    cursor: not-allowed;
+    opacity: 0.48;
+}
+
+.neo-lesson-label {
+    display: grid;
+    min-width: 140px;
+    gap: 4px;
+    margin: 0 13px;
+}
+
+.neo-path-step.path-right .neo-lesson-label {
+    order: -1;
+    text-align: right;
+}
+
+.neo-lesson-label strong {
+    color: #eff9f4;
+    font-size: 0.82rem;
+}
+
+.neo-lesson-label span {
+    color: var(--dash-muted);
+    font-size: 0.68rem;
+}
+
+.neo-path-step:has(.neo-lesson-node.current) .neo-lesson-label span {
+    color: var(--dash-green);
+}
+
+.neo-assessment-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 14px;
+    padding: 15px;
+    border: 1px solid rgba(153, 127, 255, 0.3);
+    border-radius: 14px;
+    background: linear-gradient(115deg, rgba(112, 83, 196, 0.16), rgba(18, 35, 58, 0.9));
+}
+
+.neo-assessment-icon {
+    display: grid;
+    width: 45px;
+    height: 45px;
+    flex: 0 0 45px;
+    place-items: center;
+    border-radius: 12px;
+    background: rgba(157, 129, 255, 0.17);
+    font-size: 1.35rem;
+}
+
+.neo-assessment-copy {
+    min-width: 0;
+    flex: 1;
+}
+
+.neo-assessment-copy>small {
+    color: #c4b5ff;
+    font-size: 0.59rem;
+    font-weight: 850;
+    letter-spacing: 0.1em;
+}
+
+.neo-assessment-copy h3 {
+    margin: 3px 0;
+    color: #f4f1ff;
+    font-size: 0.93rem;
+}
+
+.neo-assessment-copy p {
+    margin: 0 0 7px;
+    color: #aeb6cb;
+    font-size: 0.68rem;
+    line-height: 1.4;
+}
+
+.neo-assessment-copy>div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: #d0d1e2;
+    font-size: 0.62rem;
+}
+
+.neo-assessment-button {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 8px;
+    min-height: 39px;
+    padding: 9px 12px;
+    border-radius: 9px;
+    background: #a88cff;
+    color: #1b1037;
+    font-size: 0.72rem;
+    font-weight: 850;
+}
+
+.neo-assessment-button:hover {
+    filter: brightness(1.08);
+}
+
+.neo-dashboard-aside {
+    display: grid;
+    gap: 12px;
+}
+
+.neo-side-card {
+    padding: 15px;
+    border: 1px solid var(--dash-border);
+    border-radius: 14px;
+    background: var(--dash-surface);
+}
+
+.neo-side-card header {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #eef8f4;
+    font-size: 0.82rem;
+}
+
+.neo-side-card header>span {
+    font-size: 1.1rem;
+}
+
+.neo-streak-value {
+    margin: 10px 0;
+    color: #f5fbf8;
+    font-size: 1.9rem;
+    font-weight: 900;
+}
+
+.neo-streak-value small {
+    color: var(--dash-muted);
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.neo-week-days {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.neo-week-days>span {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    color: #799397;
+    font-size: 0.59rem;
+}
+
+.neo-week-days>span i {
+    display: grid;
+    width: 23px;
+    height: 23px;
+    place-items: center;
+    border-radius: 50%;
+    background: #14353b;
+    color: var(--dash-green);
+    font-size: 0.62rem;
+    font-style: normal;
+}
+
+.neo-week-days>span.active {
+    color: var(--dash-green);
+}
+
+.neo-week-days>span.active i {
+    background: rgba(98, 227, 157, 0.14);
+}
+
+.neo-quest-card {
+    background: linear-gradient(145deg, #302919, #201d18);
+    border-color: rgba(255, 211, 92, 0.18);
+}
+
+.neo-quest-card p {
+    margin: 12px 0 9px;
+    color: #e5dcc5;
+    font-size: 0.72rem;
+}
+
+.neo-quest-progress,
+.neo-progress-track {
+    height: 8px;
+    overflow: hidden;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.13);
+}
+
+.neo-quest-progress span,
+.neo-progress-track span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+}
+
+.neo-quest-progress span {
+    background: #ffd04b;
+}
+
+.neo-quest-card footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    margin-top: 6px;
+    color: #c5b998;
+    font-size: 0.63rem;
+}
+
+.neo-quest-card footer strong {
+    color: #ffda62;
+}
+
+.neo-total-lessons,
+.neo-progress-stat {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 12px;
+    color: var(--dash-muted);
+    font-size: 0.72rem;
+}
+
+.neo-total-lessons strong {
+    color: #f0f8f4;
+    font-size: 0.8rem;
+}
+
+.neo-progress-track {
+    height: 6px;
+    margin-top: 7px;
+    background: #1a4145;
+}
+
+.neo-progress-track span {
+    background: var(--dash-green);
+}
+
+.neo-progress-stat {
+    padding-top: 9px;
+    border-top: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.neo-progress-stat strong {
+    color: #eaf5f0;
+    font-size: 0.72rem;
+}
+
+.neo-assessment-overlay {
+    position: fixed;
+    z-index: 1400;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgba(2, 12, 17, 0.78);
+    backdrop-filter: blur(7px);
+}
+
+.neo-assessment-dialog {
+    width: min(600px, 100%);
+    max-height: min(760px, calc(100vh - 40px));
+    overflow-y: auto;
+    padding: 23px;
+    border: 1px solid rgba(132, 184, 190, 0.23);
+    border-radius: 17px;
+    background: #0b262d;
+    color: var(--dash-text);
+    box-shadow: 0 26px 72px rgba(0, 0, 0, 0.45);
+}
+
+.neo-assessment-dialog-head>div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.neo-assessment-dialog-head small {
+    color: #a7c1bd;
+    font-size: 0.72rem;
+}
+
+.neo-assessment-dialog-head button {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--dash-border);
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    font-size: 1.3rem;
+}
+
+.neo-assessment-dialog-head>i {
+    display: block;
+    height: 8px;
+    margin-top: 11px;
+    overflow: hidden;
+    border-radius: 99px;
+    background: #1d4146;
+}
+
+.neo-assessment-dialog-head>i span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--dash-green);
+}
+
+.neo-assessment-question-count {
+    margin: 20px 0 7px;
+    color: var(--dash-green);
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.neo-assessment-dialog form h2 {
+    margin: 0 0 17px;
+    font-size: 1.3rem;
+    line-height: 1.4;
+}
+
+.neo-assessment-options {
+    display: grid;
+    gap: 8px;
+}
+
+.neo-assessment-options button,
+.neo-assessment-dialog input {
+    width: 100%;
+    min-height: 45px;
+    padding: 10px 13px;
+    border: 1px solid rgba(132, 184, 190, 0.2);
+    border-radius: 9px;
+    background: #102f36;
+    color: #eff8f5;
+    text-align: left;
+}
+
+.neo-assessment-options button.selected {
+    border-color: var(--dash-green);
+    background: rgba(98, 227, 157, 0.13);
+}
+
+.neo-assessment-dialog form footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.neo-assessment-dialog form footer button,
+.neo-assessment-result button {
+    min-height: 40px;
+    padding: 9px 14px;
+    border-radius: 9px;
+    background: var(--dash-green);
+    color: #062219;
+    font-size: 0.75rem;
+    font-weight: 850;
+}
+
+.neo-assessment-dialog form footer button.secondary {
+    border: 1px solid var(--dash-border);
+    background: transparent;
+    color: #d5e5df;
+}
+
+.neo-assessment-dialog form footer button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+.neo-assessment-result {
+    padding: 17px 5px 4px;
+    text-align: center;
+}
+
+.neo-assessment-result>span {
+    font-size: 2rem;
+}
+
+.neo-assessment-result h2 {
+    margin: 8px 0;
+    font-size: 1.2rem;
+}
+
+.neo-assessment-result>strong {
+    display: block;
+    color: var(--dash-green);
+    font-size: 3.5rem;
+}
+
+.neo-assessment-result p {
+    color: #b1c4bf;
+    font-size: 0.82rem;
+}
+
+@media (max-width: 1050px) {
+    .neo-dashboard-content-grid {
+        grid-template-columns: minmax(0, 1fr) 250px;
+        gap: 14px;
+    }
+
+    .neo-unit-tabs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 780px) {
+    .neo-dashboard-content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .neo-dashboard-aside {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .neo-progress-card {
+        grid-column: 1 / -1;
+    }
+
+    .neo-learning-hero-copy {
+        width: 70%;
+        padding: 23px;
+    }
+}
+
+@media (max-width: 560px) {
+    .neo-learn-dashboard {
+        min-height: 0;
+        padding: 19px 14px 32px;
+    }
+
+    .neo-dashboard-topline {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 13px;
+    }
+
+    .neo-dashboard-stats {
+        width: 100%;
+    }
+
+    .neo-dashboard-stats>div {
+        flex: 1;
+    }
+
+    .neo-learning-hero {
+        min-height: 288px;
+        margin-bottom: 22px;
+    }
+
+    .neo-learning-hero-copy {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .neo-learning-hero-copy h2 {
+        font-size: 2rem;
+    }
+
+    .neo-learning-hero-art {
+        inset: auto 0 0;
+        width: 100%;
+        height: 108px;
+        opacity: 0.62;
+    }
+
+    .neo-hero-owl {
+        right: 15%;
+        font-size: 2.7rem;
+    }
+
+    .neo-hero-sun {
+        top: 9px;
+        right: 40px;
+        width: 32px;
+        height: 32px;
+    }
+
+    .neo-section-heading h2 {
+        font-size: 1.12rem;
+    }
+
+    .neo-unit-progress-ring {
+        width: 54px;
+        height: 54px;
+        flex-basis: 54px;
+    }
+
+    .neo-unit-progress-ring span {
+        width: 43px;
+        height: 43px;
+    }
+
+    .neo-unit-tabs {
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+    }
+
+    .neo-unit-tab {
+        min-height: 58px;
+        padding: 7px;
+    }
+
+    .neo-unit-tab-icon {
+        width: 29px;
+        height: 29px;
+        flex-basis: 29px;
+        font-size: 0.85rem;
+    }
+
+    .neo-unit-tab-copy strong {
+        font-size: 0.61rem;
+    }
+
+    .neo-path-card {
+        min-height: 320px;
+        padding: 12px 7px;
+    }
+
+    .neo-path-step {
+        min-height: 98px;
+    }
+
+    .neo-path-step.path-left {
+        padding-left: 7%;
+    }
+
+    .neo-path-step.path-right {
+        padding-right: 7%;
+    }
+
+    .neo-lesson-node {
+        width: 57px;
+        height: 57px;
+        flex-basis: 57px;
+    }
+
+    .neo-lesson-node.current {
+        width: 68px;
+        height: 68px;
+        flex-basis: 68px;
+    }
+
+    .neo-lesson-label {
+        min-width: 0;
+        max-width: 145px;
+        margin: 0 8px;
+    }
+
+    .neo-lesson-label strong {
+        font-size: 0.72rem;
+    }
+
+    .neo-lesson-label span {
+        font-size: 0.61rem;
+    }
+
+    .neo-assessment-card {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .neo-assessment-copy {
+        flex-basis: calc(100% - 60px);
+    }
+
+    .neo-assessment-button {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .neo-dashboard-aside {
+        grid-template-columns: 1fr;
+    }
+
+    .neo-progress-card {
+        grid-column: auto;
+    }
+}
