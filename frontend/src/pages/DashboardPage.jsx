@@ -20,6 +20,14 @@ const dashboardUiCopy = {
     ta: { learn: 'கற்க', letters: 'எழுத்துகள்', leaderboard: 'முன்னணி பட்டியல்', quests: 'சவால்கள்', shop: 'கடை', profile: 'சுயவிவரம்', more: 'மேலும்', logout: 'வெளியேறு', myCourse: 'என் பாடநெறி', myCourses: 'என் பாடநெறிகள்', native: 'தாய்மொழி', learning: 'கற்கும் மொழி', section: 'பிரிவு', unit: 'அலகு', complete: 'முடிந்தது', completed: 'முடிந்தது', startHere: 'இங்கே தொடங்குங்கள்', previousLesson: 'முந்தைய பாடத்தை முடிக்கவும்', viewAll: 'அனைத்தையும் காண்க', unlockLeaderboards: 'முன்னணி பட்டியலைத் திறக்கவும்!', readyToCompete: 'நீங்கள் போட்டிக்கு தயார்!', competePrompt: 'போட்டியைத் தொடங்க {count} மேலும் பாடங்களை முடிக்கவும்', dailyQuests: 'அன்றாட சவால்கள்', earnXp: '10 XP பெறுங்கள்', reviewUnit: 'அலகை மறுஆய்வு செய்யுங்கள்', goToUnit: 'அலகுக்குச் செல்லுங்கள்', unitSummary: 'அலகு {unit} • 3 பாடங்கள் • ஒவ்வொன்றும் +10 XP' },
     te: { learn: 'నేర్చుకోండి', letters: 'అక్షరాలు', leaderboard: 'లీడర్‌బోర్డ్', quests: 'లక్ష్యాలు', shop: 'దుకాణం', profile: 'ప్రొఫైల్', more: 'మరిన్ని', logout: 'లాగ్ అవుట్', myCourse: 'నా కోర్సు', myCourses: 'నా కోర్సులు', native: 'మాతృభాష', learning: 'నేర్చుకునే భాష', section: 'విభాగం', unit: 'యూనిట్', complete: 'పూర్తి', completed: 'పూర్తయింది', startHere: 'ఇక్కడ ప్రారంభించండి', previousLesson: 'మునుపటి పాఠాన్ని పూర్తి చేయండి', viewAll: 'అన్ని చూడండి', unlockLeaderboards: 'లీడర్‌బోర్డ్ Unlock చేయండి!', readyToCompete: 'మీరు పోటీకి సిద్ధంగా ఉన్నారు!', competePrompt: 'పోటీ ప్రారంభించడానికి {count} మరిన్ని పాఠాలు పూర్తి చేయండి', dailyQuests: 'రోజువారీ లక్ష్యాలు', earnXp: '10 XP సంపాదించండి', reviewUnit: 'యూనిట్‌ను రివ్యూ చేయండి', goToUnit: 'యూనిట్‌కి వెళ్లండి', unitSummary: 'యూనిట్ {unit} • 3 పాఠాలు • ప్రతి +10 XP' },
 }
+const dashboardPageCopy = {
+    en: { welcome: 'Welcome back', ready: 'Ready to learn,', journey: 'YOUR LEARNING JOURNEY', heroFirst: 'Small steps.', heroSecond: 'Big progress.', heroDescription: 'Continue learning and build your language skills every day.', continue: 'Continue learning', yourPath: 'YOUR PATH', lessonsCompleted: 'lessons completed', assessment: 'UNIT ASSESSMENT', test: 'Test your knowledge', assessmentDescription: 'Try a fresh set of questions about what you have learned.', questions: 'questions', minutes: 'min', upTo: 'Up to', startAssessment: 'Start assessment', streak: 'Streak', todayQuest: "Today's quest", completeLessons: 'Complete {count} lessons', progress: 'Your progress', totalXp: 'Total XP', hearts: 'Hearts', otherLessons: 'Other lessons', exit: 'Exit', question: 'Question', of: 'of', next: 'Continue', submit: 'Submit assessment', typeAnswer: 'Type your answer', complete: 'Assessment complete!', score: 'Score', xpEarned: 'XP earned', done: 'Done', noAssessment: 'No assessment is available for this course yet.' },
+    hi: { welcome: 'वापसी पर स्वागत है', ready: 'सीखने के लिए तैयार,', journey: 'आपकी सीखने की यात्रा', heroFirst: 'छोटे कदम।', heroSecond: 'बड़ी प्रगति।', heroDescription: 'सीखना जारी रखें और हर दिन अपनी भाषा का कौशल बढ़ाएँ।', continue: 'सीखना जारी रखें', yourPath: 'आपका सीखने का रास्ता', lessonsCompleted: 'पाठ पूरे', assessment: 'यूनिट मूल्यांकन', test: 'अपनी जानकारी जाँचें', assessmentDescription: 'सीखी हुई बातों पर नए प्रश्न हल करें।', questions: 'प्रश्न', minutes: 'मिनट', upTo: 'तक', startAssessment: 'मूल्यांकन शुरू करें', streak: 'लगातार दिन', todayQuest: 'आज का लक्ष्य', completeLessons: '{count} पाठ पूरे करें', progress: 'आपकी प्रगति', totalXp: 'कुल XP', hearts: 'दिल', otherLessons: 'अन्य पाठ', exit: 'बाहर जाएँ', question: 'प्रश्न', of: 'में से', next: 'आगे बढ़ें', submit: 'मूल्यांकन जमा करें', typeAnswer: 'अपना उत्तर लिखें', complete: 'मूल्यांकन पूरा हुआ!', score: 'अंक', xpEarned: 'XP अर्जित', done: 'हो गया', noAssessment: 'इस कोर्स के लिए अभी कोई मूल्यांकन उपलब्ध नहीं है।' },
+    kn: { welcome: 'ಮರಳಿ ಸ್ವಾಗತ', ready: 'ಕಲಿಯಲು ಸಿದ್ಧರಿದ್ದೀರಾ,', journey: 'ನಿಮ್ಮ ಕಲಿಕೆಯ ಪಯಣ', heroFirst: 'ಸಣ್ಣ ಹೆಜ್ಜೆಗಳು.', heroSecond: 'ದೊಡ್ಡ ಪ್ರಗತಿ.', heroDescription: 'ಕಲಿಕೆಯನ್ನು ಮುಂದುವರಿಸಿ, ಪ್ರತಿದಿನ ನಿಮ್ಮ ಭಾಷಾ ಕೌಶಲ್ಯ ಬೆಳೆಸಿಕೊಳ್ಳಿ.', continue: 'ಕಲಿಕೆಯನ್ನು ಮುಂದುವರಿಸಿ', yourPath: 'ನಿಮ್ಮ ಕಲಿಕೆಯ ಹಾದಿ', lessonsCompleted: 'ಪಾಠಗಳು ಪೂರ್ಣ', assessment: 'ಯುನಿಟ್ ಮೌಲ್ಯಮಾಪನ', test: 'ನಿಮ್ಮ ಜ್ಞಾನ ಪರೀಕ್ಷಿಸಿ', assessmentDescription: 'ಕಲಿತ ವಿಷಯಗಳ ಕುರಿತು ಹೊಸ ಪ್ರಶ್ನೆಗಳನ್ನು ಪ್ರಯತ್ನಿಸಿ.', questions: 'ಪ್ರಶ್ನೆಗಳು', minutes: 'ನಿಮಿಷ', upTo: 'ವರೆಗೆ', startAssessment: 'ಮೌಲ್ಯಮಾಪನ ಪ್ರಾರಂಭಿಸಿ', streak: 'ಸತತ ದಿನಗಳು', todayQuest: 'ಇಂದಿನ ಗುರಿ', completeLessons: '{count} ಪಾಠಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ', progress: 'ನಿಮ್ಮ ಪ್ರಗತಿ', totalXp: 'ಒಟ್ಟು XP', hearts: 'ಹೃದಯಗಳು', otherLessons: 'ಇತರ ಪಾಠಗಳು', exit: 'ನಿರ್ಗಮಿಸಿ', question: 'ಪ್ರಶ್ನೆ', of: 'ರಲ್ಲಿ', next: 'ಮುಂದುವರಿಸಿ', submit: 'ಮೌಲ್ಯಮಾಪನ ಸಲ್ಲಿಸಿ', typeAnswer: 'ನಿಮ್ಮ ಉತ್ತರ ಬರೆಯಿರಿ', complete: 'ಮೌಲ್ಯಮಾಪನ ಪೂರ್ಣಗೊಂಡಿದೆ!', score: 'ಅಂಕ', xpEarned: 'ಗಳಿಸಿದ XP', done: 'ಆಯಿತು', noAssessment: 'ಈ ಕೋರ್ಸ್‌ಗೆ ಇನ್ನೂ ಮೌಲ್ಯಮಾಪನ ಲಭ್ಯವಿಲ್ಲ.' },
+    ta: { welcome: 'மீண்டும் வரவேற்கிறோம்', ready: 'கற்கத் தயாரா,', journey: 'உங்கள் கற்றல் பயணம்', heroFirst: 'சிறிய படிகள்.', heroSecond: 'பெரிய முன்னேற்றம்.', heroDescription: 'தொடர்ந்து கற்று, தினமும் உங்கள் மொழித் திறனை வளர்த்துக் கொள்ளுங்கள்.', continue: 'கற்றலைத் தொடரவும்', yourPath: 'உங்கள் கற்றல் பாதை', lessonsCompleted: 'பாடங்கள் முடிந்தன', assessment: 'அலகு மதிப்பீடு', test: 'உங்கள் அறிவைச் சோதிக்கவும்', assessmentDescription: 'கற்றவற்றைப் பற்றிய புதிய கேள்விகளை முயற்சிக்கவும்.', questions: 'கேள்விகள்', minutes: 'நிமிடம்', upTo: 'வரை', startAssessment: 'மதிப்பீட்டைத் தொடங்கு', streak: 'தொடர் நாட்கள்', todayQuest: 'இன்றைய இலக்கு', completeLessons: '{count} பாடங்களை முடிக்கவும்', progress: 'உங்கள் முன்னேற்றம்', totalXp: 'மொத்த XP', hearts: 'இதயங்கள்', otherLessons: 'பிற பாடங்கள்', exit: 'வெளியேறு', question: 'கேள்வி', of: 'இல்', next: 'தொடரவும்', submit: 'மதிப்பீட்டைச் சமர்ப்பிக்கவும்', typeAnswer: 'உங்கள் பதிலை எழுதுங்கள்', complete: 'மதிப்பீடு முடிந்தது!', score: 'மதிப்பெண்', xpEarned: 'பெற்ற XP', done: 'முடிந்தது', noAssessment: 'இந்தப் பாடநெறிக்கு மதிப்பீடு இன்னும் கிடைக்கவில்லை.' },
+    te: { welcome: 'తిరిగి స్వాగతం', ready: 'నేర్చుకోవడానికి సిద్ధమా,', journey: 'మీ అభ్యాస ప్రయాణం', heroFirst: 'చిన్న అడుగులు.', heroSecond: 'పెద్ద పురోగతి.', heroDescription: 'నేర్చుకుంటూ ఉండండి, ప్రతిరోజూ మీ భాషా నైపుణ్యాలను పెంచుకోండి.', continue: 'అభ్యాసాన్ని కొనసాగించండి', yourPath: 'మీ అభ్యాస మార్గం', lessonsCompleted: 'పాఠాలు పూర్తయ్యాయి', assessment: 'యూనిట్ మూల్యాంకనం', test: 'మీ జ్ఞానాన్ని పరీక్షించండి', assessmentDescription: 'మీరు నేర్చుకున్న విషయాలపై కొత్త ప్రశ్నలను ప్రయత్నించండి.', questions: 'ప్రశ్నలు', minutes: 'నిమిషాలు', upTo: 'వరకు', startAssessment: 'మూల్యాంకనం ప్రారంభించండి', streak: 'వరుస రోజులు', todayQuest: 'నేటి లక్ష్యం', completeLessons: '{count} పాఠాలు పూర్తి చేయండి', progress: 'మీ పురోగతి', totalXp: 'మొత్తం XP', hearts: 'హృదయాలు', otherLessons: 'ఇతర పాఠాలు', exit: 'నిష్క్రమించండి', question: 'ప్రశ్న', of: 'లో', next: 'కొనసాగించండి', submit: 'మూల్యాంకనాన్ని సమర్పించండి', typeAnswer: 'మీ సమాధానాన్ని రాయండి', complete: 'మూల్యాంకనం పూర్తయింది!', score: 'స్కోరు', xpEarned: 'సంపాదించిన XP', done: 'పూర్తయింది', noAssessment: 'ఈ కోర్సుకు ఇంకా మూల్యాంకనం అందుబాటులో లేదు.' },
+}
+const courseAssessmentTitles = { en: 'COURSE ASSESSMENT', hi: 'कोर्स मूल्यांकन', kn: 'ಕೋರ್ಸ್ ಮೌಲ್ಯಮಾಪನ', ta: 'பாடநெறி மதிப்பீடு', te: 'కోర్సు మూల్యాంకనం' }
 const lessonStages = [
     { id: 'reading', icon: '🧠', label: 'Reading' },
     { id: 'writing', icon: '💡', label: 'Writing' },
@@ -229,6 +237,8 @@ export default function DashboardPage() {
     const [leaderboardPage, setLeaderboardPage] = useState(1)
     const [selected, setSelected] = useState(null)
     const [answers, setAnswers] = useState({})
+    const [assessmentOpen, setAssessmentOpen] = useState(false)
+    const [assessmentQuestionIndex, setAssessmentQuestionIndex] = useState(0)
     const [expandedModule, setExpandedModule] = useState(null)
     const [result, setResult] = useState(null)
     const [message, setMessage] = useState('')
@@ -304,6 +314,8 @@ export default function DashboardPage() {
     const nativeLanguageName = localStorage.getItem('neolit_native_language') || profile?.native_language || user?.native_language || 'English'
     const nativeLanguageCode = nativeLanguageCodes[nativeLanguageName] || 'en'
     const uiCopy = dashboardUiCopy[nativeLanguageCode] || dashboardUiCopy.en
+    const pageCopy = dashboardPageCopy[nativeLanguageCode] || dashboardPageCopy.en
+    const learnerName = [user?.first_name, user?.last_name].filter(Boolean).join(' ') || profile?.first_name || 'Learner'
     const activeStageCopy = lessonStageCopy[nativeLanguageCode]?.[selectedLesson] || lessonStageCopy.en[selectedLesson] || 'Talk about food'
     const selectedLessonTitle = lessonTitles[nativeLanguageCode] || lessonTitles.en
     const selectedUnits = courseUnits[nativeLanguageCode] || courseUnits.en
@@ -328,6 +340,9 @@ export default function DashboardPage() {
     const isUnitUnlocked = (unitNumber) => unitNumber === 1 || areAllLessonsCompleted(unitNumber - 1)
     const selectedLetters = letterLessons[selectedLanguageCode] || letterLessons.en
     const unitLessonLabels = unitLessonLabelsByLanguage[nativeLanguageCode] || unitLessonLabelsByLanguage.en
+    const unitProgressPercent = unitLessonLabels.length
+        ? Math.round((completedLessons.length / unitLessonLabels.length) * 100)
+        : 0
     const letterItems = useMemo(
         () => [...selectedLetters.vowels, ...selectedLetters.consonants],
         [selectedLetters]
@@ -385,16 +400,29 @@ export default function DashboardPage() {
         return { ...assessment, questions: shuffled }
     }
 
-    useEffect(() => {
-        if (!selected && visibleAssessments.length) {
-            setSelected(getAssessmentRound(visibleAssessments[0]))
-        }
-    }, [selected, visibleAssessments, seenQuestions])
-
     const selectAssessment = (assessment) => {
         setSelected(getAssessmentRound(assessment))
         setAnswers({})
         setResult(null)
+        setAssessmentQuestionIndex(0)
+        setAssessmentOpen(true)
+    }
+
+    const openUnitAssessment = () => {
+        const assessment = visibleAssessments[0] || assessments[0]
+        if (!assessment) {
+            setMessage(pageCopy.noAssessment)
+            return
+        }
+        selectAssessment(assessment)
+    }
+
+    const closeAssessment = () => {
+        setAssessmentOpen(false)
+        setSelected(null)
+        setAnswers({})
+        setResult(null)
+        setAssessmentQuestionIndex(0)
     }
 
     const submit = async (event) => {
@@ -748,133 +776,160 @@ export default function DashboardPage() {
         )
     }
 
+    const currentLessonStep = Math.min(currentPathLesson, unitLessonLabels.length - 1)
+    const openLesson = (step = currentLessonStep) => isUnitUnlocked(activeUnit) && step <= currentPathLesson
+
     return (
-        <div className="duolingo-reference-page">
-            <header className="duolingo-topbar">
-                <div className="duolingo-logo">NeoLit</div>
+        <div className="neo-learn-dashboard">
+            {message && <div className="neo-dashboard-message" role="status">{message}</div>}
 
-                <nav className="duolingo-top-nav" aria-label="Main navigation">
-                    <button type="button" className={`nav-link ${activeSection === 'learn' ? 'active' : ''}`} onClick={() => setActiveSection('learn')}><span className="nav-icon">🏠</span>{uiCopy.learn}</button>
-                    <button type="button" className={`nav-link ${activeSection === 'letters' ? 'active' : ''}`} onClick={() => setActiveSection('letters')}><span className="nav-icon">✎</span>{uiCopy.letters}</button>
-                    <button type="button" className={`nav-link ${activeSection === 'leaderboard' ? 'active' : ''}`} onClick={() => setActiveSection('leaderboard')}><span className="nav-icon">🏆</span>{uiCopy.leaderboard}</button>
-                    <button type="button" className={`nav-link ${activeSection === 'quests' ? 'active' : ''}`} onClick={() => setActiveSection('quests')}><span className="nav-icon">🎯</span>{uiCopy.quests}</button>
-                    <Link to="/dashboard" className="nav-link"><span className="nav-icon">🛒</span>{uiCopy.shop}</Link>
-                    <Link to="/profile" className="nav-link"><span className="nav-icon">👤</span>{uiCopy.profile}</Link>
-                    <Link to="/dashboard" className="nav-link"><span className="nav-icon">⋯</span>{uiCopy.more}</Link>
-                </nav>
-
-                <div className="duolingo-header-actions">
-                    <div className="course-switcher header-course-switcher">
-                        <button type="button" className="course-switcher-button" onClick={() => setCourseMenuOpen((open) => !open)} aria-expanded={courseMenuOpen}>
-                            <span className="course-switcher-flag">🌐</span>
-                            <span><small>{uiCopy.myCourse}</small><strong>{selectedLanguageName}</strong></span>
-                            <span className="course-switcher-chevron">⌄</span>
-                        </button>
-                        {courseMenuOpen && (
-                            <div className="course-menu">
-                                <strong>{uiCopy.myCourses}</strong>
-                                {languages.map((language) => (
-                                    <button key={language.code} type="button" className={language.code === selectedLanguageCode ? 'selected' : ''} onClick={() => changeCourse(language.code)} disabled={changingCourse}>
-                                        <span>{language.code === selectedLanguageCode ? '✓' : '+'}</span>
-                                        {language.name}
-                                    </button>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                    <button type="button" className="duolingo-logout-button" onClick={logout}>
-                        {uiCopy.logout}
-                    </button>
-                </div>
-            </header>
-
-            <div className="duolingo-app-content">
-                {activeSection === 'letters' ? renderLetters() : activeSection === 'leaderboard' ? renderLeaderboard() : activeSection === 'quests' ? renderQuests() : <main className="duolingo-reference-main">
-                    <section className="duolingo-reference-content">
-                        <div className="duolingo-reference-banner">
-                            <div className="banner-left">
-                                <span className="banner-arrow">←</span>
-                                <span className="banner-text">{uiCopy.section} {sectionNumber}, {uiCopy.unit} {activeUnit}</span>
-                            </div>
-                            <div className="banner-chip">{Math.round((completedLessons.length / unitLessonLabels.length) * 100)}% {uiCopy.complete}</div>
+            {activeSection === 'learn' ? (
+                <>
+                    <header className="neo-dashboard-topline">
+                        <div>
+                            <span className="neo-dashboard-welcome">{pageCopy.welcome}</span>
+                            <h1>{pageCopy.ready} <span>{learnerName.split(' ')[0]}?</span></h1>
                         </div>
-
-                        <div className="unit-hero-copy">
-                            <h1>{activeUnitDetails?.[0] || selectedLessonTitle}</h1>
-                            <p>{activeUnitDetails?.[1] || 'Greetings and everyday words'}</p>
+                        <div className="neo-dashboard-stats">
+                            <div><span>🔥</span><strong>{streakDays}</strong><small>{pageCopy.streak}</small></div>
+                            <div><span>⭐</span><strong>{xpTotal}</strong><small>{pageCopy.totalXp}</small></div>
+                            <div><span>❤️</span><strong>{heartsRemaining}</strong><small>{pageCopy.hearts}</small></div>
                         </div>
+                    </header>
 
-                        <div className="unit-selector" aria-label="Course units">
-                            {sectionUnits.map(([title, description], index) => {
-                                const unitNumber = sectionStartIndex + index + 1
-                                return (
-                                    <button key={`${selectedLanguageCode}-${unitNumber}`} type="button" disabled={!isUnitUnlocked(unitNumber)} className={`unit-selector-card ${activeUnit === unitNumber ? 'active' : ''} ${!isUnitUnlocked(unitNumber) ? 'locked' : ''}`} onClick={() => setActiveUnit(unitNumber)}>
-                                        <span className="unit-number">{uiCopy.unit} {unitNumber}</span>
-                                        <strong>{title}</strong>
-                                        <small>{description}</small>
-                                        <span className="unit-progress"><i style={{ width: `${unitNumber === activeUnit ? (completedLessons.length / unitLessonLabels.length) * 100 : unitNumber < activeUnit ? 100 : 0}%` }} /></span>
-                                    </button>
-                                )
-                            })}
+                    <section className="neo-learning-hero">
+                        <div className="neo-learning-hero-copy">
+                            <span>{pageCopy.journey}</span>
+                            <h2>{pageCopy.heroFirst}<br />{pageCopy.heroSecond}</h2>
+                            <p>{pageCopy.heroDescription}</p>
+                            {openLesson() ? <Link className="neo-primary-button" to={`/lesson/${activeUnit}?step=${currentLessonStep}`}>{pageCopy.continue}<span aria-hidden="true">→</span></Link> : <button className="neo-primary-button" type="button" disabled>🔒 {pageCopy.continue}</button>}
                         </div>
-
-                        <div className="course-path" aria-label={`Lessons in Unit ${activeUnit}`}>
-                            <div className="course-path-line" />
-                            {unitLessonLabels.map((label, index) => {
-                                const completed = completedLessons.includes(index)
-                                const current = index === currentPathLesson && !completed
-                                const unlocked = index <= currentPathLesson
-                                return (
-                                    <Link key={label} to={unlocked ? `/lesson/${activeUnit}?step=${index}` : '#'} className={`course-path-node path-node-${index + 1} ${completed ? 'completed' : ''} ${current ? 'current' : ''} ${!unlocked ? 'locked' : ''}`}>
-                                        <span>{completed ? '✓' : current ? '▶' : '🔒'}</span>
-                                        <strong>{label}</strong>
-                                        <small>{completed ? uiCopy.completed : current ? `+10 XP • ${uiCopy.startHere}` : uiCopy.previousLesson}</small>
-                                    </Link>
-                                )
-                            })}
+                        <div className="neo-learning-hero-art" aria-hidden="true">
+                            <span className="neo-hero-sun" />
+                            <span className="neo-hero-mountain neo-hero-mountain-back" />
+                            <span className="neo-hero-mountain neo-hero-mountain-front" />
+                            <span className="neo-hero-tree neo-hero-tree-one">🌲</span>
+                            <span className="neo-hero-tree neo-hero-tree-two">🌲</span>
+                            <span className="neo-hero-tree neo-hero-tree-three">🌲</span>
+                            <span className="neo-hero-owl">🦉</span>
                         </div>
-
-                        <div className="duolingo-reference-divider">{activeStageCopy}</div>
-
-                        <div className="duolingo-reference-cta">
-                            <div className="cta-copy">
-                                <strong>{activeUnitDetails?.[0] || selectedLessonTitle}</strong>
-                                <span>{uiCopy.unitSummary.replace('{unit}', activeUnit)}</span>
-                            </div>
-                            <div className="cta-actions">
-                                <button type="button" onClick={goToNextUnlockedUnit} className="jump-btn" style={{ border: 'none', cursor: 'pointer' }}>
-                                    {activeUnit < selectedUnits.length ? `${uiCopy.goToUnit} ${Math.min(activeUnit + 1, selectedUnits.length)}` : `${uiCopy.reviewUnit} ${activeUnit}`}
-                                </button>
-                                <button type="button" onClick={goToNextUnlockedUnit} className="play-btn" aria-label={`Go to next unlocked unit`} title={`Go to next unlocked unit`} style={{ border: 'none', cursor: 'pointer' }}>▶</button>
-                            </div>
-                        </div>
-
                     </section>
-                    <aside className="duolingo-reference-side" aria-label="Progress and daily goals">
-                        <div className="reference-stat-row">
-                            <span>🌐 {selectedLanguageName}</span>
-                            <span>🔥 {streakDays}</span>
-                            <span>💎 {gemsTotal}</span>
-                            <span>♥ {heartsRemaining}</span>
-                        </div>
-                        <article className="reference-side-card leaderboard-unlock-card">
-                            <h2>{uiCopy.unlockLeaderboards}</h2>
-                            <div className="reference-card-detail">
-                                <span className="reference-card-icon">🏅</span>
-                                <strong>{totalCompletedLessons >= 3 ? uiCopy.readyToCompete : uiCopy.competePrompt.replace('{count}', Math.max(0, 3 - totalCompletedLessons))}</strong>
+
+                    <div className="neo-dashboard-content-grid">
+                        <main className="neo-learning-section">
+                            <header className="neo-section-heading">
+                                <div>
+                                    <span>{pageCopy.yourPath}</span>
+                                    <h2>{activeUnitDetails?.[0] || selectedLessonTitle}</h2>
+                                    <p>{activeUnitDetails?.[1] || activeStageCopy}</p>
+                                </div>
+                                <div className="neo-unit-progress-ring" style={{ '--unit-progress': `${unitProgressPercent}%` }}>
+                                    <span>{unitProgressPercent}%</span>
+                                </div>
+                            </header>
+
+                            <div className="neo-unit-tabs" aria-label={pageCopy.yourPath}>
+                                {selectedUnits.map(([title, description], index) => {
+                                    const unitNumber = index + 1
+                                    const done = completedPathLessons[`${selectedLanguageCode}-${unitNumber}`]?.length || 0
+                                    const unlocked = isUnitUnlocked(unitNumber)
+                                    return (
+                                        <button key={`${selectedLanguageCode}-${unitNumber}`} type="button" disabled={!unlocked} onClick={() => setActiveUnit(unitNumber)} className={`neo-unit-tab ${activeUnit === unitNumber ? 'selected' : ''} ${!unlocked ? 'locked' : ''}`}>
+                                            <span className="neo-unit-tab-icon">{unitNumber === 1 ? '🌱' : unitNumber === 2 ? '🌿' : unitNumber === 3 ? '🍎' : '💬'}</span>
+                                            <span className="neo-unit-tab-copy"><small>{uiCopy.unit} {unitNumber}</small><strong>{title}</strong><i><span style={{ width: `${Math.round((done / unitLessonLabels.length) * 100)}%` }} /></i></span>
+                                        </button>
+                                    )
+                                })}
                             </div>
-                        </article>
-                        <article className="reference-side-card daily-quests-card">
-                            <div className="reference-side-card-header"><h2>{uiCopy.dailyQuests}</h2><button type="button" onClick={() => setActiveSection('quests')}>{uiCopy.viewAll}</button></div>
-                            <div className="reference-quest-row">
-                                <span className="quest-lightning">⚡</span>
-                                <div><strong>{uiCopy.earnXp}</strong><div className="reference-quest-progress"><span style={{ width: `${Math.min(100, (xpTotal / 10) * 100)}%` }} /></div><small>{Math.min(xpTotal, 10)} / 10</small></div>
-                                <span>🎁</span>
-                            </div>
-                        </article>
-                    </aside>
-                </main>}
-            </div>
+
+                            <section className="neo-path-card" aria-label={`${pageCopy.yourPath}: ${activeUnitDetails?.[0] || selectedLessonTitle}`}>
+                                <div className="neo-path-background" aria-hidden="true" />
+                                <div className="neo-learning-path">
+                                    {unitLessonLabels.map((label, index) => {
+                                        const completed = completedLessons.includes(index)
+                                        const current = index === currentPathLesson && !completed
+                                        const unlocked = isUnitUnlocked(activeUnit) && index <= currentPathLesson
+                                        const position = index % 2 === 0 ? 'path-left' : 'path-right'
+                                        return (
+                                            <div key={label} className={`neo-path-step ${position}`}>
+                                                {index < unitLessonLabels.length - 1 && <div className="neo-path-connector" aria-hidden="true"><span /></div>}
+                                                <Link aria-disabled={!unlocked} onClick={(event) => { if (!unlocked) event.preventDefault(); else setSelectedLesson(lessonStages[index]?.id || 'reading') }} to={unlocked ? `/lesson/${activeUnit}?step=${index}` : '#'} className={`neo-lesson-node ${completed ? 'completed' : current ? 'current' : 'locked'}`}>
+                                                    <span>{completed ? '✓' : current ? '▶' : '🔒'}</span>
+                                                </Link>
+                                                <div className="neo-lesson-label"><strong>{label}</strong><span>{completed ? uiCopy.completed : current ? `+10 XP · ${uiCopy.startHere}` : uiCopy.previousLesson}</span></div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </section>
+
+                            <section className="neo-assessment-card">
+                                <span className="neo-assessment-icon" aria-hidden="true">📝</span>
+                                <div className="neo-assessment-copy">
+                                    <small>{courseAssessmentTitles[nativeLanguageCode] || pageCopy.assessment}</small>
+                                    <h3>{pageCopy.test}</h3>
+                                    <p>{pageCopy.assessmentDescription}</p>
+                                    <div><span>✦ {(visibleAssessments[0] || assessments[0])?.questions.length || 0} {pageCopy.questions}</span><span>◷ ~5 {pageCopy.minutes}</span><span>⭐ {pageCopy.upTo} 20 XP</span></div>
+                                </div>
+                                <button type="button" className="neo-assessment-button" onClick={openUnitAssessment}>{pageCopy.startAssessment}<span aria-hidden="true">→</span></button>
+                            </section>
+                        </main>
+
+                        <aside className="neo-dashboard-aside">
+                            <article className="neo-side-card neo-streak-card">
+                                <header><span aria-hidden="true">🔥</span><strong>{pageCopy.streak}</strong></header>
+                                <div className="neo-streak-value">{streakDays}<small> {pageCopy.streak === 'Streak' ? 'days' : ''}</small></div>
+                                <div className="neo-week-days">{['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, index) => <span key={`${day}-${index}`} className={index < streakDays % 7 ? 'active' : ''}>{day}<i>{index < streakDays % 7 ? '✓' : ''}</i></span>)}</div>
+                            </article>
+
+                            <article className="neo-side-card neo-quest-card">
+                                <header><span aria-hidden="true">🎯</span><strong>{pageCopy.todayQuest}</strong></header>
+                                <p>{pageCopy.completeLessons.replace('{count}', dailyGoalTarget)}</p>
+                                <div className="neo-quest-progress"><span style={{ width: `${dailyGoalProgress}%` }} /></div>
+                                <footer><span>{dailyLessons} / {dailyGoalTarget} {pageCopy.lessonsCompleted}</span><strong>+30 XP</strong></footer>
+                            </article>
+
+                            <article className="neo-side-card neo-progress-card">
+                                <header><span aria-hidden="true">🏅</span><strong>{pageCopy.progress}</strong></header>
+                                <div className="neo-total-lessons"><span>{pageCopy.lessonsCompleted}</span><strong>{totalCompletedLessons}</strong></div>
+                                <div className="neo-progress-track"><span style={{ width: `${Math.min(100, (totalCompletedLessons / selectedUnits.length) * 100)}%` }} /></div>
+                                <div className="neo-progress-stat"><span>{pageCopy.totalXp}</span><strong>⭐ {xpTotal}</strong></div>
+                                <div className="neo-progress-stat"><span>{pageCopy.hearts}</span><strong>❤️ {heartsRemaining}</strong></div>
+                            </article>
+                        </aside>
+                    </div>
+                </>
+            ) : (
+                <div className="duolingo-app-content">
+                    {activeSection === 'letters' ? renderLetters() : activeSection === 'leaderboard' ? renderLeaderboard() : renderQuests()}
+                </div>
+            )}
+
+            {assessmentOpen && (
+                <div className="neo-assessment-overlay" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && closeAssessment()}>
+                    <section className="neo-assessment-dialog" role="dialog" aria-modal="true" aria-label={pageCopy.assessment}>
+                        {result ? (
+                            <div className="neo-assessment-result"><span aria-hidden="true">🎉</span><h2>{pageCopy.complete}</h2><strong>{result.percentage}%</strong><p>{pageCopy.score}: {result.score} / {result.total_marks}</p><p>⭐ +{result.xp_earned} {pageCopy.xpEarned}</p><button type="button" onClick={closeAssessment}>{pageCopy.done}</button></div>
+                        ) : selected?.questions?.length ? (
+                            <form onSubmit={submit}>
+                                <header className="neo-assessment-dialog-head"><div><small>{selected.title}</small><button type="button" onClick={closeAssessment} aria-label={pageCopy.exit}>×</button></div><i><span style={{ width: `${((assessmentQuestionIndex + 1) / selected.questions.length) * 100}%` }} /></i></header>
+                                {(() => {
+                                    const question = selected.questions[assessmentQuestionIndex]
+                                    const answer = answers[question.id] ?? ''
+                                    return <>
+                                        <p className="neo-assessment-question-count">{pageCopy.question} {assessmentQuestionIndex + 1} {pageCopy.of} {selected.questions.length}</p>
+                                        <h2>{question.question_text}</h2>
+                                        {question.options?.length ? <div className="neo-assessment-options">{question.options.map((option) => <button key={option.id} type="button" className={answer === option.option_text ? 'selected' : ''} onClick={() => setAnswers((current) => ({ ...current, [question.id]: option.option_text }))}>{option.option_text}</button>)}</div> : <input value={answer} onChange={(event) => setAnswers((current) => ({ ...current, [question.id]: event.target.value }))} placeholder={pageCopy.typeAnswer} />}
+                                        <footer><button type="button" className="secondary" onClick={closeAssessment}>{pageCopy.exit}</button>{assessmentQuestionIndex < selected.questions.length - 1 ? <button type="button" disabled={!String(answer).trim()} onClick={() => setAssessmentQuestionIndex((index) => index + 1)}>{pageCopy.next}</button> : <button type="submit" disabled={!String(answer).trim()}>{pageCopy.submit}</button>}</footer>
+                                    </>
+                                })()}
+                            </form>
+                        ) : (
+                            <div className="neo-assessment-result"><p>{pageCopy.noAssessment}</p><button type="button" onClick={closeAssessment}>{pageCopy.done}</button></div>
+                        )}
+                    </section>
+                </div>
+            )}
         </div>
     )
 }
