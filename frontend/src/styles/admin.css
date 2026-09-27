@@ -1032,17 +1032,32 @@
     color: #dfeaf5;
 }
 
-.admin-row-actions {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 8px;
-    white-space: nowrap;
-    align-items: center;
-}
-
 .admin-user-table td:last-child,
 .admin-user-table th:last-child {
-    min-width: 520px;
+    min-width: 150px;
+}
+
+.admin-row-actions-dropdown {
+    width: 142px;
+    min-height: 36px;
+    padding: 7px 30px 7px 10px;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: 8px;
+    background: #111d2b;
+    color: #edf6ff;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.admin-row-actions-dropdown:focus-visible {
+    outline: 2px solid #67e8f9;
+    outline-offset: 2px;
+}
+
+.admin-row-actions-dropdown option {
+    background: #111d2b;
+    color: #edf6ff;
 }
 
 .admin-action-link,
