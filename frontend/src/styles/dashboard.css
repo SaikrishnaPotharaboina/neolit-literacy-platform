@@ -1874,7 +1874,7 @@
     align-items: center;
     gap: 14px;
     min-height: 72px;
-    padding: 0 4%;
+    padding: 0 2%;
     background: linear-gradient(180deg, #0d1d22 0%, #0d1d22 100%);
     border-bottom: 1px solid rgba(149, 255, 201, 0.12);
 }
@@ -2030,9 +2030,9 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    width: 142px;
+    width: 120px;
     min-height: 50px;
-    padding: 6px 9px;
+    padding: 6px 6px;
     border: 1px solid rgba(196, 203, 255, 0.2);
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.04);
