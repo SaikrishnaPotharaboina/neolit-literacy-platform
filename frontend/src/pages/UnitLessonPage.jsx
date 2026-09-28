@@ -514,7 +514,6 @@ export default function UnitLessonPage() {
                             <p className="unit-lesson-question-count">Question {questionIndex + 1} of {content.questions.length}</p>
                             <section className="unit-question-card">
                                 <h2>{question.prompt}</h2>
-                                {question.englishPrompt && languageCode !== 'en' && <p className="question-english-help">English: {question.englishPrompt}</p>}
                                 {question.type === 'listen' ? (
                                     <div className="unit-listen-question">
                                         <button type="button" className="unit-audio-button" onClick={playQuestionAudio} disabled={speaking || Boolean(selectedAnswer)}>
@@ -526,7 +525,6 @@ export default function UnitLessonPage() {
                                             {question.options.map((option, optionIndex) => (
                                                 <button key={option} type="button" className={selectedAnswer === option ? (option === question.answer ? 'correct' : 'wrong') : ''} onClick={() => chooseAnswer(option)}>
                                                     {option}
-                                                    {languageCode !== 'en' && question.englishOptions[optionIndex] && <small className="option-english-help">English: {question.englishOptions[optionIndex]}</small>}
                                                 </button>
                                             ))}
                                         </div>
@@ -544,7 +542,6 @@ export default function UnitLessonPage() {
                                             {question.options.map((option, optionIndex) => (
                                                 <button key={option} type="button" disabled={selectedTokens.includes(option) || Boolean(selectedAnswer)} onClick={() => setSelectedTokens((tokens) => [...tokens, option])}>
                                                     {option}
-                                                    {languageCode !== 'en' && question.englishOptions[optionIndex] && <small className="option-english-help">English: {question.englishOptions[optionIndex]}</small>}
                                                 </button>
                                             ))}
                                         </div>
@@ -555,7 +552,6 @@ export default function UnitLessonPage() {
                                         {question.options.map((option, optionIndex) => (
                                             <button key={option} type="button" className={selectedAnswer === option ? (option === question.answer ? 'correct' : 'wrong') : ''} onClick={() => chooseAnswer(option)}>
                                                 {option}
-                                                {languageCode !== 'en' && question.englishOptions[optionIndex] && <small className="option-english-help">English: {question.englishOptions[optionIndex]}</small>}
                                             </button>
                                         ))}
                                     </div>
