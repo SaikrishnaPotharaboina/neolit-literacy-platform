@@ -107,9 +107,41 @@ const TELUGU_WORD_BUILDER_TRANSLATIONS = {
     ARTIST: 'కళాకారుడు',
 }
 
+const KANNADA_WORD_BUILDER_TRANSLATIONS = {
+    APPLE: 'ಸೇಬು', WATER: 'ನೀರು', HELLO: 'ನಮಸ್ಕಾರ', SCHOOL: 'ಶಾಲೆ', BOOK: 'ಪುಸ್ತಕ', FRIEND: 'ಸ್ನೇಹಿತ', SUN: 'ಸೂರ್ಯ', ELEPHANT: 'ಆನೆ', LIBRARY: 'ಗ್ರಂಥಾಲಯ', BREAKFAST: 'ಉಪಾಹಾರ',
+    GREEN: 'ಹಸಿರು', HOUSE: 'ಮನೆ', TRAIN: 'ರೈಲು', TEACHER: 'ಶಿಕ್ಷಕ', MARKET: 'ಮಾರುಕಟ್ಟೆ', DAY: 'ದಿನ', SPRING: 'ವಸಂತ', TABLE: 'ಮೇಜು', BICYCLE: 'ಸೈಕಲ್', ZOO: 'ಮೃಗಾಲಯ',
+    COFFEE: 'ಕಾಫಿ', BANANA: 'ಬಾಳೆಹಣ್ಣು', KITCHEN: 'ಅಡುಗೆಮನೆ', STADIUM: 'ಕ್ರೀಡಾಂಗಣ', DRIVER: 'ಚಾಲಕ', SLOW: 'ನಿಧಾನ', RIVER: 'ನದಿ', PENCIL: 'ಪೆನ್ಸಿಲ್', AIRPORT: 'ವಿಮಾನ ನಿಲ್ದಾಣ', DINNER: 'ರಾತ್ರಿ ಊಟ',
+    BLUE: 'ನೀಲಿ', CAT: 'ಬೆಕ್ಕು', STATION: 'ನಿಲ್ದಾಣ', DOCTOR: 'ವೈದ್ಯರು', FULL: 'ತುಂಬಿದೆ', MOON: 'ಚಂದ್ರ', GARDEN: 'ತೋಟ', SHOES: 'ಪಾದರಕ್ಷೆಗಳು', CINEMA: 'ಸಿನಿಮಾ', AIRPLANE: 'ವಿಮಾನ',
+    TOMATO: 'ಟೊಮ್ಯಾಟೊ', POOL: 'ಈಜುಕೊಳ', CHEF: 'ಅಡುಗೆಗಾರ', NEW: 'ಹೊಸ', MOUNTAIN: 'ಪರ್ವತ', BAG: 'ಚೀಲ', BEDROOM: 'ಮಲಗುವ ಕೋಣೆ', SATURDAY: 'ಶನಿವಾರ', ARTIST: 'ಕಲಾವಿದ',
+}
+
+const TAMIL_WORD_BUILDER_TRANSLATIONS = {
+    APPLE: 'ஆப்பிள்', WATER: 'தண்ணீர்', HELLO: 'வணக்கம்', SCHOOL: 'பள்ளி', BOOK: 'புத்தகம்', FRIEND: 'நண்பர்', SUN: 'சூரியன்', ELEPHANT: 'யானை', LIBRARY: 'நூலகம்', BREAKFAST: 'காலை உணவு',
+    GREEN: 'பச்சை', HOUSE: 'வீடு', TRAIN: 'ரயில்', TEACHER: 'ஆசிரியர்', MARKET: 'சந்தை', DAY: 'நாள்', SPRING: 'வசந்தம்', TABLE: 'மேசை', BICYCLE: 'மிதிவண்டி', ZOO: 'விலங்ககம்',
+    COFFEE: 'காபி', BANANA: 'வாழைப்பழம்', KITCHEN: 'சமையலறை', STADIUM: 'விளையாட்டு அரங்கம்', DRIVER: 'ஓட்டுநர்', SLOW: 'மெதுவான', RIVER: 'ஆறு', PENCIL: 'பென்சில்', AIRPORT: 'விமான நிலையம்', DINNER: 'இரவு உணவு',
+    BLUE: 'நீலம்', CAT: 'பூனை', STATION: 'நிலையம்', DOCTOR: 'மருத்துவர்', FULL: 'நிறைந்த', MOON: 'நிலா', GARDEN: 'தோட்டம்', SHOES: 'காலணிகள்', CINEMA: 'திரையரங்கம்', AIRPLANE: 'விமானம்',
+    TOMATO: 'தக்காளி', POOL: 'நீச்சல் குளம்', CHEF: 'சமையல்காரர்', NEW: 'புதிய', MOUNTAIN: 'மலை', BAG: 'பை', BEDROOM: 'படுக்கையறை', SATURDAY: 'சனிக்கிழமை', ARTIST: 'கலைஞர்',
+}
+
 const WORD_BUILDER_TRANSLATIONS_BY_LANGUAGE = {
     hi: HINDI_WORD_BUILDER_TRANSLATIONS,
+    kn: KANNADA_WORD_BUILDER_TRANSLATIONS,
+    ta: TAMIL_WORD_BUILDER_TRANSLATIONS,
     te: TELUGU_WORD_BUILDER_TRANSLATIONS,
+}
+
+const MYSTERY_WORD_TRANSLATIONS = {
+    hi: { APPLE: 'सेब', BANANA: 'केला', ORANGE: 'नारंगी', BIRD: 'चिड़िया', FISH: 'मछली', HORSE: 'घोड़ा', SUN: 'सूर्य', MOON: 'चाँद', CLOUD: 'बादल', TIGER: 'बाघ', SNAKE: 'साँप', ICE: 'बर्फ', SAND: 'रेत', PAPER: 'कागज़' },
+    kn: { APPLE: 'ಸೇಬು', BANANA: 'ಬಾಳೆಹಣ್ಣು', ORANGE: 'ಕಿತ್ತಳೆ', BIRD: 'ಪಕ್ಷಿ', FISH: 'ಮೀನು', HORSE: 'ಕುದುರೆ', SUN: 'ಸೂರ್ಯ', MOON: 'ಚಂದ್ರ', CLOUD: 'ಮೋಡ', TIGER: 'ಹುಲಿ', SNAKE: 'ಹಾವು', ICE: 'ಮಂಜುಗಡ್ಡೆ', SAND: 'ಮರಳು', PAPER: 'ಕಾಗದ' },
+    ta: { APPLE: 'ஆப்பிள்', BANANA: 'வாழைப்பழம்', ORANGE: 'ஆரஞ்சு', BIRD: 'பறவை', FISH: 'மீன்', HORSE: 'குதிரை', SUN: 'சூரியன்', MOON: 'நிலா', CLOUD: 'மேகம்', TIGER: 'புலி', SNAKE: 'பாம்பு', ICE: 'பனி', SAND: 'மணல்', PAPER: 'காகிதம்' },
+    te: { APPLE: 'ఆపిల్', BANANA: 'అరటిపండు', ORANGE: 'నారింజ', BIRD: 'పక్షి', FISH: 'చేప', HORSE: 'గుర్రం', SUN: 'సూర్యుడు', MOON: 'చంద్రుడు', CLOUD: 'మేఘం', TIGER: 'పులి', SNAKE: 'పాము', ICE: 'మంచు', SAND: 'ఇసుక', PAPER: 'కాగితం' },
+}
+
+const LOCALIZED_WORD_BUILDER_PROMPTS = {
+    hi: (hint) => `शब्द बनाएं: ${hint}।`,
+    kn: (hint) => `ಪದವನ್ನು ನಿರ್ಮಿಸಿ: ${hint}.`,
+    ta: (hint) => `சொல்லை உருவாக்கு: ${hint}.`,
+    te: (hint) => `పదాన్ని నిర్మించండి: ${hint}.`,
 }
 
 const LOCALIZED_WORD_BUILDER_HINTS = {
@@ -341,9 +373,10 @@ const getLocalizedWordBuilderQuestions = (languageCode) => {
             const entries = Array.isArray(set) ? set : Object.values(set || {})
 
             return entries.map((entry, questionIndex) => {
-                const [hint, answer] = Array.isArray(entry)
+                const [rawHint, answer] = Array.isArray(entry)
                     ? entry
                     : [entry?.hint || entry?.prompt || '', entry?.answer || entry?.correct || '']
+                const hint = rawHint.replace(/^Build the word for (.*)\.$/, '$1')
 
                 const localizedAnswer = localizedAnswers[answer.toUpperCase()] || answer
                 const localizedHint = localizedHints[hint] || hint
@@ -351,7 +384,7 @@ const getLocalizedWordBuilderQuestions = (languageCode) => {
                 return {
                     id: `word-builder-set-${setIndex + 1}-question-${questionIndex + 1}`,
                     set: setIndex + 1,
-                    prompt: languageCode === 'hi' ? `शब्द बनाएं: ${localizedHint}।` : `పదాన్ని నిర్మించండి: ${localizedHint}.`,
+                    prompt: LOCALIZED_WORD_BUILDER_PROMPTS[languageCode](localizedHint),
                     letters: Array.from(localizedAnswer),
                     correct: localizedAnswer,
                 }
@@ -1217,6 +1250,16 @@ const WORD_BUILDER_PROMPT_TEMPLATES = {
 }
 
 const localizeGameQuestion = (question, game, languageCode) => {
+    if (game.id === 'mystery-word' && languageCode !== 'en') {
+        const translations = MYSTERY_WORD_TRANSLATIONS[languageCode] || {}
+        const translateWord = (word) => translations[word] || word
+        return {
+            ...question,
+            answers: question.answers?.map(translateWord),
+            correct: translateWord(question.correct),
+        }
+    }
+
     if (game.id !== 'word-builder' || !question.prompt) {
         return question
     }
@@ -1263,13 +1306,16 @@ const getGameLibraryWithListening = (languageCode) => {
     const englishGames = languageCode === 'en' ? [] : getGameLibraryWithListening('en')
 
     return games.map((game) => {
+        const englishGame = englishGames.find((candidate) => candidate.id === game.id)
         return {
             ...game,
-            questions: game.questions.map((question) => {
+            questions: game.questions.map((question, questionIndex) => {
                 const localizedQuestion = localizeGameQuestion(question, game, languageCode)
+                const englishPrompt = englishGame?.questions?.[questionIndex]?.prompt
 
                 return {
                     ...localizedQuestion,
+                    englishPrompt: languageCode === 'en' ? '' : englishPrompt,
                     answers: localizedQuestion.answers ? shuffleGameOptions(localizedQuestion.answers) : localizedQuestion.answers,
                     letters: localizedQuestion.letters ? shuffleBuilderLetters(localizedQuestion.letters, localizedQuestion.correct) : localizedQuestion.letters,
                 }
@@ -1340,7 +1386,7 @@ export default function GamesPage() {
         kn: {
             title: 'ಆಟವಾಡಿ. ಕಲಿಯಿರಿ. ಮಟ್ಟವನ್ನು ಹೆಚ್ಚಿಸಿ.',
             subtitle: 'ಪ್ರತಿ ಚಲನೆಯೂ ನಿಮಗೆ ಏನನ್ನಾದರೂ ಕಲಿಸುತ್ತದೆ. ಜಗತ್ತನ್ನು ಆಯ್ಕೆ ಮಾಡಿ ಮತ್ತು ನಿಮ್ಮ ಸ್ಟ್ರೀಕ್‍ ಅನ್ನು ಮುಂದುವರಿಸಿ.',
-            score: 'ಸೆಷನ್ ಸ್ಕೋರ್',
+            questions: getLocalizedWordBuilderQuestions('kn'),
             chooseMode: 'ಮೋಡ್ ಆಯ್ಕೆಮಾಡಿ',
             switchGame: 'गेम್ ಬದಲಿಸಿ',
             endless: 'ಅನಂತ ಓಟ · ಹೊಸ ಅಡೆತಡೆ',
@@ -1350,7 +1396,7 @@ export default function GamesPage() {
         ta: {
             title: 'விளையாடு. கற்றுக் கொள்ளுங்கள். நிலையை உயர்த்துங்கள்.',
             subtitle: 'ஒவ்வொரு நகர்வும் உங்களுக்கு ஏதாவது கற்பிக்கிறது. ஒரு உலகத்தைத் தேர்ந்தெடுத்து உங்கள் தொடர்ச்சியைத் தொடருங்கள்.',
-            score: 'அமர்வு மதிப்பெண்',
+            questions: getLocalizedWordBuilderQuestions('ta'),
             chooseMode: 'மோடையைத் தேர்ந்தெடுக்கவும்',
             switchGame: 'गेम மாற்றவும்',
             endless: 'எல்லையற்ற ஓட்டம் · புதிய தடைகள்',
@@ -2061,6 +2107,7 @@ export default function GamesPage() {
                 {selectedGame.type !== 'memory' && (
                     <>
                         <h2>{question.prompt}</h2>
+                        {languageCode !== 'en' && question.englishPrompt && <p className="game-english-subtitle">English: {question.englishPrompt}</p>}
                     </>
                 )}
 
