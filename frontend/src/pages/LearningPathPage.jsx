@@ -1002,6 +1002,53 @@ const languageTheme = {
 
 const extraChoiceQuestionsByLanguage = lessonBankByLanguage.hi.find((item) => item.extraChoiceQuestionsByLanguage)?.extraChoiceQuestionsByLanguage || {}
 
+const localizeLessonPrompt = (languageCode, text) => {
+    if (languageCode === 'en' || !text) return text
+
+    const translations = {
+        hi: {
+            'NEW WORD': 'नया शब्द',
+            'Write this in English': 'हिंदी में लिखें',
+            'WRITE THIS IN ENGLISH': 'हिंदी में लिखें',
+            'Which one of these is': 'इनमें से कौन-सा है',
+        },
+        kn: {
+            'NEW WORD': 'ಹೊಸ ಪದ',
+            'Write this in English': 'ಕನ್ನಡದಲ್ಲಿ ಬರೆಯಿರಿ',
+            'WRITE THIS IN ENGLISH': 'ಕನ್ನಡದಲ್ಲಿ ಬರೆಯಿರಿ',
+            'Which one of these is': 'ಇದರಲ್ಲಿ ಯಾವುದು',
+        },
+        ta: {
+            'NEW WORD': 'புதிய சொல்',
+            'Write this in English': 'தமிழில் எழுதுங்கள்',
+            'WRITE THIS IN ENGLISH': 'தமிழில் எழுதுங்கள்',
+            'Which one of these is': 'இதில் எது',
+        },
+        te: {
+            'NEW WORD': 'కొత్త పదం',
+            'Write this in English': 'తెలుగులో రాయండి',
+            'WRITE THIS IN ENGLISH': 'తెలుగులో రాయండి',
+            'Which one of these is': 'ఇందులో ఏది',
+        },
+    }
+
+    const languageMap = translations[languageCode] || {}
+    if (languageMap[text]) return languageMap[text]
+
+    if (text.startsWith('Which one of these is ')) {
+        const target = text.match(/^Which one of these is\s+[“"]?(.*?)[”"]?\??$/)?.[1] || ''
+        const localizedTargetMap = {
+            hi: `इनमें से “${target}” कौन-सा है?`,
+            kn: `ಇದರಲ್ಲಿ “${target}” ಯಾವುದು?`,
+            ta: `இதில் “${target}” எது?`,
+            te: `ఇందులో “${target}” ఏది?`,
+        }
+        return localizedTargetMap[languageCode] || text
+    }
+
+    return text
+}
+
 const shuffleItems = (items) => [...items].sort(() => Math.random() - 0.5)
 
 const createDynamicLessonBank = (languageCode) => {
@@ -1013,13 +1060,15 @@ const createDynamicLessonBank = (languageCode) => {
     const uniqueQuestions = [...new Map(questions.map((question) => [question.prompt, question])).values()]
 
     return shuffleItems(uniqueQuestions).map((question) => {
+        const localizedPrompt = localizeLessonPrompt(languageCode, question.prompt)
+        const localizedLabel = localizeLessonPrompt(languageCode, question.label || '')
         const options = shuffleItems(question.options).map((option, index) => ({
             ...option,
             id: index + 1,
         }))
         const correctOption = options.find((option) => option.label === question.solution)?.id
 
-        return { ...question, options, correctOption }
+        return { ...question, prompt: localizedPrompt, label: localizedLabel || question.label, options, correctOption }
     })
 }
 
