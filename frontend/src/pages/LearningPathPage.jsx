@@ -1032,16 +1032,24 @@ const localizeLessonPrompt = (languageCode, text) => {
         },
     }
 
+    const targetTranslations = {
+        hi: { Apple: 'सेब', Coffee: 'कॉफ़ी', Window: 'खिड़की', Morning: 'सुबह', Friend: 'दोस्त', Flower: 'फूल', Book: 'किताब', Water: 'पानी', House: 'घर', Tree: 'पेड़' },
+        kn: { Apple: 'ಸೇಬು', Coffee: 'ಕಾಫಿ', Window: 'ಕಿಟಕಿ', Morning: 'ಬೆಳಗ್ಗೆ', Friend: 'ಸ್ನೇಹಿತ', Flower: 'ಹೂವು', Book: 'ಪುಸ್ತಕ', Water: 'ನೀರು', House: 'ಮನೆ', Tree: 'ಮರ' },
+        ta: { Apple: 'ஆப்பிள்', Coffee: 'காபி', Window: 'ஜன்னல்', Morning: 'காலை', Friend: 'நண்பர்', Flower: 'மலர்', Book: 'புத்தகம்', Water: 'தண்ணீர்', House: 'வீடு', Tree: 'மரம்' },
+        te: { Apple: 'ఆపిల్', Coffee: 'కాఫీ', Window: 'కిటికీ', Morning: 'ఉదయం', Friend: 'స్నేహితుడు', Flower: 'పువ్వు', Book: 'పుస్తకం', Water: 'నీరు', House: 'ఇల్లు', Tree: 'చెట్టు' },
+    }
+
     const languageMap = translations[languageCode] || {}
     if (languageMap[text]) return languageMap[text]
 
     if (text.startsWith('Which one of these is ')) {
         const target = text.match(/^Which one of these is\s+[“"]?(.*?)[”"]?\??$/)?.[1] || ''
+        const localizedTarget = targetTranslations[languageCode]?.[target] || target
         const localizedTargetMap = {
-            hi: `इनमें से “${target}” कौन-सा है?`,
-            kn: `ಇದರಲ್ಲಿ “${target}” ಯಾವುದು?`,
-            ta: `இதில் “${target}” எது?`,
-            te: `ఇందులో “${target}” ఏది?`,
+            hi: `इनमें से “${localizedTarget}” कौन-सा है?`,
+            kn: `ಇದರಲ್ಲಿ “${localizedTarget}” ಯಾವುದು?`,
+            ta: `இதில் “${localizedTarget}” எது?`,
+            te: `ఇందులో “${localizedTarget}” ఏది?`,
         }
         return localizedTargetMap[languageCode] || text
     }
