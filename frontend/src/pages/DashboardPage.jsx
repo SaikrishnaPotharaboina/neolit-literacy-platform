@@ -261,6 +261,7 @@ export default function DashboardPage() {
     const [activeUnit, setActiveUnit] = useState(1)
     const [sectionUnlockNotice, setSectionUnlockNotice] = useState('')
     const [seenQuestions, setSeenQuestions] = useState({})
+    const [selectedLanguageCode, setSelectedLanguageCode] = useState(() => localStorage.getItem('neolit_selected_language') || user?.learning_language || 'en')
 
     useEffect(() => {
         const section = searchParams.get('section')
@@ -287,6 +288,7 @@ export default function DashboardPage() {
                 setLanguages(supportedLanguages)
                 setLevels(dashboard.levels)
                 setProfile(dashboard.profile)
+                setSelectedLanguageCode(localStorage.getItem('neolit_selected_language') || dashboard.profile?.learning_language || 'en')
                 setProgress(dashboard.progress)
                 setLearningState(dashboard.learning_state)
                 setCompletedPathLessons((dashboard.learning_state.completions || []).reduce((groups, completion) => {
@@ -304,12 +306,36 @@ export default function DashboardPage() {
         load()
     }, [])
 
+    useEffect(() => {
+        const syncSelectedCourse = async () => {
+            const storedCourse = localStorage.getItem('neolit_selected_language')
+            if (!storedCourse || !supportedLanguageCodes.includes(storedCourse)) return
+
+            setSelectedLanguageCode(storedCourse)
+            setAssessmentOpen(false)
+            setSelected(null)
+            setAnswers({})
+
+            try {
+                const dashboard = await learningApi.getDashboardBootstrap()
+                setProfile(dashboard.profile)
+                setProgress(dashboard.progress)
+                setLearningState(dashboard.learning_state)
+                setAssessments(dashboard.assessments)
+            } catch {
+                setMessage('Unable to refresh the selected course')
+            }
+        }
+
+        window.addEventListener('neolit-course-changed', syncSelectedCourse)
+        return () => window.removeEventListener('neolit-course-changed', syncSelectedCourse)
+    }, [])
+
     const visibleAssessments = useMemo(
         () => assessments.filter((assessment) => assessment.assessment_type === activeSkill),
         [assessments, activeSkill]
     )
 
-    const selectedLanguageCode = localStorage.getItem('neolit_selected_language') || profile?.learning_language || 'en'
     const selectedLanguageName = languages.find((item) => item.code === selectedLanguageCode)?.name || 'English'
     const nativeLanguageName = localStorage.getItem('neolit_native_language') || profile?.native_language || user?.native_language || 'English'
     const nativeLanguageCode = nativeLanguageCodes[nativeLanguageName] || 'en'

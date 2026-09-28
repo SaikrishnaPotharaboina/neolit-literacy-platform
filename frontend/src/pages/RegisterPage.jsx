@@ -21,7 +21,7 @@ export default function RegisterPage({ adminMode = false }) {
         setup_key: '',
         age: '',
         native_language: '',
-        learning_language: 'en',
+        learning_language: adminMode ? 'en' : '',
         gender: '',
         current_level_id: '',
     })
@@ -233,6 +233,7 @@ export default function RegisterPage({ adminMode = false }) {
                                             onChange={handleChange}
                                             required
                                         >
+                                            {!adminMode && <option value="">Select a learning language</option>}
                                             {languages.map((language) => (
                                                 <option key={language.code} value={language.code}>
                                                     {language.name}

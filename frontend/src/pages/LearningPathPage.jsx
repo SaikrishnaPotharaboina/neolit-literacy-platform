@@ -1108,6 +1108,7 @@ export default function LearningPathPage() {
 
         setSelectedLanguage(language)
         persistSelectedCourse(language.code)
+        window.dispatchEvent(new Event('neolit-course-changed'))
         setStep('knowledge')
         setSavingLanguage(true)
         try {
