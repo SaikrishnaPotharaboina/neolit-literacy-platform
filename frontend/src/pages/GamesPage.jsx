@@ -55,6 +55,63 @@ const HINDI_WORD_BUILDER_TRANSLATIONS = {
     ARTIST: 'कलाकार',
 }
 
+const TELUGU_WORD_BUILDER_TRANSLATIONS = {
+    APPLE: 'ఆపిల్',
+    WATER: 'నీరు',
+    HELLO: 'హలో',
+    SCHOOL: 'పాఠశాల',
+    BOOK: 'పుస్తకం',
+    FRIEND: 'స్నేహితుడు',
+    SUN: 'సూర్యుడు',
+    ELEPHANT: 'ఏనుగు',
+    LIBRARY: 'గ్రంథాలయం',
+    BREAKFAST: 'అల్పాహారం',
+    GREEN: 'ఆకుపచ్చ',
+    HOUSE: 'ఇల్లు',
+    TRAIN: 'రైలు',
+    TEACHER: 'ఉపాధ్యాయుడు',
+    MARKET: 'మార్కెట్',
+    DAY: 'రోజు',
+    SPRING: 'వసంతం',
+    TABLE: 'మెజ్జ',
+    BICYCLE: 'సైకిల్',
+    ZOO: 'చినుకు',
+    COFFEE: 'కాఫీ',
+    BANANA: 'బనానా',
+    KITCHEN: 'వంటగది',
+    STADIUM: 'స్టేడియం',
+    DRIVER: 'డ్రైవర్',
+    SLOW: 'నెమ్మది',
+    RIVER: 'నది',
+    PENCIL: 'పెన్సిల్',
+    AIRPORT: 'విమానాశ్రయం',
+    DINNER: 'రాత్రి భోజనం',
+    BLUE: 'నీలం',
+    CAT: 'పిల్లి',
+    STATION: 'స్టేషన్',
+    DOCTOR: 'వైద్యుడు',
+    FULL: 'పూర్తిగా',
+    MOON: 'చంద్రుడు',
+    GARDEN: 'తోట',
+    SHOES: 'చెప్పులు',
+    CINEMA: 'సినిమా',
+    AIRPLANE: 'విమానము',
+    TOMATO: 'టొమాటో',
+    POOL: 'పూల్',
+    CHEF: 'షెఫ్',
+    NEW: 'కొత్త',
+    MOUNTAIN: 'పర్వతం',
+    BAG: 'బ్యాగ్',
+    BEDROOM: 'మేడము',
+    SATURDAY: 'శనివారం',
+    ARTIST: 'కళాకారుడు',
+}
+
+const WORD_BUILDER_TRANSLATIONS_BY_LANGUAGE = {
+    hi: HINDI_WORD_BUILDER_TRANSLATIONS,
+    te: TELUGU_WORD_BUILDER_TRANSLATIONS,
+}
+
 const LOCALIZED_WORD_BUILDER_HINTS = {
     hi: {
         'a fruit': 'फल',
@@ -267,13 +324,17 @@ const LOCALIZED_WORD_BUILDER_HINTS = {
 }
 
 const getLocalizedWordBuilderQuestions = (languageCode) => {
-    if (languageCode !== 'hi') {
+    const supportedLanguageCodes = Object.keys(WORD_BUILDER_TRANSLATIONS_BY_LANGUAGE)
+    if (!supportedLanguageCodes.includes(languageCode)) {
         return wordBuilderQuestions
     }
 
     const safeWordBuilderSets = Array.isArray(wordBuilderSets)
         ? wordBuilderSets
         : Object.values(wordBuilderSets || {})
+
+    const localizedHints = LOCALIZED_WORD_BUILDER_HINTS[languageCode] || {}
+    const localizedAnswers = WORD_BUILDER_TRANSLATIONS_BY_LANGUAGE[languageCode] || {}
 
     return safeWordBuilderSets
         .map((set, setIndex) => {
@@ -284,13 +345,13 @@ const getLocalizedWordBuilderQuestions = (languageCode) => {
                     ? entry
                     : [entry?.hint || entry?.prompt || '', entry?.answer || entry?.correct || '']
 
-                const localizedAnswer = HINDI_WORD_BUILDER_TRANSLATIONS[answer] || answer
-                const localizedHint = LOCALIZED_WORD_BUILDER_HINTS.hi?.[hint] || hint
+                const localizedAnswer = localizedAnswers[answer.toUpperCase()] || answer
+                const localizedHint = localizedHints[hint] || hint
 
                 return {
                     id: `word-builder-set-${setIndex + 1}-question-${questionIndex + 1}`,
                     set: setIndex + 1,
-                    prompt: `शब्द बनाएं: ${localizedHint}।`,
+                    prompt: languageCode === 'hi' ? `शब्द बनाएं: ${localizedHint}।` : `పదాన్ని నిర్మించండి: ${localizedHint}.`,
                     letters: Array.from(localizedAnswer),
                     correct: localizedAnswer,
                 }
@@ -1083,7 +1144,7 @@ const UNIVERSAL_GAMES_BY_LANGUAGE = {
     te: [
         {
             id: 'word-builder', icon: '🔤', title: 'పద నిర్మాణం', description: 'కంక్రమించిన అక్షరాలను సరైన పదంలో ఏర్పరచండి.', type: 'word-builder',
-            questions: wordBuilderQuestions,
+            questions: getLocalizedWordBuilderQuestions('te'),
         },
         {
             id: 'mystery-word', icon: '🕵️', title: 'రహస్య పదం', description: 'సూచనలను చూడండి మరియు పదాన్ని కనుగొనండి.', type: 'mystery-word',
@@ -1162,12 +1223,12 @@ const localizeGameQuestion = (question, game, languageCode) => {
 
     const localizedTemplate = WORD_BUILDER_PROMPT_TEMPLATES[languageCode]
     const normalizedCorrect = typeof question.correct === 'string' ? question.correct.toUpperCase() : ''
-    const translatedCorrect = languageCode === 'hi' ? HINDI_WORD_BUILDER_TRANSLATIONS[normalizedCorrect] || question.correct : question.correct
+    const translatedCorrect = WORD_BUILDER_TRANSLATIONS_BY_LANGUAGE[languageCode]?.[normalizedCorrect] || question.correct
 
-    if (languageCode === 'hi' && translatedCorrect && translatedCorrect !== question.correct) {
+    if (languageCode !== 'en' && translatedCorrect && translatedCorrect !== question.correct) {
         return {
             ...question,
-            prompt: localizedTemplate ? localizedTemplate(LOCALIZED_WORD_BUILDER_HINTS.hi?.[question.prompt.replace(/^Build the word for (.*)\.$/, '$1')] || question.prompt.replace(/^Build the word for (.*)\.$/, '$1')) : question.prompt,
+            prompt: localizedTemplate ? localizedTemplate(LOCALIZED_WORD_BUILDER_HINTS[languageCode]?.[question.prompt.replace(/^Build the word for (.*)\.$/, '$1')] || question.prompt.replace(/^Build the word for (.*)\.$/, '$1')) : question.prompt,
             correct: translatedCorrect,
             letters: Array.from(translatedCorrect),
         }
@@ -1202,19 +1263,13 @@ const getGameLibraryWithListening = (languageCode) => {
     const englishGames = languageCode === 'en' ? [] : getGameLibraryWithListening('en')
 
     return games.map((game) => {
-        const englishGame = englishGames.find((candidate) => candidate.id === game.id)
-
         return {
             ...game,
-            questions: game.questions.map((question, questionIndex) => {
+            questions: game.questions.map((question) => {
                 const localizedQuestion = localizeGameQuestion(question, game, languageCode)
-                const englishQuestion = englishGame?.questions?.[questionIndex]
 
                 return {
                     ...localizedQuestion,
-                    englishPrompt: localizedQuestion.englishPrompt || englishQuestion?.prompt,
-                    englishAnswers: localizedQuestion.englishAnswers || englishQuestion?.answers,
-                    englishClues: localizedQuestion.englishClues || englishQuestion?.clues,
                     answers: localizedQuestion.answers ? shuffleGameOptions(localizedQuestion.answers) : localizedQuestion.answers,
                     letters: localizedQuestion.letters ? shuffleBuilderLetters(localizedQuestion.letters, localizedQuestion.correct) : localizedQuestion.letters,
                 }
@@ -2006,7 +2061,6 @@ export default function GamesPage() {
                 {selectedGame.type !== 'memory' && (
                     <>
                         <h2>{question.prompt}</h2>
-                        {languageCode !== 'en' && question.englishPrompt && <p className="game-english-subtitle">English: {question.englishPrompt}</p>}
                     </>
                 )}
 
